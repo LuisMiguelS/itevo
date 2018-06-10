@@ -7,6 +7,9 @@
 	<meta name="description" content="ITEVO" />
 	<meta name="author" content="Simple Code" />
 
+	<!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
 	<link rel="icon" href="{{ asset('admin/images/favicon.ico') }}">
 
 	<title>ITEVO | Dashboard</title>
