@@ -16,6 +16,8 @@ class CreatePromotionsTable extends Migration
         Schema::create('promotions', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('institute_id');
+            $table->integer('no')->unsigned();
+            $table->year('yyear');
             $table->timestamps();
 
             $table->foreign('institute_id')->references('id')->on('institutes');

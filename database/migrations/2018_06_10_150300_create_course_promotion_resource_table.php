@@ -17,6 +17,7 @@ class CreateCoursePromotionResourceTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('course_promotion_id');
             $table->unsignedInteger('resource_id');
+            $table->unsignedInteger('price');
             $table->timestamps();
 
             $table->foreign('course_promotion_id')->references('id')->on('course_promotion');

@@ -19,8 +19,11 @@ class CreateCoursePromotionTable extends Migration
             $table->unsignedInteger('promotion_id');
             $table->unsignedInteger('teacher_id');
             $table->unsignedInteger('classroom_id');
+            $table->unsignedInteger('duration');
+            $table->unsignedInteger('price');
             $table->dateTime('schedule');
             $table->unique(['promotion_id', 'schedule', 'classroom_id']);
+            $table->string('status', 10);
             $table->timestamps();
 
             $table->foreign('course_id')->references('id')->on('courses');
