@@ -17,4 +17,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('home', 'HomeController@index')->name('home');
+
+
+Route::resource('institutes', 'InstituteController');
+
+Route::get('{institute}/dashboard', function (App\Institute $institute) {
+    $user = App\User::find(1);
+    return dd(Bouncer::is($user)->an('others'));
+})->fallback();
