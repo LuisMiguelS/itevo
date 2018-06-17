@@ -17,9 +17,12 @@ class InstituteController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
+        $this->authorize('view', Institute::class);
+
         $institutes = Institute::all();
         return view('institute.index', compact('institutes'));
     }
@@ -106,5 +109,14 @@ class InstituteController extends Controller
         $institute->delete();
 
         return back()->with(['flash_success' => "Instituto {$institute->name} eliminado con exito."]);
+    }
+
+    /**
+     * @param \App\Institute $institute
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function dashboard(Institute $institute)
+    {
+        return view('admin.dashboard', compact('institute'));
     }
 }

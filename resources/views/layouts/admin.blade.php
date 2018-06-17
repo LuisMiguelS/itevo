@@ -1,69 +1,100 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ app()->getLocale() }}">
 <head>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-	<meta name="description" content="ITEVO" />
-	<meta name="author" content="Simple Code" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<!-- CSRF Token -->
+    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
-	<link rel="icon" href="{{ asset('admin/images/favicon.ico') }}">
 
-	<title>ITEVO | Dashboard</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-	<link rel="stylesheet" href="{{ asset('admin/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('admin/css/font-icons/entypo/css/entypo.css') }}">
-	<link rel="stylesheet" href="{{ asset('admin/css/bootstrap.css') }}">
-	<link rel="stylesheet" href="{{ asset('admin/css/neon-core.css') }}">
-	<link rel="stylesheet" href="{{ asset('admin/css/neon-theme.css') }}">
-	<link rel="stylesheet" href="{{ asset('admin/css/neon-forms.css') }}">
-	<link rel="stylesheet" href="{{ asset('admin/css/custom.css') }}">
-	<link rel="stylesheet" href="{{ asset('admin/css/skins/black.css') }}">
-	@yield('styles')
+    <!-- Scripts -->
+    <script src="{{ mix('js/admin_panel.js') }}" defer></script>
+    @stack('scripts')
 
-	<script src="{{ asset('admin/js/jquery-1.11.3.min.js') }}"></script>
+    <!-- Styles -->
+    <link href="{{ mix('css/admin_panel.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
-	<!--[if lt IE 9]><script src="assets/js/ie8-responsive-file-warning.js') }}"></script><![endif]-->
-	
-	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!--[if lt IE 9]>
-		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-	<![endif]-->
 </head>
-<body class="page-body skin-black">
+<body class="page-body @yield('body-class', 'skin-black')">
 	<div class="page-container">
-		@include('layouts.includes.sidebar')
+        <div class="sidebar-menu">
+            <div class="sidebar-menu-inner">
+                <header class="logo-env">
+                    <div class="logo">
+                        <a href="{{ route('home') }}">
+                            <img src="https://pmcdeadline2.files.wordpress.com/2016/06/logo-tv-2.jpg?w=446&h=299&crop=1" width="120"/>
+                        </a>
+                    </div>
+
+                    <div class="sidebar-collapse">
+                        <a href="#" class="sidebar-collapse-icon with-animation">
+                            <i class="fas fa-bars"></i>
+                        </a>
+                    </div>
+
+                    <div class="sidebar-mobile-menu visible-xs">
+                        <a href="#" class="with-animation">
+                            <i class="entypo-menu"></i>
+                        </a>
+                    </div>
+                </header>
+
+                <div class="sidebar-user-info">
+                    <div class="sui-normal">
+                        <a class="user-link">
+                            <strong>{{ Auth()->user()->name }}</strong>
+                        </a>
+                    </div>
+                </div>
+
+                <ul id="main-menu" class="main-menu">
+                    @include('partials.sidebar')
+                </ul>
+            </div>
+        </div>
 
 		<div class="main-content">
-			@include('layouts.includes.navbar')
-			
-			@yield('content')
-			
-			@include('layouts.includes.footer')
+            <div class="row">
+                <div class="col-md-6 col-sm-8 clearfix">
+                    <ul class="list-inline links-list pull-left">
+                        <li class="nav-item">
+                            {{ $institute->name }}
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-6 col-sm-4 clearfix hidden-xs">
+                    <ul class="list-inline links-list pull-right">
+                        <li class="nav-item dropdown">
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                               onclick="event.preventDefault();
+                                         document.getElementById('logout-form').submit();">
+                                Cerrar Sesión
+                                <i class="fas fa-sign-out-alt"></i>
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr/>
+
+            <div class="container-fluid" style="min-height: 100vh;">
+                @yield('content')
+            </div>
+
+            <footer class="main">
+                Copyright &copy; {{ date('Y') }} <strong>{{ config('app.name', 'Laravel') }}</strong> Todos los derechos reservados.
+            </footer>
 		</div>
 	</div>
-
-	<!-- Bottom scripts (common) -->
-	<script src="{{ asset('admin/js/gsap/TweenMax.min.js') }}"></script>
-	<script src="{{ asset('admin/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js') }}"></script>
-	<script src="{{ asset('admin/js/bootstrap.js') }}"></script>
-	<script src="{{ asset('admin/js/joinable.js') }}"></script>
-	<script src="{{ asset('admin/js/resizeable.js') }}"></script>
-	<script src="{{ asset('admin/js/neon-api.js') }}"></script>
-
-	<!-- Imported scripts on this page -->
-	<script src="{{ asset('admin/js/raphael-min.js') }}"></script>
-	<script src="{{ asset('admin/js/toastr.js') }}"></script>
-
-	<!-- JavaScripts initializations and stuff -->
-	<script src="{{ asset('admin/js/neon-custom.js') }}"></script>
-
-	<!-- Demo Settings -->
-	<script src="{{ asset('admin/js/neon-demo.js') }}"></script>
-	@yield('scripts')
 </body>
 </html>

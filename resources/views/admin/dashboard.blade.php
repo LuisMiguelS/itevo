@@ -1,35 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-
-{{-- <script type="text/javascript">
-jQuery(document).ready(function($)
-{
-	// Sample Toastr Notification
-	setTimeout(function()
-	{
-		var opts = {
-			"closeButton": true,
-			"debug": false,
-			"positionClass": rtl() || public_vars.$pageContainer.hasClass('right-sidebar') ? "toast-top-left" : "toast-top-right",
-			"toastClass": "black",
-			"onclick": null,
-			"showDuration": "300",
-			"hideDuration": "1000",
-			"timeOut": "5000",
-			"extendedTimeOut": "1000",
-			"showEasing": "swing",
-			"hideEasing": "linear",
-			"showMethod": "fadeIn",
-			"hideMethod": "fadeOut"
-		};
-
-		toastr.success("You have been awarded with 1 year free subscription. Enjoy it!", "Account Subcription Updated", opts);
-	}, 3000);
-});
-</script> --}}
-
-<div class="row">
+    <div class="row">
 	<div class="col-md-3 col-sm-6 col-xs-12">
 		<div class="tile-stats tile-red">
 			<div class="icon"><i class="entypo-users"></i></div>
@@ -49,7 +21,7 @@ jQuery(document).ready(function($)
 			<p>Monto total de los ingresos del día</p>
 		</div>
 	</div>
-	
+
 	<div class="clear visible-xs"></div>
 
 	<div class="col-md-3 col-sm-6 col-xs-12">
@@ -72,7 +44,4 @@ jQuery(document).ready(function($)
 		</div>
 	</div>
 </div>
-
-<br/>
-
 @endsection

@@ -1,15 +1,50 @@
-<a href="{{ route('institutes.create') }}">Crear instituto</a>
+@extends('layouts.app')
 
+@section('content')
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
 
-@foreach($institutes  as $institute)
-    <div>
-        <h1><a href="este_sera_el_link_para_acceder_al_instituto_selecionado">{{ $institute->name }}</a></h1>
-        @can('update', $institute)
-        <a href="{{ route('institutes.edit', $institute) }}">Editar</a>
-        @endcan
+                <div class="card">
+                    <div class="card-header">
+                        Todos los institutos
+                        <a href="{{ route('institutes.create') }}">Crear instituto</a>
+                    </div>
+                    <div class="card-body">
+                        @if($institutes->count())
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($institutes  as $institute)
+                                    <tr>
+                                        <th>{{ $institute->id }}</th>
+                                        <td>{{ $institute->name }}</td>
+                                        <td>
+                                            @can('update', $institute)
+                                                <a href="{{ route('institutes.edit', $institute) }}">Editar</a>
+                                            @endcan
 
-        @can('delete', $institute)
-        <a href="{{ route('institutes.destroy', $institute) }}">Eliminar</a>
-        @endcan
+                                            @can('delete', $institute)
+                                                <a href="#">Eliminar</a>
+                                            @endcan
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @else
+                            No hay instittuos registrados
+                        @endif
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-@endforeach
+@endsection

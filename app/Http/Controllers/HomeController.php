@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Institute;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard');
+        $institutes = Institute::all();
+        return view('home', compact('institutes'));
     }
 }
