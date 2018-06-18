@@ -24,5 +24,11 @@ Route::resource('institutes', 'InstituteController');
 Route::resource('classrooms', 'ClassRoomController');
 Route::resource('courses', 'CourseController');
 Route::resource('resources', 'ResourceController');
+Route::resource('users', 'UserController');
 
-Route::get('{institute}/dashboard', 'InstituteController@dashboard')->name('institutes.dashboard')->fallback();
+Route::prefix('{institute}')->name('admin.')->group(function () {
+    Route::get('dashboard', 'InstituteController@dashboard')->name('dashboard');
+    Route::resource('classrooms', 'ClassRoomController');
+});
+
+

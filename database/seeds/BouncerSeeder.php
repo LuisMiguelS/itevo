@@ -1,6 +1,5 @@
 <?php
 
-use App\institute;
 use Illuminate\Database\Seeder;
 
 class BouncerSeeder extends Seeder
@@ -12,6 +11,6 @@ class BouncerSeeder extends Seeder
      */
     public function run()
     {
-        Bouncer::allow('admin')->everything();
+        Bouncer::allow(\App\User::ROLE_ADMIN)->everything();
     }
 }

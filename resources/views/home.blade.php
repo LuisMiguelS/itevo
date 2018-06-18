@@ -11,7 +11,7 @@
                    @if($institutes->count())
                         <ul class="list-group list-group-flush">
                             @foreach($institutes as $institute)
-                                <a href="{{ route('institutes.dashboard', $institute) }}" class="list-group-item list-group-item-action">
+                                <a href="{{ route('admin.dashboard', $institute) }}" class="list-group-item list-group-item-action">
                                     <b>{{ $institute->name }}</b>
                                 </a>
                             @endforeach

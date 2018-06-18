@@ -4,12 +4,14 @@ namespace App;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
+use Silber\Bouncer\BouncerFacade as Bouncer;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasRolesAndAbilities;
+    use Notifiable, HasRolesAndAbilities, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -29,6 +31,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    const ROLE_ADMIN = 'admin';
+
     public function setNameAttribute($name)
     {
         $this->attributes['name'] = strtolower($name);
@@ -44,8 +48,13 @@ class User extends Authenticatable
         return ucwords($name);
     }
 
+    public function isAdmin()
+    {
+        return Bouncer::is($this)->an(User::ROLE_ADMIN);
+    }
+
     public function institutes()
     {
-        return $this->hasMany(Institute::class);
+        return $this->belongsToMany(Institute::class, 'institute_user')->withPivot('institute_id', 'user_id');
     }
 }

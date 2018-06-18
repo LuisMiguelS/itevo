@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Classroom;
+use App\{Institute, Classroom};
 use App\Http\Requests\CreateClassRoomRequest;
 use App\Http\Requests\UpdateClassRoomRequest;
-use App\Institute;
 
 class ClassRoomController extends Controller
 {
@@ -15,27 +14,30 @@ class ClassRoomController extends Controller
     }
 
     /**
+     * @param \App\Institute|null $institute
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index()
+    public function index(Institute $institute = null)
     {
         $this->authorize('view', Classroom::class);
 
-        $classrooms = Classroom::all();
+        $classrooms = Classroom::onlyRelations($institute)->paginate();
 
         return view('classroom.index', compact('classrooms'));
     }
 
     /**
+     * @param \App\Institute|null $institute
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create()
+    public function create(Institute $institute = null)
     {
         $this->authorize('create', Classroom::class);
 
-        $institutes = Institute::all();
+        $institutes = Institute::onlyRelations($institute)->paginate();
+
         return view('classroom.create', compact('institutes'));
     }
 
@@ -57,15 +59,17 @@ class ClassRoomController extends Controller
     }
 
     /**
+     * @param \App\Institute|null $institute
      * @param \App\Classroom $classroom
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function edit(Classroom $classroom)
+    public function edit(Institute $institute = null, Classroom $classroom)
     {
         $this->authorize('update', $classroom);
 
-        $institutes = Institute::all();
+        $institutes = Institute::onlyRelations($institute)->paginate();
+
         return view('classroom.edit', compact('classroom', 'institutes'));
     }
 

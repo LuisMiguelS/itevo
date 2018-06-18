@@ -49,7 +49,7 @@ class Institute extends Model
 
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class, 'institute_user')->withPivot('institute_id', 'user_id');
     }
 
     public function promotions()
@@ -60,5 +60,12 @@ class Institute extends Model
     public function classrooms()
     {
         return $this->hasMany(Classroom::class);
+    }
+
+    public function scopeOnlyRelations($query, Institute $institute = null)
+    {
+        return $query->unless(auth()->user()->isAdmin(), function ($q) use($institute){
+            $q->where('id', $institute->id);
+        })->orderBy('id','DESC');
     }
 }
