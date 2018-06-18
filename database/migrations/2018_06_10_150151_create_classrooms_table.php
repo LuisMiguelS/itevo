@@ -18,6 +18,7 @@ class CreateClassroomsTable extends Migration
             $table->string('name', 50);
             $table->string('building', 50)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

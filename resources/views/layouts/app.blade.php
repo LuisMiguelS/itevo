@@ -38,6 +38,18 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('institutes.index') }}">Institutos</a>
                             </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('classrooms.index') }}">Aulas</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('courses.index') }}">Cursos</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('resources.index') }}">Recursos</a>
+                            </li>
                         @endif
                     </ul>
 

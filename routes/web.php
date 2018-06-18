@@ -21,5 +21,8 @@ Route::get('home', 'HomeController@index')->name('home');
 
 
 Route::resource('institutes', 'InstituteController');
+Route::resource('classrooms', 'ClassRoomController');
+Route::resource('courses', 'CourseController');
+Route::resource('resources', 'ResourceController');
 
 Route::get('{institute}/dashboard', 'InstituteController@dashboard')->name('institutes.dashboard')->fallback();
