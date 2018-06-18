@@ -10,7 +10,7 @@ class Classroom extends Model
 	use SoftDeletes;
 
     protected $fillable = [
-    	'name', 'building'
+    	'name', 'building', 'institute_id'
     ];
 
     public function setNameAttribute($name)
@@ -31,5 +31,10 @@ class Classroom extends Model
     public function getBuildingAttribute($building)
     {
         return ucwords($building);
+    }
+
+    public function institute()
+    {
+        return $this->belongsTo(Institute::class);
     }
 }

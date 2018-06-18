@@ -53,7 +53,7 @@ class UpdateInstituteTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
-        $this->assertDatabaseMissing('institutes', $this->withData( ));
+        $this->assertDatabaseMissing('institutes', $this->withData());
     }
 
     /** @test */

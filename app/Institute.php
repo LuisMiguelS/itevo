@@ -7,7 +7,7 @@ use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class institute extends Model
+class Institute extends Model
 {
     use SoftDeletes, HasSlug;
 
@@ -55,5 +55,10 @@ class institute extends Model
     public function promotions()
     {
         return $this->hasMany(Promotion::class);
+    }
+
+    public function classrooms()
+    {
+        return $this->hasMany(Classroom::class);
     }
 }

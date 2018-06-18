@@ -16,9 +16,13 @@ class CreateClassroomsTable extends Migration
         Schema::create('classrooms', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50);
-            $table->string('building', 50)->nullable();
+            $table->string('building', 50);
+            $table->unsignedInteger('institute_id');
+            $table->unique(['institute_id', 'name', 'building']);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('institute_id')->references('id')->on('institutes');
         });
     }
 

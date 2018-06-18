@@ -15,14 +15,18 @@ class UpdateClassRoomRequest extends FormRequest
     public function rules ()
     {
         return [
-            'name' => 'required|min:1|max:50'
+            'name' => 'required|min:1|max:50',
+            'building' => 'required|min:1|max:50',
+            'institute_id' => 'required',
         ];
     }
 
     public function attributes ()
     {
         return [
-            'name' => 'nombre'
+            'name' => 'nombre',
+            'building' => 'nombre del edificio',
+            'institute_id' => 'instituto'
         ];
     }
 

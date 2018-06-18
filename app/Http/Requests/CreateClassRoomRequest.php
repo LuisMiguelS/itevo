@@ -15,21 +15,24 @@ class CreateClassRoomRequest extends FormRequest
     public function rules ()
     {
         return [
-            'name' => 'required|min:1|max:50'
+            'name' => 'required|min:1|max:50',
+            'building' => 'required|min:1|max:50',
+            'institute_id' => 'required',
         ];
     }
 
     public function attributes ()
     {
         return [
-            'name' => 'nombre'
+            'name' => 'nombre del aula',
+            'building' => 'nombre del edificio',
+            'institute_id' => 'instituto'
         ];
     }
 
     public function createClassRoom ()
     {
-        $institute = Classroom::create($this->validated());
-
-        return "Aula {$institute->name} creado con éxito.";
+        $classroon = Classroom::create($this->validated());
+        return "Aula {$classroon->name} creado con éxito.";
     }
 }

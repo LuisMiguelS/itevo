@@ -29,3 +29,11 @@ $factory->define(App\Institute::class, function (Faker $faker) {
     ];
 });
 
+$factory->define(App\Classroom::class, function (Faker $faker) {
+    return [
+        'name' => $faker->word,
+        'building' => $faker->word,
+        'institute_id' => factory(App\Institute::class)->create()
+    ];
+});
+

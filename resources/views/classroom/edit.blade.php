@@ -14,6 +14,31 @@
                             @method('PUT')
 
                             <div class="form-group row">
+                                <label for="institute_id" class="col-sm-4 col-form-label text-md-right">Instituto</label>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <select class="form-control {{ $errors->has('institute_id') ? ' is-invalid' : '' }}" id="institute_id" name="institute_id">
+                                            <option>Seleciona una opcion</option>
+                                            @foreach($institutes as $institute)
+
+                                                <option value="{{ $institute->id }}"
+                                                    {{ old('institute_id') == $institute->id || $classroom->institute_id == $institute->id ? 'selected' : '' }}>
+                                                    {{ $institute->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('institute_id'))
+                                            <span class="invalid-feedback">
+                                            <strong>{{ $errors->first('institute_id') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
                                 <label for="name" class="col-sm-4 col-form-label text-md-right">Nombre del aula</label>
 
                                 <div class="col-md-6">
