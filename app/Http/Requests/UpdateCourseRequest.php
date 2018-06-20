@@ -16,7 +16,7 @@ class UpdateCourseRequest extends FormRequest
     {
         return [
             'name' => 'required|min:2|max:255',
-            'type' => 'required|min:2|max:100'
+            'type_course_id' => 'required|numeric'
         ];
     }
 
@@ -24,14 +24,13 @@ class UpdateCourseRequest extends FormRequest
     {
         return [
             'name' => 'nombre',
-            'type' => 'tipo'
+            'type_course_id' => 'tipo de curso'
         ];
     }
 
     public function updateCourse (Course $course)
     {
         $course->update($this->validated());
-
-        return "Curso {$course->name} actualizada con éxito.";
+        return "Curso {$course->name} actualizado con éxito.";
     }
 }

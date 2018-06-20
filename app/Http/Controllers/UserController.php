@@ -20,10 +20,13 @@ class UserController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
-        //
+        $this->authorize('view', User::class);
+        $users = User::paginate();
+        return view('user.index', compact('users'));
     }
 
     /**
@@ -35,6 +38,7 @@ class UserController extends Controller
     public function create()
     {
         $this->authorize('create', User::class);
+        return view('user.create');
     }
 
     /**
@@ -47,30 +51,32 @@ class UserController extends Controller
     public function store(CreateUserRequest $request)
     {
         $this->authorize('create', User::class);
-
         return back()->with(['flash_success' => $request->createUser()]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\User  $user
+     * @param  \App\User $user
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(User $user)
     {
-        //
+        $this->authorize('view', User::class);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\User  $user
+     * @param  \App\User $user
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(User $user)
     {
-        //
+        $this->authorize('update', User::class);
+        return view('user.edit', compact('user'));
     }
 
     /**

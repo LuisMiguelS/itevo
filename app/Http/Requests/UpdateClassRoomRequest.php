@@ -17,7 +17,7 @@ class UpdateClassRoomRequest extends FormRequest
         return [
             'name' => 'required|min:1|max:50',
             'building' => 'required|min:1|max:50',
-            'institute_id' => 'required',
+            'institute_id' => 'required|numeric',
         ];
     }
 

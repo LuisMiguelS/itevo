@@ -37,3 +37,16 @@ $factory->define(App\Classroom::class, function (Faker $faker) {
     ];
 });
 
+$factory->define(App\TypeCourse::class, function (Faker $faker) {
+    return [
+        'name' => $faker->unique()->word,
+    ];
+});
+
+$factory->define(App\Course::class, function (Faker $faker) {
+    return [
+        'name' => $faker->word,
+        'type_course_id' => factory(App\TypeCourse::class)->create()
+    ];
+});
+

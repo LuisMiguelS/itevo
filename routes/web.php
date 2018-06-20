@@ -19,12 +19,22 @@ Auth::routes();
 
 Route::get('home', 'HomeController@index')->name('home');
 
-
 Route::resource('institutes', 'InstituteController');
 Route::resource('classrooms', 'ClassRoomController');
 Route::resource('courses', 'CourseController');
 Route::resource('resources', 'ResourceController');
 Route::resource('users', 'UserController');
+Route::resource('types/courses', 'TypeCourseController')->names([
+    'index' => 'typecourses.index',
+    'show' => 'typecourses.show',
+    'create' => 'typecourses.create',
+    'store' => 'typecourses.store',
+    'edit' => 'typecourses.edit',
+    'update' => 'typecourses.update',
+    'destroy' => 'typecourses.destroy',
+])->parameters([
+    'courses' => 'typeCourse'
+]);
 
 Route::prefix('{institute}')->name('admin.')->group(function () {
     Route::get('dashboard', 'InstituteController@dashboard')->name('dashboard');

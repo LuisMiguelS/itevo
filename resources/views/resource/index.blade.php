@@ -31,11 +31,6 @@
                                             @endcan
 
                                             @can('delete', $resource)
-                                                {{-- <form action="{{ route('resources.destroy', $resource) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="btn btn-danger btn-xs" type="submit">Borrar</button>
-                                                </form> --}}
                                                 <a href="#">Borrar</a>
                                             @endcan
                                         </td>
@@ -43,6 +38,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $resources->links() }}
                         @else
                             No hay recursos registrados
                         @endif

@@ -19,7 +19,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <select class="form-control {{ $errors->has('institute_id') ? ' is-invalid' : '' }}" id="institute_id" name="institute_id">
-                                            <option>Seleciona una opcion</option>
+                                            <option disabled>Seleciona una opcion</option>
                                             @foreach($institutes as $institute)
 
                                                 <option value="{{ $institute->id }}"

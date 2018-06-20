@@ -7,32 +7,32 @@
 
                 <div class="card">
                     <div class="card-header">
-                        Todos las Aulas
-                        <a href="{{ route('classrooms.create') }}">Crear Aula</a>
+                        Todos los usuarios
+                        <a href="{{ route('users.create') }}">Crear Usuario</a>
                     </div>
                     <div class="card-body">
-                        @if($classrooms->count())
+                        @if($users->count())
                         <table class="table">
                             <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Aula</th>
-                                <th>Edificio</th>
+                                <th>Nombre</th>
+                                <th>Correo Electrónico</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
                             <tbody>
-                                @foreach($classrooms  as $classroom)
+                                @foreach($users  as $user)
                                     <tr>
-                                        <th>{{ $classroom->id }}</th>
-                                        <td>{{ $classroom->name }}</td>
-                                        <td>{{ $classroom->building }}</td>
+                                        <th>{{ $user->id }}</th>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email }}</td>
                                         <td>
-                                            @can('update', $classroom)
-                                                <a href="{{ route('classrooms.edit', $classroom) }}">Editar</a>
+                                            @can('update', $user)
+                                                <a href="{{ route('users.edit', $user) }}">Editar</a>
                                             @endcan
 
-                                            @can('delete', $classroom)
+                                            @can('delete', $user)
                                                 <a href="#">Borrar</a>
                                             @endcan
                                         </td>
@@ -40,9 +40,9 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $classrooms->links() }}
+                        {{ $users->links() }}
                         @else
-                            No hay aulas registradas
+                            No hay Tipos de cursos registrados
                         @endif
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Classroom;
 
 use App\{Institute, User};
 use Tests\TestCase;

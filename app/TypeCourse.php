@@ -5,13 +5,13 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Course extends Model
+class TypeCourse extends Model
 {
-	use SoftDeletes;
+    use SoftDeletes;
 
-	protected $fillable = [
-		'name', 'type_course_id'
-	];
+    protected $fillable = [
+        'name'
+    ];
 
     public function setNameAttribute($name)
     {
@@ -23,13 +23,8 @@ class Course extends Model
         return ucwords($name);
     }
 
-    public function typecourse()
+    public function courses()
     {
-        return $this->belongsTo(TypeCourse::class);
-    }
-
-    public function promotions()
-    {
-        return $this->hasMany(Promotion::class);
+        return $this->hasMany(Course::class);
     }
 }

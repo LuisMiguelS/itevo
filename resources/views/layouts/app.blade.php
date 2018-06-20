@@ -44,11 +44,19 @@
                             </li>
 
                             <li class="nav-item">
+                                <a class="nav-link" href="{{ route('typecourses.index') }}">Tipos de cursos</a>
+                            </li>
+
+                            <li class="nav-item">
                                 <a class="nav-link" href="{{ route('courses.index') }}">Cursos</a>
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('resources.index') }}">Recursos</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('users.index') }}">Usuarios</a>
                             </li>
                         @endif
                     </ul>

@@ -38,6 +38,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $institutes->links() }}
                         @else
                             No hay instittuos registrados
                         @endif

@@ -33,11 +33,6 @@
                                             @endcan
 
                                             @can('delete', $course)
-                                                {{-- <form action="{{ route('courses.destroy', $course) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="btn btn-danger btn-xs" type="submit">Borrar</button>
-                                                </form> --}}
                                                 <a href="#">Borrar</a>
                                             @endcan
                                         </td>
@@ -45,6 +40,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $courses->links() }}
                         @else
                             No hay cursos registrados
                         @endif

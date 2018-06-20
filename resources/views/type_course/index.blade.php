@@ -7,32 +7,30 @@
 
                 <div class="card">
                     <div class="card-header">
-                        Todos las Aulas
-                        <a href="{{ route('classrooms.create') }}">Crear Aula</a>
+                        Todos los Tipos de cursos
+                        <a href="{{ route('typecourses.create') }}">Crear Tipo de curso</a>
                     </div>
                     <div class="card-body">
-                        @if($classrooms->count())
+                        @if($typeCourses->count())
                         <table class="table">
                             <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Aula</th>
-                                <th>Edificio</th>
+                                <th>Tipo de curso</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
                             <tbody>
-                                @foreach($classrooms  as $classroom)
+                                @foreach($typeCourses  as $typeCourse)
                                     <tr>
-                                        <th>{{ $classroom->id }}</th>
-                                        <td>{{ $classroom->name }}</td>
-                                        <td>{{ $classroom->building }}</td>
+                                        <th>{{ $typeCourse->id }}</th>
+                                        <td>{{ $typeCourse->name }}</td>
                                         <td>
-                                            @can('update', $classroom)
-                                                <a href="{{ route('classrooms.edit', $classroom) }}">Editar</a>
+                                            @can('update', $typeCourse)
+                                                <a href="{{ route('typecourses.edit', $typeCourse) }}">Editar</a>
                                             @endcan
 
-                                            @can('delete', $classroom)
+                                            @can('delete', $typeCourse)
                                                 <a href="#">Borrar</a>
                                             @endcan
                                         </td>
@@ -40,9 +38,9 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $classrooms->links() }}
+                        {{ $typeCourses->links() }}
                         @else
-                            No hay aulas registradas
+                            No hay Tipos de cursos registrados
                         @endif
                     </div>
                 </div>

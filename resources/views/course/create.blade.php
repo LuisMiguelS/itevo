@@ -25,16 +25,26 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="name" class="col-sm-4 col-form-label text-md-right">Tipo de curso</label>
-                                
-                                <div class="col-md-6">
-                                    <input id="type" type="text" class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}" name="type" value="{{ old('type') }}">
+                                <label for="institute_id" class="col-sm-4 col-form-label text-md-right">Tipo de cursos</label>
 
-                                    @if ($errors->has('type'))
-                                      <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('type') }}</strong>
-                                    </span>
-                                    @endif
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <select class="form-control {{ $errors->has('type_course_id') ? ' is-invalid' : '' }}" id="type_course_id" name="type_course_id">
+                                            <option disabled>Seleciona una opcion</option>
+                                            @foreach($typeCourses as $typeCourse)
+
+                                                <option value="{{ $typeCourse->id }}"
+                                                    {{ old('type_course_id') == $typeCourse->id ? 'selected' : '' }}>
+                                                    {{ $typeCourse->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('type_course_id'))
+                                            <span class="invalid-feedback">
+                                            <strong>{{ $errors->first('type_course_id') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
 

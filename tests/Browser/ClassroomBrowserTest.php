@@ -2,10 +2,9 @@
 
 namespace Tests\Browser;
 
-use App\Classroom;
-use App\Institute;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
+use App\{Classroom, Institute};
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ClassroomBrowserTest extends DuskTestCase

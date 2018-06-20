@@ -20,8 +20,7 @@ class InstituteController extends Controller
     public function index()
     {
         $this->authorize('view', Institute::class);
-
-        $institutes = Institute::all();
+        $institutes = Institute::paginate();
         return view('institute.index', compact('institutes'));
     }
 
@@ -32,7 +31,6 @@ class InstituteController extends Controller
     public function create()
     {
         $this->authorize('create', Institute::class);
-
         return view('institute.create');
     }
 
@@ -44,10 +42,13 @@ class InstituteController extends Controller
     public function store(CreateInstituteRequest $request)
     {
         $this->authorize('create', Institute::class);
-
         return back()->with(['flash_success' => $request->createInstitute()]);
     }
 
+    /**
+     * @param \App\Institute $institute
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function show(Institute $institute)
     {
         $this->authorize('view', Institute::class);
@@ -61,7 +62,6 @@ class InstituteController extends Controller
     public function edit(institute $institute)
     {
         $this->authorize('update', $institute);
-
         return view('institute.edit', compact('institute'));
     }
 
@@ -74,7 +74,6 @@ class InstituteController extends Controller
     public function update(UpdateInstituteRequest $request, Institute $institute)
     {
         $this->authorize('update', $institute);
-
         return redirect()->route('institutes.index')->with(['flash_success' => $request->updateInstitute($institute)]);
     }
 
@@ -86,9 +85,7 @@ class InstituteController extends Controller
     public function destroy(Institute $institute)
     {
         $this->authorize('delete', $institute);
-
         $institute->delete();
-
         return back()->with(['flash_success' => "Instituto {$institute->name} eliminado con exito."]);
     }
 
@@ -100,7 +97,6 @@ class InstituteController extends Controller
     public function dashboard(Institute $institute)
     {
         $this->authorize('view-dashboard', Institute::class);
-
         return view('admin.dashboard', compact('institute'));
     }
 }
