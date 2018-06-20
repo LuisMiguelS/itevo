@@ -35,6 +35,16 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         @if (auth()->check() && auth()->user()->isAn('admin'))
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Gestión de usuarios
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('abilities.index') }}">Habilidades</a>
+                                    <a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a>
+                                    <a class="dropdown-item" href="{{ route('users.index') }}">Usuarios</a>
+                                </div>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('institutes.index') }}">Institutos</a>
                             </li>

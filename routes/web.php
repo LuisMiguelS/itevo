@@ -23,7 +23,6 @@ Route::resource('institutes', 'InstituteController');
 Route::resource('classrooms', 'ClassRoomController');
 Route::resource('courses', 'CourseController');
 Route::resource('resources', 'ResourceController');
-Route::resource('users', 'UserController');
 Route::resource('types/courses', 'TypeCourseController')->names([
     'index' => 'typecourses.index',
     'show' => 'typecourses.show',
@@ -35,6 +34,10 @@ Route::resource('types/courses', 'TypeCourseController')->names([
 ])->parameters([
     'courses' => 'typeCourse'
 ]);
+
+Route::resource('users', 'UserManagement\UserController');
+Route::resource('abilities', 'UserManagement\AbilitieController');
+Route::resource('roles', 'UserManagement\RoleController');
 
 Route::prefix('{institute}')->name('admin.')->group(function () {
     Route::get('dashboard', 'InstituteController@dashboard')->name('dashboard');

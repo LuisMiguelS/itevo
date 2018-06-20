@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\UserManagement;
 
 use App\User;
 use Illuminate\Foundation\Http\FormRequest;
@@ -27,6 +27,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => 'required|min:5|max:255',
             'email' => 'required|email|max:255|unique:users,email,'. $this->user->id,
+            'roles.*' => 'nullable|present'
         ];
     }
 
@@ -35,13 +36,21 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => 'nombre',
             'email' => 'correo electrónico',
+            'roles.*' => 'roles'
         ];
     }
 
     public function updateUser(User $user)
     {
         $user->update($this->validated());
-
+        foreach ($user->roles as $role) {
+            $user->retract($role);
+        }
+        if(isset($this->validated()['roles'])){
+            foreach ($this->validated()['roles'] as $role) {
+                $user->assign($role);
+            }
+        }
         return "Usuario {$user->name} actualizado con exito.";
     }
 }

@@ -18,6 +18,7 @@
                                 <th>#</th>
                                 <th>Nombre</th>
                                 <th>Correo Electrónico</th>
+                                <th>roles</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
@@ -27,6 +28,11 @@
                                         <th>{{ $user->id }}</th>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
+                                        <td>
+                                            @foreach ($user->roles->pluck('name') as $role)
+                                                <span class="badge badge-primary">{{ $role }}</span>
+                                            @endforeach
+                                        </td>
                                         <td>
                                             @can('update', $user)
                                                 <a href="{{ route('users.edit', $user) }}">Editar</a>

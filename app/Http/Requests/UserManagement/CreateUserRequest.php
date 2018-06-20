@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\UserManagement;
 
 use App\User;
 use Illuminate\Foundation\Http\FormRequest;
@@ -28,6 +28,7 @@ class CreateUserRequest extends FormRequest
             'name' => 'required|min:5|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
+            'roles.*' => 'nullable|present'
         ];
     }
 
@@ -36,13 +37,19 @@ class CreateUserRequest extends FormRequest
         return [
             'name' => 'nombre',
             'email' => 'correo electrónico',
-            'password' => 'contraseña'
+            'password' => 'contraseña',
+            'roles*' => 'roles'
         ];
     }
 
     public function createUser()
     {
         $user = User::create($this->validated());
+       if (isset($this->validated()['roles'])){
+           foreach ($this->validated()['roles'] as $role) {
+               $user->assign($role);
+           }
+       }
         return "Usuario {$user->name} creado con éxito.";
     }
 }
