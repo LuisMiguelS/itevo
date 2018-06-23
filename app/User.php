@@ -32,6 +32,7 @@ class User extends Authenticatable
     ];
 
     const ROLE_ADMIN = 'admin';
+    const ROLE_TENANT_ADMIN = 'tenant admin';
 
     public function setNameAttribute($name)
     {
@@ -50,7 +51,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return Bouncer::is($this)->an(User::ROLE_ADMIN);
+        return $this->isAn(User::ROLE_ADMIN);
     }
 
     public function institutes()

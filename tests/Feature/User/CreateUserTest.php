@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\User;
 
-use App\User;
 use Tests\TestCase;
+use App\{User, Institute};
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -23,6 +23,7 @@ class CreateUserTest extends TestCase
     {
         parent::setUp();
         $this->admin = $this->createAdmin();
+        $this->institute = factory(Institute::class)->create();
     }
 
     /** @test */
@@ -30,7 +31,8 @@ class CreateUserTest extends TestCase
     {
         $this->actingAs($this->admin)
             ->post(route('users.store'), $this->withData([
-                'password_confirmation' => $this->defaultData['password']
+                'password_confirmation' => $this->defaultData['password'],
+                'institutes' => [$this->institute->id]
             ]))
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Usuario {$this->defaultData['name']} creado con éxito."]);
@@ -44,7 +46,8 @@ class CreateUserTest extends TestCase
         $this->withExceptionHandling();
 
         $this->post(route('users.store'), $this->withData([
-            'password_confirmation' => $this->defaultData['password']
+            'password_confirmation' => $this->defaultData['password'],
+            'institutes' => [$this->institute->id]
         ]))
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
@@ -61,7 +64,8 @@ class CreateUserTest extends TestCase
 
         $this->actingAs($user)
             ->post(route('users.store'), $this->withData([
-                'password_confirmation' => $this->defaultData['password']
+                'password_confirmation' => $this->defaultData['password'],
+                'institutes' => [$this->institute->id]
             ]))
             ->assertStatus(Response::HTTP_FORBIDDEN);
 

@@ -96,7 +96,7 @@ class InstituteController extends Controller
      */
     public function dashboard(Institute $institute)
     {
-        $this->authorize('view-dashboard', Institute::class);
-        return view('admin.dashboard', compact('institute'));
+        $this->authorize('tenant-view', Institute::class);
+        return view('tenant.dashboard', compact('institute'));
     }
 }

@@ -2,9 +2,8 @@
 
 namespace Tests\Feature\typecourse;
 
-use App\User;
 use Tests\TestCase;
-use App\TypeCourse;
+use App\{Institute, User, TypeCourse};
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -22,12 +21,15 @@ class UpdateTypeCourseTest extends TestCase
 
     private $user;
 
+    private $institute;
+
     protected function setUp()
     {
         parent::setUp();
         $this->admin = $this->createAdmin();
         $this->type_course = factory(TypeCourse::class)->create();
         $this->user = factory(User::class)->create();
+        $this->institute = factory(Institute::class)->create();
     }
 
 
@@ -35,7 +37,10 @@ class UpdateTypeCourseTest extends TestCase
     function an_admin_can_update_type_course()
     {
         $this->actingAs($this->admin)
-            ->put(route('typecourses.update', $this->type_course), $this->withData())
+            ->put(route('tenant.typecourses.update', [
+                'institute' => $this->institute,
+                'typeCourse' => $this->type_course
+            ]), $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Tipo de curso {$this->defaultData['name']} actualizado con éxito."]);
 
@@ -47,7 +52,10 @@ class UpdateTypeCourseTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $this->put(route('typecourses.update', $this->type_course), $this->withData())
+        $this->put(route('tenant.typecourses.update', [
+            'institute' => $this->institute,
+            'typeCourse' => $this->type_course
+        ]), $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
@@ -60,7 +68,10 @@ class UpdateTypeCourseTest extends TestCase
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
-            ->put(route('typecourses.update', $this->type_course), $this->withData())
+            ->put(route('tenant.typecourses.update', [
+                'institute' => $this->institute,
+                'typeCourse' => $this->type_course
+            ]), $this->withData())
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
         $this->assertDatabaseMissing('type_courses', $this->withData());
@@ -72,7 +83,10 @@ class UpdateTypeCourseTest extends TestCase
         $this->handleValidationExceptions();
 
         $this->actingAs($this->admin)
-            ->put(route('typecourses.update', $this->type_course), [])
+            ->put(route('tenant.typecourses.update', [
+                'institute' => $this->institute,
+                'typeCourse' => $this->type_course
+            ]), [])
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasErrors(['name']);
 

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\User;
 
+use App\Institute;
 use App\User;
 use Tests\TestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,13 +26,16 @@ class UpdateUserTest extends TestCase
         parent::setUp();
         $this->user = factory(User::class)->create();
         $this->admin = $this->createAdmin();
+        $this->institute = factory(Institute::class)->create();
     }
 
     /** @test */
     function an_admin_can_update_users()
     {
         $this->actingAs($this->admin)
-            ->put(route('users.update', $this->user), $this->withData())
+            ->put(route('users.update', $this->user), $this->withData([
+                'institutes' => [$this->institute->id]
+            ]))
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Usuario Cristian Gomez actualizado con exito."]);
 
@@ -43,7 +47,9 @@ class UpdateUserTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $this->put(route('users.update', $this->user), $this->withData())
+        $this->put(route('users.update', $this->user), $this->withData([
+            'institutes' => [$this->institute->id]
+        ]))
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
@@ -56,7 +62,9 @@ class UpdateUserTest extends TestCase
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
-            ->put(route('users.update', $this->user), $this->withData())
+            ->put(route('users.update', $this->user), $this->withData([
+                'institutes' => [$this->institute->id]
+            ]))
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
         $this->assertDatabaseMissing('users', $this->withData());
@@ -84,6 +92,7 @@ class UpdateUserTest extends TestCase
 
         $this->actingAs($this->admin)
             ->put(route('users.update', $this->user), $this->withData([
+                'institutes' => [$this->institute->id],
                 'email' => $user->email
             ]))
             ->assertStatus(Response::HTTP_FOUND)

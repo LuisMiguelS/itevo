@@ -38,7 +38,7 @@ class Classroom extends Model
         return $this->belongsTo(Institute::class);
     }
 
-    public function scopeOnlyRelations($query, Institute $institute = null)
+    public function scopeOnlyRelations($query, Institute $institute)
     {
         return $query->unless(auth()->user()->isAdmin(), function ($q) use($institute){
             $q->where('institute_id', $institute->id);

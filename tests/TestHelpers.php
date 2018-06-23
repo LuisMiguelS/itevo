@@ -22,8 +22,7 @@ trait TestHelpers
     protected function createAdmin()
     {
         return tap(factory(\App\User::class)->create(), function ($user) {
-            Bouncer::allow('admin')->everything();
-            Bouncer::assign('admin')->to($user);
+            $user->assign(\App\User::ROLE_ADMIN);
         });
     }
 }

@@ -3,7 +3,7 @@
 namespace Tests\Feature\type_course;
 
 use Tests\TestCase;
-use App\{TypeCourse, User};
+use App\{Institute, TypeCourse, User};
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -17,19 +17,25 @@ class DeleteTypeCourseTest extends TestCase
 
     private $admin;
 
+    private $institute;
+
     protected function setUp()
     {
         parent::setUp();
         $this->type_course = factory(TypeCourse::class)->create();
         $this->user = factory(User::class)->create();
         $this->admin = $this->createAdmin();
+        $this->institute = factory(Institute::class)->create();
     }
 
     /** @test */
         function an_admin_can_delete_type_course()
     {
         $this->actingAs($this->admin)
-            ->delete(route('typecourses.destroy', $this->type_course))
+            ->delete(route('tenant.typecourses.destroy', [
+                'institute' => $this->institute,
+                'typeCourse' => $this->type_course
+            ]))
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Tipo de curso {$this->type_course->name} eliminado con éxito."]);
 
@@ -44,7 +50,10 @@ class DeleteTypeCourseTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $this->delete(route('typecourses.destroy', $this->type_course))
+        $this->delete(route('tenant.typecourses.destroy', [
+            'institute' => $this->institute,
+            'typeCourse' => $this->type_course
+        ]))
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
@@ -60,7 +69,10 @@ class DeleteTypeCourseTest extends TestCase
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
-            ->put(route('typecourses.destroy', $this->type_course))
+            ->put(route('tenant.typecourses.destroy', [
+                'institute' => $this->institute,
+                'typeCourse' => $this->type_course
+            ]))
             ->assertStatus(Response::HTTP_FOUND);
 
         $this->assertDatabaseHas('type_courses', [

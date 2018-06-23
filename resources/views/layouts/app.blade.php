@@ -34,39 +34,15 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+                        <li>
+                            <a class="nav-link" href="{{ route('home') }}">Home</a>
+                        </li>
                         @if (auth()->check() && auth()->user()->isAn('admin'))
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Gestión de usuarios
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('abilities.index') }}">Habilidades</a>
-                                    <a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a>
-                                    <a class="dropdown-item" href="{{ route('users.index') }}">Usuarios</a>
-                                </div>
+                            <li>
+                                <a class="nav-link" href="{{ route('users.index') }}">Usuarios</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('institutes.index') }}">Institutos</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('classrooms.index') }}">Aulas</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('typecourses.index') }}">Tipos de cursos</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('courses.index') }}">Cursos</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('resources.index') }}">Recursos</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('users.index') }}">Usuarios</a>
                             </li>
                         @endif
                     </ul>

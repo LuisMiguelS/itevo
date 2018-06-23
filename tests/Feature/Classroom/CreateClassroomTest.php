@@ -31,9 +31,7 @@ class CreateClassroomTest extends TestCase
     function an_admin_can_create_classrooms()
     {
         $this->actingAs($this->admin)
-            ->post(route('classrooms.store'), $this->withData([
-                'institute_id' => $this->institute->id
-            ]))
+            ->post(route('tenant.classrooms.store', $this->institute), $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Aula {$this->defaultData['name']} creado con éxito."]);
 
@@ -47,9 +45,7 @@ class CreateClassroomTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $this->post(route('classrooms.store'), $this->withData([
-            'institute_id' => $this->institute->id
-        ]))
+        $this->post(route('tenant.classrooms.store', $this->institute), $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
@@ -66,9 +62,7 @@ class CreateClassroomTest extends TestCase
         $user = factory(User::class)->create();
 
         $this->actingAs($user)
-            ->post(route('classrooms.store'), $this->withData([
-                'institute_id' => $this->institute->id
-            ]))
+            ->post(route('tenant.classrooms.store', $this->institute), $this->withData())
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
         $this->assertDatabaseEmpty('classrooms');
@@ -80,9 +74,9 @@ class CreateClassroomTest extends TestCase
         $this->handleValidationExceptions();
 
         $this->actingAs($this->admin)
-            ->post(route('classrooms.store'), [])
+            ->post(route('tenant.classrooms.store', $this->institute), [])
             ->assertStatus(Response::HTTP_FOUND)
-            ->assertSessionHasErrors(['name', 'building', 'institute_id']);
+            ->assertSessionHasErrors(['name', 'building']);
 
         $this->assertDatabaseEmpty('classrooms');
     }

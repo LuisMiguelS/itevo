@@ -7,7 +7,7 @@ use App\{User, Classroom};
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class DeleteClassroomTestTest extends TestCase
+class DeleteClassroomTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -29,7 +29,10 @@ class DeleteClassroomTestTest extends TestCase
     function an_admin_can_delete_classroom()
     {
         $this->actingAs($this->admin)
-            ->delete(route('classrooms.destroy', $this->classroom))
+            ->delete(route('tenant.classrooms.destroy', [
+                'institute' => $this->classroom->institute,
+                'classrooms' => $this->classroom
+            ]))
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Aula {$this->classroom->name} eliminada con éxito."]);
 
@@ -44,7 +47,10 @@ class DeleteClassroomTestTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $this->delete(route('classrooms.destroy', $this->classroom))
+        $this->delete(route('tenant.classrooms.destroy', [
+            'institute' => $this->classroom->institute,
+            'classrooms' => $this->classroom
+        ]))
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
@@ -60,7 +66,10 @@ class DeleteClassroomTestTest extends TestCase
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
-            ->put(route('classrooms.destroy', $this->classroom))
+            ->put(route('tenant.classrooms.destroy', [
+                'institute' => $this->classroom->institute,
+                'classrooms' => $this->classroom
+            ]))
             ->assertStatus(Response::HTTP_FOUND);
 
         $this->assertDatabaseHas('classrooms', [

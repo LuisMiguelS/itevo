@@ -36,15 +36,14 @@ class UpdateClassroomTest extends TestCase
     function an_admin_can_update_classroom()
     {
         $this->actingAs($this->admin)
-            ->put(route('classrooms.update', $this->classroom), $this->withData([
-                'institute_id' => $this->institute->id
-            ]))
+            ->put(route('tenant.classrooms.update', [
+                'institute' => $this->institute,
+                'classroom' => $this->classroom
+            ]), $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Aula {$this->defaultData['name']} actualizada con éxito."]);
 
-        $this->assertDatabaseHas('classrooms', $this->withData([
-            'institute_id' => $this->institute->id
-        ]));
+        $this->assertDatabaseHas('classrooms', $this->withData());
     }
 
     /** @test */
@@ -52,9 +51,10 @@ class UpdateClassroomTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $this->put(route('classrooms.update', $this->classroom), $this->withData([
-            'institute_id' => $this->institute->id
-        ]))
+        $this->put(route('tenant.classrooms.update', [
+                'institute' => $this->institute,
+                'classroom' => $this->classroom
+            ]), $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
@@ -67,9 +67,10 @@ class UpdateClassroomTest extends TestCase
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
-            ->put(route('classrooms.update', $this->classroom), $this->withData([
-                'institute_id' => $this->institute->id
-            ]))
+            ->put(route('tenant.classrooms.update', [
+                'institute' => $this->institute,
+                'classroom' => $this->classroom
+            ]), $this->withData())
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
         $this->assertDatabaseMissing('classrooms', $this->withData());
@@ -81,9 +82,12 @@ class UpdateClassroomTest extends TestCase
         $this->handleValidationExceptions();
 
         $this->actingAs($this->admin)
-            ->put(route('classrooms.update', $this->classroom), [])
+            ->put(route('tenant.classrooms.update', [
+                'institute' => $this->institute,
+                'classroom' => $this->classroom
+            ]), [])
             ->assertStatus(Response::HTTP_FOUND)
-            ->assertSessionHasErrors(['name', 'building', 'institute_id']);
+            ->assertSessionHasErrors(['name', 'building']);
 
         $this->assertDatabaseMissing('classrooms', $this->withData());
     }

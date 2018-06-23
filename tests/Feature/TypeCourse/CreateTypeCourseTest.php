@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\TypeCourse;
 
-use App\User;
 use Tests\TestCase;
+use App\{User, Institute};
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -21,13 +21,14 @@ class CreateTypeCourseTest extends TestCase
     {
         parent::setUp();
         $this->admin = $this->createAdmin();
+        $this->institute = factory(Institute::class)->create();
     }
 
     /** @test */
     function an_admin_can_create_type_courses()
     {
         $this->actingAs($this->admin)
-            ->post(route('typecourses.store'), $this->withData())
+            ->post(route('tenant.typecourses.store', $this->institute), $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Tipo de curso {$this->defaultData['name']} creado con éxito."]);
 
@@ -39,7 +40,7 @@ class CreateTypeCourseTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $this->post(route('typecourses.store'), $this->withData())
+        $this->post(route('tenant.typecourses.store', $this->institute), $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
@@ -54,7 +55,7 @@ class CreateTypeCourseTest extends TestCase
         $user = factory(User::class)->create();
 
         $this->actingAs($user)
-            ->post(route('typecourses.store'), $this->withData())
+            ->post(route('tenant.typecourses.store', $this->institute), $this->withData())
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
         $this->assertDatabaseEmpty('type_courses');
@@ -66,7 +67,7 @@ class CreateTypeCourseTest extends TestCase
         $this->handleValidationExceptions();
 
         $this->actingAs($this->admin)
-            ->post(route('typecourses.store'), [])
+            ->post(route('tenant.typecourses.store', $this->institute), [])
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasErrors(['name']);
 

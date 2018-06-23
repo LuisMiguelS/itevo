@@ -3,9 +3,7 @@
 namespace Tests\Feature\course;
 
 use Tests\TestCase;
-use App\{
-    Course, TypeCourse, User
-};
+use App\{Course, Institute, User};
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -19,19 +17,25 @@ class DeleteCourseTest extends TestCase
 
     private $admin;
 
+    private $institute;
+
     protected function setUp()
     {
         parent::setUp();
         $this->course = factory(Course::class)->create();
         $this->user = factory(User::class)->create();
         $this->admin = $this->createAdmin();
+        $this->institute = factory(Institute::class)->create();
     }
 
     /** @test */
         function an_admin_can_delete_type_course()
     {
         $this->actingAs($this->admin)
-            ->delete(route('courses.destroy', $this->course))
+            ->delete(route('tenant.courses.destroy', [
+                'institute' => $this->institute,
+                'courses' => $this->course
+            ]))
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Curso {$this->course->name} eliminado con éxito."]);
 
@@ -46,7 +50,10 @@ class DeleteCourseTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $this->delete(route('courses.destroy', $this->course))
+        $this->delete(route('tenant.courses.destroy', [
+            'institute' => $this->institute,
+            'courses' => $this->course
+        ]))
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
@@ -62,7 +69,10 @@ class DeleteCourseTest extends TestCase
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
-            ->put(route('courses.destroy', $this->course))
+            ->put(route('tenant.courses.destroy', [
+                'institute' => $this->institute,
+                'courses' => $this->course
+            ]))
             ->assertStatus(Response::HTTP_FOUND);
 
         $this->assertDatabaseHas('courses', [

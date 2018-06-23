@@ -3,7 +3,9 @@
 namespace Tests\Feature\Course;
 
 use Tests\TestCase;
-use App\{TypeCourse, User};
+use App\{
+    Institute, TypeCourse, User
+};
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -21,19 +23,22 @@ class CreateCoursesTest extends TestCase
 
     private $user;
 
+    private $institute;
+
     protected function setUp()
     {
         parent::setUp();
         $this->admin = $this->createAdmin();
         $this->user = factory(User::class)->create();
         $this->type_course = factory(TypeCourse::class)->create();
+        $this->institute = factory(Institute::class)->create();
     }
 
     /** @test */
     function an_admin_can_create_course()
     {
        $this->actingAs($this->admin)
-           ->post(route('courses.store'), $this->withData([
+           ->post(route('tenant.courses.store', $this->institute), $this->withData([
                'type_course_id' => $this->type_course->id
            ]))
            ->assertStatus(Response::HTTP_FOUND)
@@ -47,7 +52,7 @@ class CreateCoursesTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $this->post(route('courses.store'), $this->withData([
+        $this->post(route('tenant.courses.store', $this->institute), $this->withData([
                 'type_course_id' => $this->type_course->id
             ]))
             ->assertStatus(Response::HTTP_FOUND)
@@ -62,7 +67,7 @@ class CreateCoursesTest extends TestCase
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
-            ->post(route('courses.store'), $this->withData([
+            ->post(route('tenant.courses.store', $this->institute), $this->withData([
                 'type_course_id' => $this->type_course->id
             ]))
             ->assertStatus(Response::HTTP_FORBIDDEN);
@@ -76,7 +81,7 @@ class CreateCoursesTest extends TestCase
         $this->handleValidationExceptions();
 
         $this->actingAs($this->admin)
-            ->post(route('courses.store'), [])
+            ->post(route('tenant.courses.store', $this->institute), [])
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasErrors(['name', 'type_course_id']);
 

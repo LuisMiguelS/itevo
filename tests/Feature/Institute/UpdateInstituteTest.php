@@ -4,7 +4,6 @@ namespace Tests\Feature\Institute;
 
 use Tests\TestCase;
 use App\{User, Institute};
-use Silber\Bouncer\BouncerFacade as Bouncer;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -26,7 +25,6 @@ class UpdateInstituteTest extends TestCase
     {
         parent::setUp();
         $this->institute = factory(Institute::class)->create();
-        Bouncer::scope()->to($this->institute->id)->onlyRelations()->dontScopeRoleAbilities();
         $this->user = factory(User::class)->create();
         $this->admin = $this->createAdmin();
     }
