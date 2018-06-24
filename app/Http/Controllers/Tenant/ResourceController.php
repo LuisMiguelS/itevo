@@ -21,7 +21,7 @@ class ResourceController extends Controller
      */
     public function index(Institute $institute)
     {
-        $this->authorize('view', Resource::class);
+        $this->authorize('tenant-view', Resource::class);
         $resources = Resource::paginate();
         return view('tenant.resource.index', compact('institute', 'resources'));
     }
@@ -33,7 +33,7 @@ class ResourceController extends Controller
      */
     public function create(Institute $institute)
     {
-        $this->authorize('create', Resource::class);
+        $this->authorize('tenant-create', Resource::class);
         return view('tenant.resource.create', compact('institute'));
     }
 
@@ -45,7 +45,7 @@ class ResourceController extends Controller
      */
     public function store(StoreResourceRequest $request, Institute $institute)
     {
-        $this->authorize('create', Resource::class);
+        $this->authorize('tenant-create', Resource::class);
         return redirect()
             ->route('tenant.resources.index', $institute)
             ->with(['flash_success' => $request->createResource()]);
@@ -59,7 +59,7 @@ class ResourceController extends Controller
      */
     public function edit(Institute $institute, Resource $resource)
     {
-        $this->authorize('update', $resource);
+        $this->authorize('tenant-update', $resource);
         return view('tenant.resource.edit', compact('institute', 'resource'));
     }
 
@@ -72,7 +72,7 @@ class ResourceController extends Controller
      */
     public function update(UpdateResourceRequest $request, Institute $institute, Resource $resource)
     {
-        $this->authorize('update', $resource);
+        $this->authorize('tenant-update', $resource);
         return redirect()
             ->route('tenant.resources.index', $institute)
             ->with(['flash_success' => $request->updateResource($resource)]);
@@ -85,7 +85,7 @@ class ResourceController extends Controller
      */
     public function destroy(Institute $institute, Resource $resource)
     {
-        $this->authorize('delete', $resource);
+        $this->authorize('tenant-delete', $resource);
         $resource->delete();
         return redirect()
             ->route('tenant.resources.index', $institute)

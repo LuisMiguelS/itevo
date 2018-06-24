@@ -2,7 +2,9 @@
 
 use Illuminate\Database\Seeder;
 use Silber\Bouncer\Database\Ability;
-use App\{User, Course, TypeCourse, Classroom, Institute};
+use App\{
+    Resource, User, Course, TypeCourse, Classroom, Institute
+};
 
 class BouncerSeeder extends Seeder
 {
@@ -38,17 +40,17 @@ class BouncerSeeder extends Seeder
 
         Bouncer::ability()->createForModel(Classroom::class, [
             'name' => 'tenant-create',
-            'title' => 'Crear aulas'
+            'title' => 'Crear aula'
         ]);
 
         Bouncer::ability()->createForModel(Classroom::class, [
             'name' => 'tenant-delete',
-            'title' => 'Eliminar aulas'
+            'title' => 'Eliminar aula'
         ]);
 
         Bouncer::ability()->createForModel(Classroom::class, [
             'name' => 'tenant-update',
-            'title' => 'Actualizar aulas'
+            'title' => 'Actualizar aula'
         ]);
 
         /*
@@ -61,17 +63,17 @@ class BouncerSeeder extends Seeder
 
         Bouncer::ability()->createForModel(Course::class, [
             'name' => 'tenant-create',
-            'title' => 'Crear cursos'
+            'title' => 'Crear curso'
         ]);
 
         Bouncer::ability()->createForModel(Course::class, [
             'name' => 'tenant-delete',
-            'title' => 'Eliminar cursos'
+            'title' => 'Eliminar curso'
         ]);
 
         Bouncer::ability()->createForModel(Course::class, [
             'name' => 'tenant-update',
-            'title' => 'Actualizar cursos'
+            'title' => 'Actualizar curso'
         ]);
 
         /*
@@ -79,22 +81,45 @@ class BouncerSeeder extends Seeder
        */
         Bouncer::ability()->createForModel(TypeCourse::class, [
             'name' => 'tenant-view',
-            'title' => 'Ver tipo cursos'
+            'title' => 'Ver tipos cursos'
         ]);
 
         Bouncer::ability()->createForModel(TypeCourse::class, [
             'name' => 'tenant-create',
-            'title' => 'Crear tipo cursos'
+            'title' => 'Crear tipo curso'
         ]);
 
         Bouncer::ability()->createForModel(TypeCourse::class, [
             'name' => 'tenant-delete',
-            'title' => 'Eliminar tipo cursos'
+            'title' => 'Eliminar tipo curso'
         ]);
 
         Bouncer::ability()->createForModel(TypeCourse::class, [
             'name' => 'tenant-update',
-            'title' => 'Actualizar tipo cursos'
+            'title' => 'Actualizar tipo curso'
+        ]);
+
+        /*
+       * Tipo de cursos Habilidades
+      */
+        Bouncer::ability()->createForModel(Resource::class, [
+            'name' => 'tenant-view',
+            'title' => 'Ver recursos'
+        ]);
+
+        Bouncer::ability()->createForModel(Resource::class, [
+            'name' => 'tenant-create',
+            'title' => 'Crear recurso'
+        ]);
+
+        Bouncer::ability()->createForModel(Resource::class, [
+            'name' => 'tenant-delete',
+            'title' => 'Eliminar recurso'
+        ]);
+
+        Bouncer::ability()->createForModel(Resource::class, [
+            'name' => 'tenant-update',
+            'title' => 'Actualizar recurso'
         ]);
 
         /*
