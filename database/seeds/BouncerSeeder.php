@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Silber\Bouncer\Database\Ability;
+use App\{User, Course, TypeCourse, Classroom, Institute};
 
 class BouncerSeeder extends Seeder
 {
@@ -11,19 +13,120 @@ class BouncerSeeder extends Seeder
      */
     public function run()
     {
-        Bouncer::allow(\App\User::ROLE_ADMIN)->everything();
+        $this->createAbilities();
+        $this->createRole();
+    }
+
+    protected function createAbilities()
+    {
+        /*
+         * Todas las habilidades
+         */
+        Bouncer::ability()->create([
+            'name' => '*',
+            'title' => 'Todas las habilidades',
+            'entity_type' => '*',
+        ]);
 
         /*
-         * Institute permission
+         * Classroom Habilidades
          */
-        Bouncer::allow(\App\User::ROLE_TENANT_ADMIN)->to('tenant-view', \App\Institute::class);
+        Bouncer::ability()->createForModel(Classroom::class, [
+           'name' => 'tenant-view',
+           'title' => 'Ver aulas'
+        ]);
+
+        Bouncer::ability()->createForModel(Classroom::class, [
+            'name' => 'tenant-create',
+            'title' => 'Crear aulas'
+        ]);
+
+        Bouncer::ability()->createForModel(Classroom::class, [
+            'name' => 'tenant-delete',
+            'title' => 'Eliminar aulas'
+        ]);
+
+        Bouncer::ability()->createForModel(Classroom::class, [
+            'name' => 'tenant-update',
+            'title' => 'Actualizar aulas'
+        ]);
 
         /*
-         * Classroom permission
+         * Course Habilidades
          */
-        Bouncer::allow(\App\User::ROLE_TENANT_ADMIN)->to('tenant-view', \App\Classroom::class);
-        Bouncer::allow(\App\User::ROLE_TENANT_ADMIN)->to('tenant-create', \App\Classroom::class);
-        Bouncer::allow(\App\User::ROLE_TENANT_ADMIN)->to('tenant-update', \App\Classroom::class);
-        Bouncer::allow(\App\User::ROLE_TENANT_ADMIN)->to('tenant-delete', \App\Classroom::class);
+        Bouncer::ability()->createForModel(Course::class, [
+            'name' => 'tenant-view',
+            'title' => 'Ver cursos'
+        ]);
+
+        Bouncer::ability()->createForModel(Course::class, [
+            'name' => 'tenant-create',
+            'title' => 'Crear cursos'
+        ]);
+
+        Bouncer::ability()->createForModel(Course::class, [
+            'name' => 'tenant-delete',
+            'title' => 'Eliminar cursos'
+        ]);
+
+        Bouncer::ability()->createForModel(Course::class, [
+            'name' => 'tenant-update',
+            'title' => 'Actualizar cursos'
+        ]);
+
+        /*
+        * Tipo de cursos Habilidades
+       */
+        Bouncer::ability()->createForModel(TypeCourse::class, [
+            'name' => 'tenant-view',
+            'title' => 'Ver tipo cursos'
+        ]);
+
+        Bouncer::ability()->createForModel(TypeCourse::class, [
+            'name' => 'tenant-create',
+            'title' => 'Crear tipo cursos'
+        ]);
+
+        Bouncer::ability()->createForModel(TypeCourse::class, [
+            'name' => 'tenant-delete',
+            'title' => 'Eliminar tipo cursos'
+        ]);
+
+        Bouncer::ability()->createForModel(TypeCourse::class, [
+            'name' => 'tenant-update',
+            'title' => 'Actualizar tipo cursos'
+        ]);
+
+        /*
+         * Institute Habilidades
+         */
+        Bouncer::ability()->createForModel(Institute::class, [
+            'name' => 'tenant-view',
+            'title' => 'Ver dashboard'
+        ]);
+    }
+
+    protected function createRole()
+    {
+        /*
+         *  Rol Administrador
+         */
+        $admin = Bouncer::role()->create([
+            'name' => User::ROLE_ADMIN,
+            'title' => 'Administrador',
+        ]);
+
+        Bouncer::allow($admin)->everything();
+
+        /*
+         * Rol Administrador de instituto
+         */
+        $tenant_admin = Bouncer::role()->create([
+            'name' => User::ROLE_TENANT_ADMIN,
+            'title' => 'Administrador de instituto',
+        ]);
+
+        $abilities = Ability::where('name', '<>', '*')->get();
+        Bouncer::allow($tenant_admin)->to($abilities);
     }
 }

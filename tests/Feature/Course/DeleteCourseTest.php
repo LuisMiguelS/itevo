@@ -73,7 +73,7 @@ class DeleteCourseTest extends TestCase
                 'institute' => $this->institute,
                 'courses' => $this->course
             ]))
-            ->assertStatus(Response::HTTP_FOUND);
+            ->assertStatus(Response::HTTP_FORBIDDEN);
 
         $this->assertDatabaseHas('courses', [
             'id' => $this->course->id,

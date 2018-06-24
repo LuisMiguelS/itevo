@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
-use Silber\Bouncer\BouncerFacade as Bouncer;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -52,6 +51,11 @@ class User extends Authenticatable
     public function isAdmin()
     {
         return $this->isAn(User::ROLE_ADMIN);
+    }
+
+    public function isAssignedTo(Institute $institute): bool
+    {
+        return $this->institutes()->where('institute_id', $institute->id)->count() > 0;
     }
 
     public function institutes()

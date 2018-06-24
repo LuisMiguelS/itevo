@@ -33,7 +33,15 @@
                                             @endcan
 
                                             @can('tenant-delete', $classroom)
-                                                <a href="#">Borrar</a>
+                                                    <a href="{{ route('tenant.classrooms.destroy', ['institute' => $institute, 'classroom' => $classroom]) }}"
+                                                       onclick="event.preventDefault();
+                                                           document.getElementById('classrooms-delete-{{$classroom->id}}').submit();">
+                                                        Eliminar
+                                                    </a>
+                                                    <form id="classrooms-delete-{{$classroom->id}}" action="{{ route('tenant.classrooms.destroy',  ['institute' => $institute, 'classroom' => $classroom]) }}" method="POST" style="display: none;">
+                                                        @csrf
+                                                        @method('delete')
+                                                    </form>
                                             @endcan
                                         </td>
                                     </tr>

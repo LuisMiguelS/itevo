@@ -33,7 +33,7 @@
                                                    class="custom-control-input"
                                                    type="checkbox"
                                                    id="role_{{ $abilitie->id }}"
-                                                   value="{{ $abilitie->name }}"
+                                                   value="{{ $abilitie->id }}"
                                                     {{ old("abilities.{$abilitie->id}") ? 'checked' : '' }}>
                                             <label class="custom-control-label" for="role_{{ $abilitie->id }}">{{ $abilitie->title }}</label>
                                         </div>

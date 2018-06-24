@@ -8,7 +8,6 @@
                 <div class="card">
                     <div class="card-header">
                         Todas las habilidades
-                        <a href="{{ route('abilities.create') }}">Crear Habilidad</a>
                     </div>
                     <div class="card-body">
                         @if($abilities->count())
@@ -17,7 +16,6 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Habilidad</th>
-                                    <th>Acciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -25,15 +23,6 @@
                                     <tr>
                                         <th>{{ $abilitie->id }}</th>
                                         <td>{{ $abilitie->title }}</td>
-                                        <td>
-                                            @can('update', $abilitie)
-                                                <a href="{{ route('abilities.edit', $abilitie) }}">Editar</a>
-                                            @endcan
-
-                                            @can('delete', $abilitie)
-                                                <a href="#">Borrar</a>
-                                            @endcan
-                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>

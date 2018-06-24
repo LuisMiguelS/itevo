@@ -17,7 +17,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Curso</th>
-                                <th>Tipo</th>
+                                <th>Tipo de curso</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
@@ -26,7 +26,7 @@
                                     <tr>
                                         <th>{{ $course->id }}</th>
                                         <td>{{ $course->name }}</td>
-                                        <td>{{ $course->type }}</td>
+                                        <td>{{ $course->typecourse->name }}</td>
                                         <td>
                                             @can('update', $course)
                                                 <a href="{{ route('tenant.courses.edit', ['institute' => $institute, 'courses' => $course]) }}">
@@ -35,7 +35,15 @@
                                             @endcan
 
                                             @can('delete', $course)
-                                                <a href="#">Borrar</a>
+                                                    <a href="{{ route('tenant.courses.destroy', ['institute' => $institute, 'courses' => $course]) }}"
+                                                       onclick="event.preventDefault();
+                                                           document.getElementById('courses-delete-{{$course->id}}').submit();">
+                                                        Eliminar
+                                                    </a>
+                                                    <form id="courses-delete-{{$course->id}}" action="{{ route('tenant.courses.destroy',  ['institute' => $institute, 'courses' => $course]) }}" method="POST" style="display: none;">
+                                                        @csrf
+                                                        @method('delete')
+                                                    </form>
                                             @endcan
                                         </td>
                                     </tr>

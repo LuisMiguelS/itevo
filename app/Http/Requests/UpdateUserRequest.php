@@ -44,7 +44,9 @@ class UpdateUserRequest extends FormRequest
     {
         $user->update($this->validated());
         $user->institutes()->detach();
-        $user->institutes()->attach($this->validated()['institutes']);
+        if (isset($this->validated()['institutes'])){
+            $user->institutes()->attach($this->validated()['institutes']);
+        }
         return "Usuario {$user->name} actualizado con exito.";
     }
 }

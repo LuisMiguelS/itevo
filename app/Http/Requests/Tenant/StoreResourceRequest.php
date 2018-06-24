@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Tenant;
 
 use App\Resource;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateResourceRequest extends FormRequest
+class StoreResourceRequest extends FormRequest
 {
     public function authorize ()
     {
@@ -26,10 +26,10 @@ class UpdateResourceRequest extends FormRequest
         ];
     }
 
-    public function updateResource (Resource $resource)
+    public function createResource ()
     {
-        $resource->update($this->validated());
+        $resource = Resource::create($this->validated());
 
-        return "Recurso {$resource->name} actualizada con éxito.";
+        return "Recurso {$resource->name} creado con éxito.";
     }
 }

@@ -21,9 +21,11 @@ Route::get('home', 'HomeController@index')->name('home');
 
 Route::resource('institutes', 'InstituteController');
 Route::resource('users', 'UserController');
+Route::resource('abilities', 'AbilitieController')->only('index');
+Route::resource('roles', 'RoleController');
 
 
-Route::prefix('{institute}')->name('tenant.')->group(function () {
+Route::prefix('{institute}')->middleware('tenantAccess')->name('tenant.')->group(function () {
     Route::get('dashboard', 'InstituteController@dashboard')->name('dashboard');
     Route::resource('classrooms', 'Tenant\ClassRoomController');
     Route::resource('types/courses', 'Tenant\TypeCourseController')->names([
@@ -38,7 +40,7 @@ Route::prefix('{institute}')->name('tenant.')->group(function () {
         'courses' => 'typeCourse'
     ]);
     Route::resource('courses', 'Tenant\CourseController');
-    Route::resource('resources', 'ResourceController');
+    Route::resource('resources', 'Tenant\ResourceController');
 });
 
 

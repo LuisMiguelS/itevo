@@ -34,16 +34,28 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <li>
-                            <a class="nav-link" href="{{ route('home') }}">Home</a>
-                        </li>
-                        @if (auth()->check() && auth()->user()->isAn('admin'))
+                        @if (auth()->check())
                             <li>
-                                <a class="nav-link" href="{{ route('users.index') }}">Usuarios</a>
+                                <a class="nav-link" href="{{ route('home') }}">Home</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('institutes.index') }}">Institutos</a>
-                            </li>
+
+                            @if(auth()->user()->isAn(\App\User::ROLE_ADMIN))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('institutes.index') }}">Institutos</a>
+                                </li>
+                            @endif
+
+                            @if(auth()->user()->isAn(\App\User::ROLE_ADMIN) || auth()->user()->isAn(\App\User::ROLE_TENANT_ADMIN))
+                                <li>
+                                    <a class="nav-link" href="{{ route('users.index') }}">Usuarios</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="{{ route('abilities.index') }}">Habilidades</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="{{ route('roles.index') }}">Roles</a>
+                                </li>
+                            @endif
                         @endif
                     </ul>
 

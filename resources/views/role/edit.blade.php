@@ -36,8 +36,8 @@
                                                    class="custom-control-input"
                                                    type="checkbox"
                                                    id="role_{{ $abilitie->id }}"
-                                                   value="{{ $abilitie->name }}"
-                                                {{ old("abilities.{$abilitie->id}") || in_array($abilitie->name, $role->getAbilities()->pluck('name', 'name')->toArray()) ? 'checked' : '' }}>
+                                                   value="{{ $abilitie->id }}"
+                                                {{ old("abilities.{$abilitie->id}") || in_array($abilitie->id, $role->getAbilities()->pluck('id', 'id')->toArray()) ? 'checked' : '' }}>
                                             <label class="custom-control-label" for="role_{{ $abilitie->id }}">{{ $abilitie->title }}</label>
                                         </div>
                                     @endforeach

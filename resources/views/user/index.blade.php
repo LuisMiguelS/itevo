@@ -29,7 +29,7 @@
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>
-                                            @foreach ($user->roles->pluck('name') as $role)
+                                            @foreach ($user->roles->pluck('title') as $role)
                                                 <span class="badge badge-primary">{{ $role }}</span>
                                             @endforeach
                                         </td>
@@ -39,7 +39,15 @@
                                             @endcan
 
                                             @can('delete', $user)
-                                                <a href="#">Borrar</a>
+                                                    <a href="{{ route('users.destroy', $user) }}"
+                                                       onclick="event.preventDefault();
+                                                           document.getElementById('users-delete-{{$user->id}}').submit();">
+                                                        Eliminar
+                                                    </a>
+                                                    <form id="users-delete-{{$user->id}}" action="{{ route('users.destroy', $user) }}" method="POST" style="display: none;">
+                                                        @csrf
+                                                        @method('delete')
+                                                    </form>
                                             @endcan
                                         </td>
                                     </tr>

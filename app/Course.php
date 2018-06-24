@@ -25,7 +25,7 @@ class Course extends Model
 
     public function typecourse()
     {
-        return $this->belongsTo(TypeCourse::class);
+        return $this->belongsTo(TypeCourse::class, 'type_course_id');
     }
 
     public function promotions()

@@ -44,21 +44,27 @@
                             <div class="form-group row">
                                 <label for="abilities" class="col-sm-4 col-form-label text-md-right">Institutos</label>
                                 <div class="col-md-6">
-                                    @foreach($institutes as $institute)
-                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                            <input name="institutes[{{ $institute->id }}]"
-                                                   class="custom-control-input {{ $errors->has('institutes') ? ' is-invalid' : '' }}"
-                                                   type="checkbox"
-                                                   id="institutes{{ $institute->id }}"
-                                                   value="{{ $institute->id }}"
-                                                {{ old("institutes.{$institute->id}") || in_array($institute->id, $user->institutes()->get()->pluck('pivot')->pluck('institute_id', 'institute_id')->toArray()) ? 'checked' : '' }}>
-                                            <label class="custom-control-label" for="institutes{{ $institute->id }}">{{ $institute->name }}</label>
-                                        </div>
-                                    @endforeach
-                                    @if ($errors->has('institutes[]'))
-                                        <span class="invalid-feedback">
+                                    @if($institutes->count())
+                                        @foreach($institutes as $institute)
+                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                <input name="institutes[{{ $institute->id }}]"
+                                                       class="custom-control-input {{ $errors->has('institutes') ? ' is-invalid' : '' }}"
+                                                       type="checkbox"
+                                                       id="institutes{{ $institute->id }}"
+                                                       value="{{ $institute->id }}"
+                                                    {{ old("institutes.{$institute->id}") || in_array($institute->id, $user->institutes()->get()->pluck('pivot')->pluck('institute_id', 'institute_id')->toArray()) ? 'checked' : '' }}>
+                                                <label class="custom-control-label" for="institutes{{ $institute->id }}">{{ $institute->name }}</label>
+                                            </div>
+                                        @endforeach
+                                        @if ($errors->has('institutes[]'))
+                                            <span class="invalid-feedback">
                                             <strong>{{ $errors->first('institutes[]') }}</strong>
                                         </span>
+                                        @endif
+                                        @else
+                                        <div class="alert alert-primary" role="alert">
+                                            No hay institutos registrados
+                                        </div>
                                     @endif
                                 </div>
                             </div>

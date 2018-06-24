@@ -25,7 +25,7 @@
                                 @foreach($roles  as $role)
                                     <tr>
                                         <th>{{ $role->id }}</th>
-                                        <td>{{ $role->name }}</td>
+                                        <td>{{ $role->title }}</td>
                                         <td>
                                             @foreach ($role->abilities()->pluck('title') as $ability)
                                                 <span class="badge badge-info">{{ $ability }}</span>
@@ -37,7 +37,15 @@
                                             @endcan
 
                                             @can('delete', $role)
-                                                <a href="#">Borrar</a>
+                                                <a href="{{ route('roles.destroy', $role) }}"
+                                                   onclick="event.preventDefault();
+                                                       document.getElementById('roles-delete-{{$role->id}}').submit();">
+                                                    Eliminar
+                                                </a>
+                                                <form id="roles-delete-{{$role->id}}" action="{{ route('roles.destroy', $role) }}" method="POST" style="display: none;">
+                                                    @csrf
+                                                    @method('delete')
+                                                </form>
                                             @endcan
                                         </td>
                                     </tr>

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\UserManagement;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Silber\Bouncer\Database\Role;
 
-class CreateAbilitieRequest extends FormRequest
+class StoreRoleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,6 +26,16 @@ class CreateAbilitieRequest extends FormRequest
     {
         return [
             'name' => 'required',
+            'abilities.*' => 'nullable|present'
         ];
+    }
+
+    public function createRole()
+    {
+        $role = Role::create($this->validated());
+        if (isset($this->validated()['abilities'])) {
+            $role->allow($this->validated()['abilities']);
+        }
+        return "Rol {$role->title} creado con éxito";
     }
 }

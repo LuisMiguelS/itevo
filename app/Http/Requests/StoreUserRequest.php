@@ -28,7 +28,7 @@ class StoreUserRequest extends FormRequest
             'name' => 'required|min:5|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-            'institutes' => 'required|array'
+            'institutes' => 'nullable|array'
         ];
     }
 
@@ -46,7 +46,9 @@ class StoreUserRequest extends FormRequest
     {
         $user = User::create($this->validated());
         $user->assign(User::ROLE_TENANT_ADMIN);
-        $user->institutes()->attach($this->validated()['institutes']);
+        if (isset($this->validated()['institutes'])){
+            $user->institutes()->attach($this->validated()['institutes']);
+        }
         return "Usuario {$user->name} creado con éxito.";
     }
 

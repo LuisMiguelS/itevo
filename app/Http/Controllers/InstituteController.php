@@ -42,7 +42,9 @@ class InstituteController extends Controller
     public function store(CreateInstituteRequest $request)
     {
         $this->authorize('create', Institute::class);
-        return back()->with(['flash_success' => $request->createInstitute()]);
+        return redirect()
+            ->route('institutes.index')
+            ->with(['flash_success' => $request->createInstitute()]);
     }
 
     /**
@@ -74,7 +76,9 @@ class InstituteController extends Controller
     public function update(UpdateInstituteRequest $request, Institute $institute)
     {
         $this->authorize('update', $institute);
-        return redirect()->route('institutes.index')->with(['flash_success' => $request->updateInstitute($institute)]);
+        return redirect()
+            ->route('institutes.index')
+            ->with(['flash_success' => $request->updateInstitute($institute)]);
     }
 
     /**

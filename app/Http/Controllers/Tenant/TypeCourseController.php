@@ -26,7 +26,7 @@ class TypeCourseController extends Controller
      */
     public function index(Institute $institute)
     {
-        $this->authorize('view', TypeCourse::class);
+        $this->authorize('tenant-view', TypeCourse::class);
         $typeCourses = TypeCourse::paginate();
         return view('tenant.type_course.index', compact('institute','typeCourses'));
     }
@@ -40,7 +40,7 @@ class TypeCourseController extends Controller
      */
     public function create(Institute $institute)
     {
-        $this->authorize('create', TypeCourse::class);
+        $this->authorize('tenant-create', TypeCourse::class);
         return view('tenant.type_course.create', compact('institute'));
     }
 
@@ -54,7 +54,7 @@ class TypeCourseController extends Controller
      */
     public function store(StoreTypeCourseRequest $request, Institute $institute)
     {
-        $this->authorize('create', TypeCourse::class);
+        $this->authorize('tenant-create', TypeCourse::class);
         return redirect()->route('tenant.typecourses.index', $institute)->with(['flash_success' => $request->createTypeCourse()]);
     }
 
@@ -68,7 +68,7 @@ class TypeCourseController extends Controller
      */
     public function edit(Institute $institute, TypeCourse $typeCourse)
     {
-        $this->authorize('update', $typeCourse);
+        $this->authorize('tenant-update', $typeCourse);
         return view('tenant.type_course.edit', compact('institute','typeCourse'));
     }
 
@@ -83,7 +83,7 @@ class TypeCourseController extends Controller
      */
     public function update(UpdateTypeCourseRequest $request,Institute $institute, TypeCourse $typeCourse)
     {
-        $this->authorize('update', $typeCourse);
+        $this->authorize('tenant-update', $typeCourse);
         return redirect()->route('tenant.typecourses.index', $institute)->with(['flash_success' => $request->updateTypeCourse($typeCourse)]);
     }
 
@@ -98,7 +98,7 @@ class TypeCourseController extends Controller
      */
     public function destroy(Institute $institute, TypeCourse $typeCourse)
     {
-        $this->authorize('delete', $typeCourse);
+        $this->authorize('tenant-delete', $typeCourse);
         $typeCourse->delete();
         return redirect()->route('tenant.typecourses.index', $institute)->with(['flash_success' => "Tipo de curso {$typeCourse->name} eliminado con éxito."]);
     }

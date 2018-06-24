@@ -21,7 +21,7 @@ class CourseController extends Controller
      */
     public function index(Institute $institute)
     {
-        $this->authorize('view', Course::class);
+        $this->authorize('tenant-view', Course::class);
         $courses = Course::with('typecourse')->paginate();
         return view('tenant.course.index', compact('institute', 'courses'));
     }
@@ -33,7 +33,7 @@ class CourseController extends Controller
      */
     public function create(Institute $institute)
     {
-        $this->authorize('create', Course::class);
+        $this->authorize('tenant-create', Course::class);
         $typeCourses = TypeCourse::all();
         return view('tenant.course.create', compact('institute', 'typeCourses'));
     }
@@ -46,7 +46,7 @@ class CourseController extends Controller
      */
     public function store(StoreCourseRequest $request, Institute $institute)
     {
-        $this->authorize('create', Course::class);
+        $this->authorize('tenant-create', Course::class);
         return redirect()->route('tenant.courses.index', $institute)->with(['flash_success' => $request->createCourse()]);
     }
 
@@ -58,13 +58,13 @@ class CourseController extends Controller
      */
     public function edit(Institute $institute, Course $course)
     {
-        $this->authorize('update', $course);
+        $this->authorize('tenant-update', $course);
         $typeCourses = TypeCourse::all();
         return view('tenant.course.edit', compact('institute', 'course', 'typeCourses'));
     }
 
     /**
-     * @param \App\Http\Requests\UpdateCourseRequest $request
+     * @param \App\Http\Requests\Tenant\UpdateCourseRequest $request
      * @param \App\Institute $institute
      * @param \App\Course $course
      * @return \Illuminate\Http\RedirectResponse
@@ -72,7 +72,7 @@ class CourseController extends Controller
      */
     public function update(UpdateCourseRequest $request,Institute $institute, Course $course)
     {
-        $this->authorize('update', $course);
+        $this->authorize('tenant-update', $course);
         return redirect()->route('tenant.courses.index', $institute)->with(['flash_success' => $request->updateCourse($course)]);
     }
 
@@ -81,10 +81,11 @@ class CourseController extends Controller
      * @param \App\Course $course
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Exception
      */
-    public function destroy(institute $institute, Course $course)
+    public function destroy(Institute $institute, Course $course)
     {
-        $this->authorize('delete', $course);
+        $this->authorize('tenant-delete', $course);
         $course->delete();
         return redirect()->route('tenant.courses.index', $institute)->with(['flash_success' => "Curso {$course->name} eliminado con éxito."]);
     }

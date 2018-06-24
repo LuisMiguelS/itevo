@@ -31,7 +31,15 @@
                                             @endcan
 
                                             @can('delete', $institute)
-                                                <a href="#">Eliminar</a>
+                                                <a href="{{ route('institutes.destroy', $institute) }}"
+                                                   onclick="event.preventDefault();
+                                                 document.getElementById('institutes-delete-{{$institute->id}}').submit();">
+                                                    Eliminar
+                                                </a>
+                                                <form id="institutes-delete-{{$institute->id}}" action="{{ route('institutes.destroy', $institute) }}" method="POST" style="display: none;">
+                                                    @csrf
+                                                    @method('delete')
+                                                </form>
                                             @endcan
                                         </td>
                                     </tr>

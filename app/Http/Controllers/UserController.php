@@ -52,7 +52,8 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $this->authorize('create', User::class);
-        return back()
+        return redirect()
+            ->route('users.index')
             ->with(['flash_success' => $request->createUser()]);
     }
 

@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">Crear recurso</div>
                     <div class="card-body">
-                        <form action="{{ route('resources.store') }}" method="POST">
+                        <form action="{{ route('tenant.resources.store', $institute) }}" method="POST">
                             @csrf
 
                             <div class="form-group row">

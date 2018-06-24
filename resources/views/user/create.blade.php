@@ -63,17 +63,23 @@
                             <div class="form-group row">
                                 <label for="name" class="col-sm-4 col-form-label text-md-right">Instituto</label>
                                 <div class="col-md-6">
-                                    @foreach($institutes as $institute)
-                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                            <input name="institutes[{{ $institute->id }}]"
-                                                   class="custom-control-input"
-                                                   type="checkbox"
-                                                   id="institutes{{ $institute->id }}"
-                                                   value="{{ $institute->id }}"
-                                                {{ old("institutes.{$institute->id}") ? 'checked' : '' }}>
-                                            <label class="custom-control-label" for="institutes{{ $institute->id }}">{{ $institute->name }}</label>
+                                    @if($institutes->count())
+                                        @foreach($institutes as $institute)
+                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                <input name="institutes[{{ $institute->id }}]"
+                                                       class="custom-control-input"
+                                                       type="checkbox"
+                                                       id="institutes{{ $institute->id }}"
+                                                       value="{{ $institute->id }}"
+                                                    {{ old("institutes.{$institute->id}") ? 'checked' : '' }}>
+                                                <label class="custom-control-label" for="institutes{{ $institute->id }}">{{ $institute->name }}</label>
+                                            </div>
+                                        @endforeach
+                                        @else
+                                        <div class="alert alert-primary" role="alert">
+                                            No hay institutos registrados
                                         </div>
-                                    @endforeach
+                                    @endif
                                 </div>
                             </div>
 

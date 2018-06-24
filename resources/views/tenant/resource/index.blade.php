@@ -8,7 +8,7 @@
                 <div class="card">
                     <div class="card-header">
                         Todos los Recursos
-                        <a href="{{ route('resources.create') }}">Crear Recurso</a>
+                        <a href="{{ route('tenant.resources.create', $institute) }}">Crear Recurso</a>
                     </div>
                     <div class="card-body">
                         @if($resources->count())
@@ -27,11 +27,19 @@
                                         <td>{{ $resource->name }}</td>
                                         <td>
                                             @can('update', $resource)
-                                                <a href="{{ route('resources.edit', $resource) }}">Editar</a>
+                                                <a href="{{ route('tenant.resources.edit', ['institute' => $institute, 'resource' => $resource]) }}">Editar</a>
                                             @endcan
 
                                             @can('delete', $resource)
-                                                <a href="#">Borrar</a>
+                                                    <a href="{{ route('tenant.resources.destroy', ['institute' => $institute, 'resource' => $resource]) }}"
+                                                       onclick="event.preventDefault();
+                                                           document.getElementById('resource-delete-{{$resource->id}}').submit();">
+                                                        Eliminar
+                                                    </a>
+                                                    <form id="resource-delete-{{$resource->id}}" action="{{ route('tenant.resources.destroy',  ['institute' => $institute, 'resource' => $resource]) }}" method="POST" style="display: none;">
+                                                        @csrf
+                                                        @method('delete')
+                                                    </form>
                                             @endcan
                                         </td>
                                     </tr>
