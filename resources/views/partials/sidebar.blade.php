@@ -1,4 +1,4 @@
-<li class="opened active opened active">
+<li class="opened active opened">
     <a href="{{ route('tenant.dashboard', $institute) }}">
         <i class="fas fa-tachometer-alt"></i>
         <span class="title">Dashboard</span>
@@ -83,4 +83,13 @@
         </li>
     </ul>
 </li>
+
+<li class="opened active opened">
+    <a href="{{ route('tenant.promotions.index', $institute) }}">
+        <i class="fas fa-th-large"></i>
+        <span class="title">Promociones</span>
+    </a>
+</li>
+
+
 
