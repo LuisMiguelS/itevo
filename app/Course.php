@@ -28,8 +28,8 @@ class Course extends Model
         return $this->belongsTo(TypeCourse::class, 'type_course_id');
     }
 
-    public function promotions()
+    public function coursePromotion()
     {
-        return $this->hasMany(Promotion::class);
+        return $this->hasMany(CoursePromotion::class);
     }
 }

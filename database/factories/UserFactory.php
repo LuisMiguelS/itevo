@@ -50,3 +50,20 @@ $factory->define(App\Course::class, function (Faker $faker) {
     ];
 });
 
+$factory->define(App\Promotion::class, function (Faker $faker) {
+    return [
+        'institute_id' => factory(App\Institute::class)->create(),
+        'period' => $faker->randomElement([\App\Promotion::PROMOTION_NO_1, \App\Promotion::PROMOTION_NO_2, \App\Promotion::PROMOTION_NO_3]),
+        'status' => $faker->randomElement([\App\Promotion::STATUS_INSCRIPTION, \App\Promotion::STATUS_CURRENT, \App\Promotion::STATUS_FINISHED])
+    ];
+});
+
+$factory->define(App\Teacher::class, function (Faker $faker) {
+    return [
+        'institute_id' => factory(App\Institute::class)->create(),
+        'id_card' => substr($faker->unique()->creditCardNumber, 0, 13),
+        'name' => $faker->name,
+        'last_name' => $faker->lastName,
+        'phone' => substr($faker->unique()->phoneNumber, 0, 13)
+    ];
+});

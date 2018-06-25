@@ -42,6 +42,7 @@ Route::prefix('{institute}')->middleware('tenantAccess')->name('tenant.')->group
     Route::resource('courses', 'Tenant\CourseController');
     Route::resource('resources', 'Tenant\ResourceController');
     Route::resource('promotions', 'Tenant\PromotionController')->only('index');
+    Route::resource('teachers', 'Tenant\TeacherController');
 });
 
 

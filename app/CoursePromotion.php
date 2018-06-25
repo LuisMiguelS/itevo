@@ -8,6 +8,16 @@ class CoursePromotion extends Model
 {
     protected $table = 'course_promotion';
 
+    public function promotion()
+    {
+        return $this->belongsTo(Promotion::class);
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
     public function students()
     {
         return $this->hasMany(Student::class);

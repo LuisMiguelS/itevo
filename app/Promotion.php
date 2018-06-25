@@ -21,9 +21,9 @@ class Promotion extends Model
         return $this->belongsTo(Institute::class);
     }
 
-    public function courses()
+    public function coursePromotion()
     {
-        return $this->hasMany(Course::class);
+        return $this->hasMany(CoursePromotion::class);
     }
 
     public function students()

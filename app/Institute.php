@@ -62,6 +62,11 @@ class Institute extends Model
         return $this->hasMany(Classroom::class);
     }
 
+    public function teachers()
+    {
+        return $this->hasMany(Teacher::class);
+    }
+
     public function scopeOnlyRelations($query, Institute $institute = null)
     {
         return $query->unless(auth()->user()->isAdmin(), function ($q) use($institute){
