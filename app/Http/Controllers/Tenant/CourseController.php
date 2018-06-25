@@ -9,6 +9,9 @@ use App\Http\Requests\Tenant\UpdateCourseRequest;
 
 class CourseController extends Controller
 {
+    /**
+     * CourseController constructor.
+     */
     public function __construct()
     {
         $this->middleware('auth');

@@ -3,7 +3,9 @@
 namespace Tests\Feature\Classroom;
 
 use Tests\TestCase;
-use App\{User, Classroom};
+use App\{
+    Institute, User, Classroom
+};
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -71,6 +73,24 @@ class DeleteClassroomTest extends TestCase
                 'classrooms' => $this->classroom
             ]))
             ->assertStatus(Response::HTTP_FORBIDDEN);
+
+        $this->assertDatabaseHas('classrooms', [
+            'id' => $this->classroom->id,
+            'name' => $this->classroom->name,
+        ]);
+    }
+
+    /** @test */
+    function an_institute_cannot_delete_classroom_from_another_institute()
+    {
+        $this->withExceptionHandling();
+
+        $this->actingAs($this->admin)
+            ->delete(route('tenant.classrooms.destroy', [
+                'institute' => factory(Institute::class)->create(),
+                'classrooms' => $this->classroom
+            ]))
+            ->assertStatus(Response::HTTP_NOT_FOUND);
 
         $this->assertDatabaseHas('classrooms', [
             'id' => $this->classroom->id,

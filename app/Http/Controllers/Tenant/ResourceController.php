@@ -9,6 +9,9 @@ use App\Http\Requests\Tenant\UpdateResourceRequest;
 
 class ResourceController extends Controller
 {
+    /**
+     * ResourceController constructor.
+     */
     public function __construct()
     {
         $this->middleware('auth');

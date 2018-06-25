@@ -26,11 +26,11 @@
                                         <th>{{ $resource->id }}</th>
                                         <td>{{ $resource->name }}</td>
                                         <td>
-                                            @can('update', $resource)
+                                            @can('tenant-update', $resource)
                                                 <a href="{{ route('tenant.resources.edit', ['institute' => $institute, 'resource' => $resource]) }}">Editar</a>
                                             @endcan
 
-                                            @can('delete', $resource)
+                                            @can('tenant-delete', $resource)
                                                     <a href="{{ route('tenant.resources.destroy', ['institute' => $institute, 'resource' => $resource]) }}"
                                                        onclick="event.preventDefault();
                                                            document.getElementById('resource-delete-{{$resource->id}}').submit();">

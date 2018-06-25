@@ -44,4 +44,9 @@ class Classroom extends Model
             $q->where('institute_id', $institute->id);
         })->orderBy('id','DESC');
     }
+
+    public function isRegisteredIn(Institute $institute)
+    {
+        return $this->institute()->where('id', $institute->id)->count() > 0;
+    }
 }

@@ -32,6 +32,16 @@ class StoreTeacherRequest extends FormRequest
         ];
     }
 
+    public function attributes ()
+    {
+        return [
+            'id_card' => 'cédula',
+            'name' => 'nombre (s)',
+            'last_name' => 'apellido (s)',
+            'phone' => 'teléfono',
+        ];
+    }
+
     public function createTeacher(Institute $institute)
     {
         $teacher = $institute->teachers()->create($this->validated());

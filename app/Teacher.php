@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Teacher extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'institute_id', 'id_card', 'name', 'last_name', 'phone'
     ];
@@ -43,5 +46,10 @@ class Teacher extends Model
     public function institute()
     {
         return $this->belongsTo(Institute::class);
+    }
+
+    public function isRegisteredIn(Institute $institute)
+    {
+        return $this->institute()->where('id', $institute->id)->count() > 0;
     }
 }

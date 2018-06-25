@@ -28,13 +28,13 @@
                                         <td>{{ $course->name }}</td>
                                         <td>{{ $course->typecourse->name }}</td>
                                         <td>
-                                            @can('update', $course)
+                                            @can('tenant-update', $course)
                                                 <a href="{{ route('tenant.courses.edit', ['institute' => $institute, 'courses' => $course]) }}">
                                                     Editar
                                                 </a>
                                             @endcan
 
-                                            @can('delete', $course)
+                                            @can('tenant-delete', $course)
                                                     <a href="{{ route('tenant.courses.destroy', ['institute' => $institute, 'courses' => $course]) }}"
                                                        onclick="event.preventDefault();
                                                            document.getElementById('courses-delete-{{$course->id}}').submit();">

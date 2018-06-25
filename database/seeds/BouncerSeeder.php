@@ -2,9 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Silber\Bouncer\Database\Ability;
-use App\{
-    Resource, User, Course, TypeCourse, Classroom, Institute
-};
+use App\{Promotion, Resource, Teacher, User, Course, TypeCourse, Classroom, Institute};
 
 class BouncerSeeder extends Seeder
 {
@@ -21,21 +19,92 @@ class BouncerSeeder extends Seeder
 
     protected function createAbilities()
     {
+        $this->allAbility();
+        $this->dashboardAbility();
+        $this->classroomAbilities();
+        $this->courseAbilities();
+        $this->typeCourseAbilities();
+        $this->resourceAbilities();
+        $this->teacherAbilities();
+        $this->promotionAbility();
+    }
+
+    protected function createRole()
+    {
         /*
-         * Todas las habilidades
+        |--------------------------------------------------------------------------
+        | Rol de administrador
+        |--------------------------------------------------------------------------
+        */
+
+        $admin = Bouncer::role()->create([
+            'name' => User::ROLE_ADMIN,
+            'title' => 'Administrador',
+        ]);
+
+        Bouncer::allow($admin)->everything();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Rol Administrador de instituto
+        |--------------------------------------------------------------------------
+        */
+
+        $tenant_admin = Bouncer::role()->create([
+            'name' => User::ROLE_TENANT_ADMIN,
+            'title' => 'Administrador de instituto',
+        ]);
+
+        $abilities = Ability::where('name', '<>', '*')->get();
+        Bouncer::allow($tenant_admin)->to($abilities);
+    }
+
+    protected function allAbility(): void
+    {
+        /*
+         |--------------------------------------------------------------------------
+         | Todas las habilidades
+         |--------------------------------------------------------------------------
+         |
+         | Estas habilidades solo las puede tener un rol de administrador, ya que tienen autorizacion total sobre
+         | los distintos modulos del sistema.
          */
+
         Bouncer::ability()->create([
             'name' => '*',
             'title' => 'Todas las habilidades',
             'entity_type' => '*',
         ]);
+    }
 
+    protected function dashboardAbility(): void
+    {
         /*
-         * Classroom Habilidades
+         |--------------------------------------------------------------------------
+         | Institutos dashboard Habilidades
+         |--------------------------------------------------------------------------
+         |
+         | Habilidad para ver el dashboard de la pagina de administracion
          */
+        Bouncer::ability()->createForModel(Institute::class, [
+            'name' => 'tenant-view',
+            'title' => 'Ver dashboard'
+        ]);
+    }
+
+    protected function classroomAbilities(): void
+    {
+        /*
+         |--------------------------------------------------------------------------
+         | Aulas Habilidades
+         |--------------------------------------------------------------------------
+         |
+         | Todas la habilidades para la gestion del crud de aulas
+         */
+
         Bouncer::ability()->createForModel(Classroom::class, [
-           'name' => 'tenant-view',
-           'title' => 'Ver aulas'
+            'name' => 'tenant-view',
+            'title' => 'Ver aulas'
         ]);
 
         Bouncer::ability()->createForModel(Classroom::class, [
@@ -52,10 +121,18 @@ class BouncerSeeder extends Seeder
             'name' => 'tenant-update',
             'title' => 'Actualizar aula'
         ]);
+    }
 
+    protected function courseAbilities(): void
+    {
         /*
-         * Course Habilidades
+         |--------------------------------------------------------------------------
+         | Cursos Habilidades
+         |--------------------------------------------------------------------------
+         |
+         | Todas la habilidades para la gestion del crud de cursos
          */
+
         Bouncer::ability()->createForModel(Course::class, [
             'name' => 'tenant-view',
             'title' => 'Ver cursos'
@@ -75,10 +152,18 @@ class BouncerSeeder extends Seeder
             'name' => 'tenant-update',
             'title' => 'Actualizar curso'
         ]);
+    }
 
+    protected function typeCourseAbilities(): void
+    {
         /*
-        * Tipo de cursos Habilidades
-       */
+        |--------------------------------------------------------------------------
+        | Tipo de cursos Habilidades
+        |--------------------------------------------------------------------------
+        |
+        | Todas la habilidades para la gestion del crud de tipos de cursos
+        */
+
         Bouncer::ability()->createForModel(TypeCourse::class, [
             'name' => 'tenant-view',
             'title' => 'Ver tipos cursos'
@@ -98,10 +183,18 @@ class BouncerSeeder extends Seeder
             'name' => 'tenant-update',
             'title' => 'Actualizar tipo curso'
         ]);
+    }
 
+    protected function resourceAbilities(): void
+    {
         /*
-       * Tipo de cursos Habilidades
-      */
+        |--------------------------------------------------------------------------
+        | Recursos Habilidades
+        |--------------------------------------------------------------------------
+        |
+        | Todas la habilidades para la gestion del crud de recursos
+        */
+
         Bouncer::ability()->createForModel(Resource::class, [
             'name' => 'tenant-view',
             'title' => 'Ver recursos'
@@ -121,37 +214,52 @@ class BouncerSeeder extends Seeder
             'name' => 'tenant-update',
             'title' => 'Actualizar recurso'
         ]);
+    }
 
+    protected function teacherAbilities(): void
+    {
         /*
-         * Institute Habilidades
-         */
-        Bouncer::ability()->createForModel(Institute::class, [
+        |--------------------------------------------------------------------------
+        | Profesores Habilidades
+        |--------------------------------------------------------------------------
+        |
+        | Todas la habilidades para la gestion del crud de profesores
+        */
+
+        Bouncer::ability()->createForModel(Teacher::class, [
             'name' => 'tenant-view',
-            'title' => 'Ver dashboard'
+            'title' => 'Ver profesores'
+        ]);
+
+        Bouncer::ability()->createForModel(Teacher::class, [
+            'name' => 'tenant-create',
+            'title' => 'Crear profesor'
+        ]);
+
+        Bouncer::ability()->createForModel(Teacher::class, [
+            'name' => 'tenant-delete',
+            'title' => 'Eliminar profesor'
+        ]);
+
+        Bouncer::ability()->createForModel(Teacher::class, [
+            'name' => 'tenant-update',
+            'title' => 'Actualizar profesor'
         ]);
     }
 
-    protected function createRole()
+    protected function promotionAbility(): void
     {
         /*
-         *  Rol Administrador
-         */
-        $admin = Bouncer::role()->create([
-            'name' => User::ROLE_ADMIN,
-            'title' => 'Administrador',
+        |--------------------------------------------------------------------------
+        | Promociones Habilidades
+        |--------------------------------------------------------------------------
+        |
+        | Todas la habilidades para la gestion del crud de promociones
+        */
+
+        Bouncer::ability()->createForModel(Promotion::class, [
+            'name' => 'tenant-view',
+            'title' => 'Ver promociones'
         ]);
-
-        Bouncer::allow($admin)->everything();
-
-        /*
-         * Rol Administrador de instituto
-         */
-        $tenant_admin = Bouncer::role()->create([
-            'name' => User::ROLE_TENANT_ADMIN,
-            'title' => 'Administrador de instituto',
-        ]);
-
-        $abilities = Ability::where('name', '<>', '*')->get();
-        Bouncer::allow($tenant_admin)->to($abilities);
     }
 }

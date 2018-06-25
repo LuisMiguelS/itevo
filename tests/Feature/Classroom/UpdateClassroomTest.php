@@ -37,7 +37,7 @@ class UpdateClassroomTest extends TestCase
     {
         $this->actingAs($this->admin)
             ->put(route('tenant.classrooms.update', [
-                'institute' => $this->institute,
+                'institute' => $this->classroom->institute,
                 'classroom' => $this->classroom
             ]), $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
@@ -90,5 +90,24 @@ class UpdateClassroomTest extends TestCase
             ->assertSessionHasErrors(['name', 'building']);
 
         $this->assertDatabaseMissing('classrooms', $this->withData());
+    }
+
+
+    /** @test */
+    function an_institute_cannot_update_classroom_from_another_institute()
+    {
+        $this->withExceptionHandling();
+
+        $this->actingAs($this->admin)
+            ->put(route('tenant.classrooms.update', [
+                'institute' => factory(Institute::class)->create(),
+                'classrooms' => $this->classroom
+            ]), $this->withData())
+            ->assertStatus(Response::HTTP_NOT_FOUND);
+
+        $this->assertDatabaseHas('classrooms', [
+            'id' => $this->classroom->id,
+            'name' => $this->classroom->name,
+        ]);
     }
 }

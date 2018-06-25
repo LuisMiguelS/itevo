@@ -32,6 +32,16 @@ class UpdateTeacherRequest extends FormRequest
         ];
     }
 
+    public function attributes ()
+    {
+        return [
+            'id_card' => 'cédula',
+            'name' => 'nombre (s)',
+            'last_name' => 'apellido (s)',
+            'phone' => 'teléfono',
+        ];
+    }
+
     public function updateTeacher(Teacher $teacher)
     {
         $teacher->update($this->validated());

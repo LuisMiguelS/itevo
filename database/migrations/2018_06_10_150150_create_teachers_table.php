@@ -21,6 +21,7 @@ class CreateTeachersTable extends Migration
             $table->string('last_name', 70);
             $table->string('phone', 17)->unique();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('institute_id')->references('id')->on('institutes');
         });

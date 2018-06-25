@@ -63,8 +63,6 @@
     </ul>
 </li>
 
-
-
 <li class="has-sub">
     <a href="#">
         <i class="fas fa-th-large"></i>
@@ -89,6 +87,25 @@
         <i class="fas fa-th-large"></i>
         <span class="title">Promociones</span>
     </a>
+</li>
+
+<li class="has-sub">
+    <a href="#">
+        <i class="fas fa-th-large"></i>
+        <span class="title">Profesores</span>
+    </a>
+    <ul>
+        <li>
+            <a href="{{ route('tenant.teachers.index', $institute) }}">
+                <span class="title">Todos los profesores</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('tenant.teachers.create', $institute) }}">
+                <span class="title">Crear profesor</span>
+            </a>
+        </li>
+    </ul>
 </li>
 
 

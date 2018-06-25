@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\Tenant;
 
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Tenant\StoreClassRoomRequest;
 use App\Http\Requests\Tenant\UpdateClassRoomRequest;
 use App\{Http\Controllers\Controller, Institute, Classroom};
 
 class ClassRoomController extends Controller
 {
+    /**
+     * ClassRoomController constructor.
+     */
     public function __construct()
     {
         $this->middleware('auth');
@@ -57,6 +61,7 @@ class ClassRoomController extends Controller
     public function edit(Institute $institute, Classroom $classroom)
     {
         $this->authorize('tenant-update', $classroom);
+        abort_unless($classroom->isRegisteredIn($institute), Response::HTTP_NOT_FOUND);
         return view('tenant.classroom.edit', compact('institute', 'classroom'));
     }
 
@@ -70,6 +75,7 @@ class ClassRoomController extends Controller
     public function update(UpdateClassRoomRequest $request,Institute $institute, Classroom $classroom)
     {
         $this->authorize('tenant-update', $classroom);
+        abort_unless($classroom->isRegisteredIn($institute), Response::HTTP_NOT_FOUND);
         return redirect()->route('tenant.classrooms.index', $institute)->with(['flash_success' => $request->updateClassRoom($classroom)]);
     }
 
@@ -78,10 +84,12 @@ class ClassRoomController extends Controller
      * @param \App\Classroom $classroom
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Exception
      */
     public function destroy(Institute $institute, Classroom $classroom)
     {
         $this->authorize('tenant-delete', $classroom);
+        abort_unless($classroom->isRegisteredIn($institute), Response::HTTP_NOT_FOUND);
         $classroom->delete();
         return redirect()->route('tenant.classrooms.index', $institute)->with(['flash_success' => "Aula {$classroom->name} eliminada con éxito."]);
     }
