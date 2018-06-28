@@ -1,13 +1,13 @@
 <li class="opened active opened">
     <a href="{{ route('tenant.dashboard', $institute) }}">
-        <i class="fas fa-tachometer-alt"></i>
+        <i class="fas fa-home"></i>
         <span class="title">Dashboard</span>
     </a>
 </li>
 
 <li class="has-sub">
     <a href="#">
-        <i class="fas fa-th-large"></i>
+        <i class="fa fa-school"></i>
         <span class="title">Aulas</span>
     </a>
     <ul>
@@ -27,7 +27,7 @@
 
 <li class="has-sub">
     <a href="#">
-        <i class="fas fa-th-large"></i>
+        <i class="fa fa-puzzle-piece"></i>
         <span class="title">Cursos</span>
     </a>
     <ul>
@@ -65,7 +65,7 @@
 
 <li class="has-sub">
     <a href="#">
-        <i class="fas fa-th-large"></i>
+        <i class="fa fa-sign"></i>
         <span class="title">Recursos</span>
     </a>
     <ul>
@@ -84,14 +84,14 @@
 
 <li class="opened active opened">
     <a href="{{ route('tenant.promotions.index', $institute) }}">
-        <i class="fas fa-th-large"></i>
+        <i class="fa fa-calendar-alt"></i>
         <span class="title">Promociones</span>
     </a>
 </li>
 
 <li class="has-sub">
     <a href="#">
-        <i class="fas fa-th-large"></i>
+        <i class="fa fa-chalkboard-teacher"></i>
         <span class="title">Profesores</span>
     </a>
     <ul>
@@ -107,6 +107,3 @@
         </li>
     </ul>
 </li>
-
-
-

@@ -26,7 +26,7 @@
                 <header class="logo-env">
                     <div class="logo">
                         <a href="{{ route('home') }}">
-                            <img src="https://pmcdeadline2.files.wordpress.com/2016/06/logo-tv-2.jpg?w=446&h=299&crop=1" width="120"/>
+                            <img src="{{ asset('img/logo-itevo.png') }}" width="120"/>
                         </a>
                     </div>
 
@@ -88,6 +88,19 @@
             <hr/>
 
             <div class="container-fluid" style="min-height: 100vh;">
+                <ol class="breadcrumb bc-3" >
+                    <li>
+                        <a href="{{ route('home') }}"><i class="fa fa-home"></i>Inicio</a>
+                    </li>
+
+                    <li class="active">
+                        <strong>@yield('title')</strong>
+                    </li>
+                </ol>
+                            
+                <h2 class="text-center">@yield('title')</h2>
+                <br/>
+
                 @yield('content')
             </div>
 
