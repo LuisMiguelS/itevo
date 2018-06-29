@@ -11,11 +11,11 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ mix('js/admin_panel.js') }}" defer></script>
+    <script src="{{ mix('js/tenant_panel.js') }}" defer></script>
     @stack('scripts')
 
     <!-- Styles -->
-    <link href="{{ mix('css/admin_panel.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/tenant_panel.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
 </head>
@@ -97,7 +97,7 @@
                         <strong>@yield('title')</strong>
                     </li>
                 </ol>
-                            
+
                 <h2 class="text-center">@yield('title')</h2>
                 <br/>
 
