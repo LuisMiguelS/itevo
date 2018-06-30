@@ -5,8 +5,8 @@
       <div class="row justify-content-center">
           <div class="col-md-8">
 
-              <div class="card">
-                  <div class="card-header">Crear Instituto</div>
+              <div class="card shadow-sm border-0">
+                  <div class="card-header border-0 font-weight-bold">Crear Instituto</div>
                   <div class="card-body">
 
                       <form action="{{ route('institutes.store') }}" method="POST">

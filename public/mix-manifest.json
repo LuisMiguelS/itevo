@@ -1,4 +1,6 @@
 {
-    "/css/admin_panel.css": "/css/admin_panel.css",
-    "/js/admin_panel.js": "/js/admin_panel.js"
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
+    "/css/tenant_panel.css": "/css/tenant_panel.css",
+    "/js/tenant_panel.js": "/js/tenant_panel.js"
 }

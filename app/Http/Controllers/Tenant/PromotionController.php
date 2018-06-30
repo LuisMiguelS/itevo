@@ -24,6 +24,6 @@ class PromotionController extends Controller
     {
         $this->authorize('tenant-view', Promotion::class);
         $promotions = $institute->promotions()->paginate();
-        return view('tenant.promotion.index', compact('promotions'));
+        return view('tenant.promotion.index', compact('institute', 'promotions'));
     }
 }

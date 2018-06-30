@@ -5,10 +5,10 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
 
-                <div class="card">
-                    <div class="card-header">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header border-0 font-weight-bold">
                         Todos los roles
-                        <a href="{{ route('roles.create') }}">Crear Rol</a>
+                        <a class="btn btn-primary btn-sm" href="{{ route('roles.create') }}">Crear Rol</a>
                     </div>
                     <div class="card-body">
                         @if($roles->count())
@@ -33,14 +33,16 @@
                                         </td>
                                         <td>
                                             @can('update', $role)
-                                                <a href="{{ route('roles.edit', $role) }}">Editar</a>
+                                                <a class="btn btn-info btn-sm" href="{{ route('roles.edit', $role) }}">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                </a>
                                             @endcan
 
                                             @can('delete', $role)
-                                                <a href="{{ route('roles.destroy', $role) }}"
+                                                <a class="btn btn-danger btn-sm" href="{{ route('roles.destroy', $role) }}"
                                                    onclick="event.preventDefault();
                                                        document.getElementById('roles-delete-{{$role->id}}').submit();">
-                                                    Eliminar
+                                                    <i class="fas fa-trash"></i>
                                                 </a>
                                                 <form id="roles-delete-{{$role->id}}" action="{{ route('roles.destroy', $role) }}" method="POST" style="display: none;">
                                                     @csrf

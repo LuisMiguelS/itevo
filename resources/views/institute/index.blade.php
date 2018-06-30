@@ -5,10 +5,10 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
 
-                <div class="card">
-                    <div class="card-header">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header border-0 font-weight-bold">
                         Todos los institutos
-                        <a href="{{ route('institutes.create') }}">Crear instituto</a>
+                        <a class="btn btn-primary btn-sm" href="{{ route('institutes.create') }}">Crear instituto</a>
                     </div>
                     <div class="card-body">
                         @if($institutes->count())
@@ -27,14 +27,14 @@
                                         <td>{{ $institute->name }}</td>
                                         <td>
                                             @can('update', $institute)
-                                                <a href="{{ route('institutes.edit', $institute) }}">Editar</a>
+                                                <a class="btn btn-info btn-sm" href="{{ route('institutes.edit', $institute) }}"><i class="fas fa-pencil-alt"></i></a>
                                             @endcan
 
                                             @can('delete', $institute)
-                                                <a href="{{ route('institutes.destroy', $institute) }}"
+                                                <a class="btn btn-danger btn-sm" href="{{ route('institutes.destroy', $institute) }}"
                                                    onclick="event.preventDefault();
                                                  document.getElementById('institutes-delete-{{$institute->id}}').submit();">
-                                                    Eliminar
+                                                    <i class="fas fa-trash"></i>
                                                 </a>
                                                 <form id="institutes-delete-{{$institute->id}}" action="{{ route('institutes.destroy', $institute) }}" method="POST" style="display: none;">
                                                     @csrf

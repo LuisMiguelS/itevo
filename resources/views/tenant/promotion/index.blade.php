@@ -1,12 +1,12 @@
-@extends('layouts.admin')
+@extends('layouts.tenant')
+
+
+@section('title', 'Todas las Promociones')
 
 @section('content')
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="panel">
-                <div class="panel-header">
-                    Todas las Promociones
-                </div>
+        <div class="col-md-10 col-md-offset-1">
+            <div class="panel panel-primary">
                 <div class="panel-body">
                     @if($promotions->count())
                         <table class="table">

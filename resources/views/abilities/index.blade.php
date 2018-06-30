@@ -5,8 +5,8 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
 
-                <div class="card">
-                    <div class="card-header">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header border-0 font-weight-bold">
                         Todas las habilidades
                     </div>
                     <div class="card-body">

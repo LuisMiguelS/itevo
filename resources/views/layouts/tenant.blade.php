@@ -16,10 +16,10 @@
 
     <!-- Styles -->
     <link href="{{ mix('css/tenant_panel.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
 
 </head>
-<body class="page-body @yield('body-class', 'skin-black')">
+<body class="page-body">
 	<div class="page-container">
         <div class="sidebar-menu">
             <div class="sidebar-menu-inner">
@@ -88,18 +88,9 @@
             <hr/>
 
             <div class="container-fluid" style="min-height: 100vh;">
-                <ol class="breadcrumb bc-3" >
-                    <li>
-                        <a href="{{ route('home') }}"><i class="fa fa-home"></i>Inicio</a>
-                    </li>
+                @yield('breadcrumb')
 
-                    <li class="active">
-                        <strong>@yield('title')</strong>
-                    </li>
-                </ol>
-
-                <h2 class="text-center">@yield('title')</h2>
-                <br/>
+                @include('partials.alert-tenant')
 
                 @yield('content')
             </div>

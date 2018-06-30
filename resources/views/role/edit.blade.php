@@ -5,8 +5,10 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
 
-                <div class="card">
-                    <div class="card-header">Editar {{ $role->name }}</div>
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header border-0">
+                        <span class="font-weight-bold">Editar</span>
+                        {{ $role->name }}</div>
                     <div class="card-body">
 
                         <form action="{{ route('roles.update', $role) }}" method="POST">

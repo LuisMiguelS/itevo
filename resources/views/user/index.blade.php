@@ -5,10 +5,10 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
 
-                <div class="card">
-                    <div class="card-header">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header border-0 font-weight-bold">
                         Todos los usuarios
-                        <a href="{{ route('users.create') }}">Crear Usuario</a>
+                        <a class="btn btn-primary btn-sm" href="{{ route('users.create') }}">Crear Usuario</a>
                     </div>
                     <div class="card-body">
                         @if($users->count())
@@ -35,14 +35,16 @@
                                         </td>
                                         <td>
                                             @can('update', $user)
-                                                <a href="{{ route('users.edit', $user) }}">Editar</a>
+                                                <a class="btn btn-info btn-sm" href="{{ route('users.edit', $user) }}">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                </a>
                                             @endcan
 
                                             @can('delete', $user)
-                                                    <a href="{{ route('users.destroy', $user) }}"
+                                                    <a class="btn btn-danger btn-sm" href="{{ route('users.destroy', $user) }}"
                                                        onclick="event.preventDefault();
                                                            document.getElementById('users-delete-{{$user->id}}').submit();">
-                                                        Eliminar
+                                                        <i class="fas fa-trash"></i>
                                                     </a>
                                                     <form id="users-delete-{{$user->id}}" action="{{ route('users.destroy', $user) }}" method="POST" style="display: none;">
                                                         @csrf

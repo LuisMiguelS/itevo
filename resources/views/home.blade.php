@@ -4,14 +4,15 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Home</div>
+            <div class="card border-0 shadow-sm">
+                <div class="card-header border-0 font-weight-bold text-uppercase text-center">Esto son los institutos a los que peteneces</div>
 
                 <div class="card-body">
                    @if($institutes->count())
-                        <ul class="list-group list-group-flush">
+                        <ul class="list-group">
                             @foreach($institutes as $institute)
-                                <a href="{{ route('tenant.dashboard', $institute) }}" class="list-group-item list-group-item-action">
+                                <a href="{{ route('tenant.dashboard', $institute) }}" class="list-group-item text-uppercase">
+                                    <i class="fas fa-school text-dark"></i>
                                     <b>{{ $institute->name }}</b>
                                 </a>
                             @endforeach

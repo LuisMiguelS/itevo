@@ -1,4 +1,16 @@
-@extends('layouts.admin')
+@extends('layouts.tenant')
+
+@section('breadcrumb')
+    <ol class="breadcrumb bc-3" >
+        <li>
+            <a href="{{ route('home') }}"><i class="fa fa-home"></i>Inicio</a>
+        </li>
+
+        <li class="active">
+            <strong>Dashboard</strong>
+        </li>
+    </ol>
+@endsection
 
 @section('content')
     <div class="row">
