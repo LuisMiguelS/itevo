@@ -1,6 +1,10 @@
 @extends('layouts.tenant')
 
-@section('title', 'Todos los Tipos de Cursos')
+@section('title', 'Todos los tipos de cursos')
+
+@section('breadcrumb')
+    {{ Breadcrumbs::render('typecourse', $institute) }}
+@endsection
 
 @section('content')
     <div class="row justify-content-center">
@@ -8,7 +12,7 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <div class="panel-title">
-                        <a class="btn btn-primary btn-sm" style="color: #fff;" href="{{ route('tenant.resources.create', $institute) }}">Crear Tipo de Curso</a>
+                        <a class="btn btn-primary btn-sm" style="color: #fff;" href="{{ route('tenant.typecourses.create', $institute) }}">Crear Tipo de Curso</a>
                     </div>
                 </div>
                 <div class="panel-body">

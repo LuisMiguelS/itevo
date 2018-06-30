@@ -1,6 +1,10 @@
 @extends('layouts.tenant')
 
-@section('title', 'Registrar Profesor')
+@section('title', 'Crear profesor')
+
+@section('breadcrumb')
+    {{ Breadcrumbs::render('teacher-create', $institute) }}
+@endsection
 
 @section('content')
     <div class="row">

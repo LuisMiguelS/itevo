@@ -1,15 +1,9 @@
 @extends('layouts.tenant')
 
-@section('breadcrumb')
-    <ol class="breadcrumb bc-3" >
-        <li>
-            <a href="{{ route('home') }}"><i class="fa fa-home"></i>Inicio</a>
-        </li>
+@section('title', 'Dashboard')
 
-        <li class="active">
-            <strong>Dashboard</strong>
-        </li>
-    </ol>
+@section('breadcrumb')
+    {{ Breadcrumbs::render('dashboard', $institute) }}
 @endsection
 
 @section('content')

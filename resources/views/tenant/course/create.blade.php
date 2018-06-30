@@ -1,6 +1,10 @@
 @extends('layouts.tenant')
 
-@section('title', 'Crear Curso')
+@section('title', 'Crear curso')
+
+@section('breadcrumb')
+    {{ Breadcrumbs::render('course-create', $institute) }}
+@endsection
 
 @section('content')
     <div class="row justify-content-center">

@@ -27,6 +27,7 @@ class BouncerSeeder extends Seeder
         $this->resourceAbilities();
         $this->teacherAbilities();
         $this->promotionAbility();
+        $this->userAbilities();
     }
 
     protected function createRole()
@@ -260,6 +261,37 @@ class BouncerSeeder extends Seeder
         Bouncer::ability()->createForModel(Promotion::class, [
             'name' => 'tenant-view',
             'title' => 'Ver promociones'
+        ]);
+    }
+
+    protected function userAbilities(): void
+    {
+        /*
+        |--------------------------------------------------------------------------
+        | Usuarios Habilidades
+        |--------------------------------------------------------------------------
+        |
+        | Todas la habilidades para la gestion del crud de usuarios
+        */
+
+        Bouncer::ability()->createForModel(User::class, [
+            'name' => 'view',
+            'title' => 'Ver usuarios'
+        ]);
+
+        Bouncer::ability()->createForModel(User::class, [
+            'name' => 'create',
+            'title' => 'Crear usuario'
+        ]);
+
+        Bouncer::ability()->createForModel(User::class, [
+            'name' => 'delete',
+            'title' => 'Eliminar usuario'
+        ]);
+
+        Bouncer::ability()->createForModel(User::class, [
+            'name' => 'update',
+            'title' => 'Actualizar usuario'
         ]);
     }
 }

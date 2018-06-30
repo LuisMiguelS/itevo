@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\{Institute, User};
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\StoreUserRequest;
+use function foo\func;
 
 class UserController extends Controller
 {
@@ -25,7 +26,11 @@ class UserController extends Controller
     public function index()
     {
         $this->authorize('view', User::class);
-        $users = User::paginate();
+        $users = User::unless(auth()->user()->isAdmin(), function ($query){
+           $query->with(['roles' => function($q){
+                $q->where('name', '<>', User::ROLE_ADMIN)->where('name', '<>', User::ROLE_TENANT_ADMIN);
+           }]);
+        })->where('id', '<>', auth()->id())->paginate();
         return view('user.index', compact('users'));
     }
 

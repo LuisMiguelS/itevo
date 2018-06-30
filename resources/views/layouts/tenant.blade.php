@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title', config('app.name', 'Laravel'))</title>
 
     <!-- Scripts -->
     <script src="{{ mix('js/tenant_panel.js') }}" defer></script>
@@ -89,6 +89,10 @@
 
             <div class="container-fluid" style="min-height: 100vh;">
                 @yield('breadcrumb')
+
+                <div class="page-header">
+                    <h1>@yield('title', config('app.name', 'Laravel'))</h1>
+                </div>
 
                 @include('partials.alert-tenant')
 
