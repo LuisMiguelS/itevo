@@ -42,11 +42,16 @@
                                 <li class="nav-item"><a class="nav-link" href="{{ route('institutes.index') }}">Institutos</a></li>
                             @endif
 
-                            @if(auth()->user()->isAn(\App\User::ROLE_ADMIN) || auth()->user()->isAn(\App\User::ROLE_TENANT_ADMIN))
+                            @can('view', \App\User::class)
                                 <li><a class="nav-link" href="{{ route('users.index') }}">Usuarios</a></li>
+                            @endcan
+
+                            @can('view', \Silber\Bouncer\Database\Role::class)
                                 <li><a class="nav-link" href="{{ route('roles.index') }}">Roles</a></li>
-                                <li><a class="nav-link" href="{{ route('abilities.index') }}">Habilidades</a></li>
-                            @endif
+                            @endcan
+
+                            <li><a class="nav-link" href="{{ route('abilities.index') }}">Habilidades</a></li>
+
                         @endif
                     </ul>
 

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\{Institute, User};
-use App\Http\Requests\UpdateUserRequest;
+use Silber\Bouncer\Database\Role;
 use App\Http\Requests\StoreUserRequest;
-use function foo\func;
+use App\Http\Requests\UpdateUserRequest;
 
 class UserController extends Controller
 {
@@ -26,11 +26,15 @@ class UserController extends Controller
     public function index()
     {
         $this->authorize('view', User::class);
-        $users = User::unless(auth()->user()->isAdmin(), function ($query){
-           $query->with(['roles' => function($q){
-                $q->where('name', '<>', User::ROLE_ADMIN)->where('name', '<>', User::ROLE_TENANT_ADMIN);
-           }]);
-        })->where('id', '<>', auth()->id())->paginate();
+        $users = User::where('id','<>', auth()->id())
+            ->unless(auth()->user()->isAdmin(), function ($user_query){
+                $user_query->whereHas('roles', function ($role_query) {
+                   $role_query->where([
+                       ['name', '<>', User::ROLE_ADMIN],
+                       ['name', '<>', User::ROLE_TENANT_ADMIN]
+                   ]);
+                });
+            })->paginate();
         return view('user.index', compact('users'));
     }
 
@@ -44,7 +48,13 @@ class UserController extends Controller
     {
         $this->authorize('create', User::class);
         $institutes = Institute::select('id','name')->get();
-        return view('user.create', compact('institutes'));
+        $roles = Role::unless(auth()->user()->isAdmin(), function ($query) {
+            $query->where([
+                ['name', '<>', User::ROLE_ADMIN],
+                ['name', '<>', User::ROLE_TENANT_ADMIN]
+            ]);
+        })->get();
+        return view('user.create', compact('institutes', 'roles'));
     }
 
     /**
@@ -72,8 +82,15 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $this->authorize('update', User::class);
+        $this->canAlterTo($user);
         $institutes = Institute::all();
-        return view('user.edit', compact('user', 'institutes'));
+        $roles = Role::unless(auth()->user()->isAdmin(), function ($query) {
+            $query->where([
+                ['name', '<>', User::ROLE_ADMIN],
+                ['name', '<>', User::ROLE_TENANT_ADMIN]
+            ]);
+        })->get();
+        return view('user.edit', compact('user', 'institutes', 'roles'));
     }
 
     /**
@@ -87,6 +104,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $this->authorize('update', $user);
+        $this->canAlterTo($user);
         return redirect()
             ->route('users.index')
             ->with(['flash_success' => $request->updateUser($user)]);
@@ -104,8 +122,19 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $this->authorize('delete', $user);
+        $this->canAlterTo($user);
         $user->delete();
         return back()
             ->with(['flash_success' => "Usuario {$user->name} eliminado con éxito."]);
+    }
+
+    /**
+     * @param \App\User $user
+     */
+    protected function canAlterTo(User $user): void
+    {
+        if (! auth()->user()->isAdmin()) {
+            abort_if($user->isAn(User::ROLE_ADMIN) || $user->isAn(User::ROLE_TENANT_ADMIN), 403);
+        }
     }
 }

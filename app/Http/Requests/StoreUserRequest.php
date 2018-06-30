@@ -28,7 +28,8 @@ class StoreUserRequest extends FormRequest
             'name' => 'required|min:5|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-            'institutes' => 'nullable|array'
+            'institutes' => 'required|array',
+            'role' => 'nullable|integer'
         ];
     }
 
@@ -38,14 +39,17 @@ class StoreUserRequest extends FormRequest
             'name' => 'nombre',
             'email' => 'correo electrónico',
             'password' => 'contraseña',
-            'institutes' => 'instituto'
+            'institutes' => 'instituto',
+            'role' => 'rol'
         ];
     }
 
     public function createUser()
     {
         $user = User::create($this->validated());
-        $user->assign(User::ROLE_TENANT_ADMIN);
+        if (isset($this->validated()['role'])){
+            $user->assign($this->validated()['role']);
+        }
         if (isset($this->validated()['institutes'])){
             $user->institutes()->attach($this->validated()['institutes']);
         }

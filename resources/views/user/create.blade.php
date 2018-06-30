@@ -60,6 +60,25 @@
                                 </div>
                             </div>
 
+                            @if(auth()->user()->isAn(\App\User::ROLE_ADMIN) || auth()->user()->isAn(\App\User::ROLE_TENANT_ADMIN))
+                            <div class="form-group row">
+                                <label for="role" class="col-md-4 col-form-label text-md-right">Rol</label>
+                                <div class="col-md-6">
+                                    <select class="form-control {{ $errors->has('role') ? ' is-invalid' : '' }}" id="role" name="role">
+                                        <option>Seleciona un rol para el usuario</option>
+                                        @foreach($roles as $role)
+                                            <option value="{{ $role->name }}">{{ $role->title }}</option>
+                                        @endforeach
+                                    </select>
+                                    @if ($errors->has('role'))
+                                        <span class="invalid-feedback">
+                                            <strong>{{ $errors->first('role') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                            @endif
+
                             <div class="form-group row">
                                 <label for="name" class="col-sm-4 col-form-label text-md-right">Instituto</label>
                                 <div class="col-md-6">
@@ -67,7 +86,7 @@
                                         @foreach($institutes as $institute)
                                             <div class="custom-control custom-checkbox custom-control-inline">
                                                 <input name="institutes[{{ $institute->id }}]"
-                                                       class="custom-control-input"
+                                                       class="custom-control-input {{ $errors->has('institutes') ? ' is-invalid' : '' }}"
                                                        type="checkbox"
                                                        id="institutes{{ $institute->id }}"
                                                        value="{{ $institute->id }}"
@@ -75,6 +94,12 @@
                                                 <label class="custom-control-label" for="institutes{{ $institute->id }}">{{ $institute->name }}</label>
                                             </div>
                                         @endforeach
+                                        @if ($errors->has('institutes'))
+                                                <br>
+                                                <small style="color: #dc3545; font-size: 12px !important;">
+                                                    <strong>{{ $errors->first('institutes') }}</strong>
+                                                </small>
+                                        @endif
                                         @else
                                         <div class="alert alert-primary" role="alert">
                                             No hay institutos registrados
