@@ -7,12 +7,12 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateClassRoomRequest extends FormRequest
 {
-    public function authorize ()
+    public function authorize()
     {
         return true;
     }
 
-    public function rules ()
+    public function rules()
     {
         return [
             'name' => 'required|min:1|max:50',
@@ -20,7 +20,7 @@ class UpdateClassRoomRequest extends FormRequest
         ];
     }
 
-    public function attributes ()
+    public function attributes()
     {
         return [
             'name' => 'nombre',
@@ -28,10 +28,9 @@ class UpdateClassRoomRequest extends FormRequest
         ];
     }
 
-    public function updateClassRoom (Classroom $classroom)
+    public function updateClassRoom(Classroom $classroom)
     {
         $classroom->update($this->validated());
-
         return "Aula {$classroom->name} actualizada con éxito.";
     }
 }

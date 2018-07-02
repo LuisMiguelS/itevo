@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Silber\Bouncer\Database\Ability;
-use App\{Promotion, Resource, Teacher, User, Course, TypeCourse, Classroom, Institute};
+use App\{Promotion, Resource, Teacher, User, Course, TypeCourse, Classroom, BranchOffice};
 use Silber\Bouncer\Database\Role;
 
 class BouncerSeeder extends Seeder
@@ -89,7 +89,7 @@ class BouncerSeeder extends Seeder
          |
          | Habilidad para ver el dashboard de la pagina de administracion
          */
-        Bouncer::ability()->createForModel(Institute::class, [
+        Bouncer::ability()->createForModel(BranchOffice::class, [
             'name' => 'tenant-view',
             'title' => 'Ver dashboard'
         ]);

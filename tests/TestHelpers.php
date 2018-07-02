@@ -2,8 +2,6 @@
 
 namespace Tests;
 
-use Silber\Bouncer\BouncerFacade as Bouncer;
-
 trait TestHelpers
 {
     protected function assertDatabaseEmpty($table, $connection = null)

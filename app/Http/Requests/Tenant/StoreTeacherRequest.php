@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Tenant;
 
-use App\Institute;
+use App\BranchOffice;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTeacherRequest extends FormRequest
@@ -42,9 +42,9 @@ class StoreTeacherRequest extends FormRequest
         ];
     }
 
-    public function createTeacher(Institute $institute)
+    public function createTeacher(BranchOffice $branchOffice)
     {
-        $teacher = $institute->teachers()->create($this->validated());
+        $teacher = $branchOffice->teachers()->create($this->validated());
         return "Profesor {$teacher->full_name} creado correctamente.";
     }
 }

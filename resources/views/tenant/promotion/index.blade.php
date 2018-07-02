@@ -3,7 +3,7 @@
 @section('title', 'Todas las promociones')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('promotion', $institute) }}
+    {{ Breadcrumbs::render('promotion', $branchOffice) }}
 @endsection
 
 @section('content')

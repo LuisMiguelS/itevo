@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Feature\Institute;
+namespace Tests\Feature\BranchOffice;
 
 use Tests\TestCase;
-use App\{User, Institute};
+use App\{User, BranchOffice};
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class UpdateInstituteTest extends TestCase
+class UpdateBranchOfficeTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -15,7 +15,7 @@ class UpdateInstituteTest extends TestCase
         'name' => 'Itevo La Vega',
     ];
 
-    private $institute;
+    private $branchOffice;
 
     private $user;
 
@@ -24,46 +24,46 @@ class UpdateInstituteTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->institute = factory(Institute::class)->create();
+        $this->branchOffice = factory(BranchOffice::class)->create();
         $this->user = factory(User::class)->create();
         $this->admin = $this->createAdmin();
     }
 
     /** @test */
-    function an_admin_can_update_institute()
+    function an_admin_can_update_branch_office()
     {
         $this->actingAs($this->admin)
-            ->put(route('institutes.update', $this->institute), $this->withData())
+            ->put($this->branchOffice->url->update, $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
-            ->assertSessionHas(['flash_success' => "Instituto {$this->defaultData['name']} actualizado con exito."]);
+            ->assertSessionHas(['flash_success' => "Sucursal {$this->defaultData['name']} actualizado con exito."]);
 
-        $this->assertDatabaseHas('institutes', $this->withData([
-            'id' => $this->institute->id
+        $this->assertDatabaseHas('branch_offices', $this->withData([
+            'id' => $this->branchOffice->id
         ]));
     }
 
     /** @test */
-    function an_guest_cannot_update_institute()
+    function an_guest_cannot_update_branch_office()
     {
         $this->withExceptionHandling();
 
-        $this->put(route('institutes.update', $this->institute), $this->withData())
+        $this->put($this->branchOffice->url->update, $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
-        $this->assertDatabaseMissing('institutes', $this->withData());
+        $this->assertDatabaseMissing('branch_offices', $this->withData());
     }
 
     /** @test */
-    function an_unauthorized_user_cannot_update_institute()
+    function an_unauthorized_user_cannot_update_branchOffice()
     {
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
-            ->put(route('institutes.update', $this->institute), $this->withData())
+            ->put($this->branchOffice->url->update, $this->withData())
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
-        $this->assertDatabaseMissing('institutes', $this->withData());
+        $this->assertDatabaseMissing('branch_offices', $this->withData());
     }
 
     /** @test */
@@ -72,10 +72,10 @@ class UpdateInstituteTest extends TestCase
         $this->handleValidationExceptions();
 
         $this->actingAs($this->admin)
-            ->put(route('institutes.update', $this->institute), [])
+            ->put($this->branchOffice->url->update, [])
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasErrors(['name']);
 
-        $this->assertDatabaseMissing('institutes', $this->withData());
+        $this->assertDatabaseMissing('branch_offices', $this->withData());
     }
 }

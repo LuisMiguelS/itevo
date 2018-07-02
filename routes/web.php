@@ -19,23 +19,34 @@ Auth::routes();
 
 Route::get('home', 'HomeController@index')->name('home');
 
-Route::resource('institutes', 'InstituteController');
+Route::resource('branch/offices', 'BranchOfficeController')->names([
+    'index' => 'branchOffices.index',
+    'show' => 'branchOffices.show',
+    'create' => 'branchOffices.create',
+    'store' => 'branchOffices.store',
+    'edit' => 'branchOffices.edit',
+    'update' => 'branchOffices.update',
+    'destroy' => 'branchOffices.destroy',
+])->parameters([
+    'offices' => 'branchOffice'
+]);
+
 Route::resource('users', 'UserController');
 Route::resource('abilities', 'AbilitieController')->only('index');
 Route::resource('roles', 'RoleController');
 
 
-Route::prefix('{institute}')->middleware('tenantAccess')->name('tenant.')->group(function () {
-    Route::get('dashboard', 'InstituteController@dashboard')->name('dashboard');
+Route::prefix('{branchOffice}')->middleware('tenantAccess')->name('tenant.')->group(function () {
+    Route::get('dashboard', 'BranchOfficeController@dashboard')->name('dashboard');
     Route::resource('classrooms', 'Tenant\ClassRoomController');
     Route::resource('types/courses', 'Tenant\TypeCourseController')->names([
-        'index' => 'typecourses.index',
-        'show' => 'typecourses.show',
-        'create' => 'typecourses.create',
-        'store' => 'typecourses.store',
-        'edit' => 'typecourses.edit',
-        'update' => 'typecourses.update',
-        'destroy' => 'typecourses.destroy',
+        'index' => 'typeCourses.index',
+        'show' => 'typeCourses.show',
+        'create' => 'typeCourses.create',
+        'store' => 'typeCourses.store',
+        'edit' => 'typeCourses.edit',
+        'update' => 'typeCourses.update',
+        'destroy' => 'typeCourses.destroy',
     ])->parameters([
         'courses' => 'typeCourse'
     ]);

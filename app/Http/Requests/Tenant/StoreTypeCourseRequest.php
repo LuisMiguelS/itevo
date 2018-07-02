@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Tenant;
 
-use App\TypeCourse;
+use App\BranchOffice;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTypeCourseRequest extends FormRequest
@@ -36,9 +36,9 @@ class StoreTypeCourseRequest extends FormRequest
         ];
     }
 
-    public function createTypeCourse()
+    public function createTypeCourse(BranchOffice $branchOffice)
     {
-        $type_course = TypeCourse::create($this->validated());
+        $type_course = $branchOffice->typecourses()->create($this->validated());
         return "Tipo de curso {$type_course->name} creado con éxito.";
     }
 }

@@ -39,7 +39,7 @@
                             <li><a class="nav-link" href="{{ route('home') }}">Home</a></li>
 
                             @if(auth()->user()->isAn(\App\User::ROLE_ADMIN))
-                                <li class="nav-item"><a class="nav-link" href="{{ route('institutes.index') }}">Institutos</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{{ route('branchOffices.index') }}">Sucursales</a></li>
                             @endif
 
                             @can('view', \App\User::class)

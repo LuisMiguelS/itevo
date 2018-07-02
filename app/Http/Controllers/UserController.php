@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\{Institute, User};
+use App\{BranchOffice, User};
 use Silber\Bouncer\Database\Role;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -47,14 +47,14 @@ class UserController extends Controller
     public function create()
     {
         $this->authorize('create', User::class);
-        $institutes = Institute::select('id','name')->get();
+        $branchOffices = BranchOffice::select('id','name')->get();
         $roles = Role::unless(auth()->user()->isAdmin(), function ($query) {
             $query->where([
                 ['name', '<>', User::ROLE_ADMIN],
                 ['name', '<>', User::ROLE_TENANT_ADMIN]
             ]);
         })->get();
-        return view('user.create', compact('institutes', 'roles'));
+        return view('user.create', compact('branchOffices', 'roles'));
     }
 
     /**
@@ -83,14 +83,14 @@ class UserController extends Controller
     {
         $this->authorize('update', User::class);
         $this->canAlterTo($user);
-        $institutes = Institute::all();
+        $branchOffices = BranchOffice::all();
         $roles = Role::unless(auth()->user()->isAdmin(), function ($query) {
             $query->where([
                 ['name', '<>', User::ROLE_ADMIN],
                 ['name', '<>', User::ROLE_TENANT_ADMIN]
             ]);
         })->get();
-        return view('user.edit', compact('user', 'institutes', 'roles'));
+        return view('user.edit', compact('user', 'branchOffices', 'roles'));
     }
 
     /**

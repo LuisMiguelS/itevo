@@ -24,8 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('promotion:setup')
-             ->dailyAt('00:00'); // Correra el comando todos los dias as las 12:00 AM
+        // Your Task
     }
 
     /**

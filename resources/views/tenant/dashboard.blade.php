@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('dashboard', $institute) }}
+    {{ Breadcrumbs::render('dashboard', $branchOffice) }}
 @endsection
 
 @section('content')
@@ -14,7 +14,7 @@
 			<div class="num" data-start="0" data-end="83" data-postfix="" data-duration="1500" data-delay="0">0</div>
 
 			<h3>Estudiantes</h3>
-			<p>{{ $institute->name }}</p>
+			<p>{{ $branchOffice->name }}</p>
 		</div>
 	</div>
 

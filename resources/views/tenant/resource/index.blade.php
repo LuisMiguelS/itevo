@@ -3,7 +3,7 @@
 @section('title', 'Todos los recursos')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('resource', $institute) }}
+    {{ Breadcrumbs::render('resource', $branchOffice) }}
 @endsection
 
 @section('content')
@@ -12,7 +12,7 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <div class="panel-title">
-                        <a class="btn btn-primary btn-sm" style="color: #fff;" href="{{ route('tenant.resources.create', $institute) }}">Crear Recurso</a>
+                        <a class="btn btn-primary btn-sm" style="color: #fff;" href="{{ route('tenant.resources.create', $branchOffice) }}">Crear Recurso</a>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -32,18 +32,18 @@
                                     <td>{{ $resource->name }}</td>
                                     <td>
                                         @can('tenant-update', $resource)
-                                            <a class="btn btn-info btn-xs" href="{{ route('tenant.resources.edit', ['institute' => $institute, 'resource' => $resource]) }}">
+                                            <a class="btn btn-info btn-xs" href="{{ $resource->url->edit }}">
                                                 <i class="fa fa-pencil-alt"></i>
                                             </a>
                                         @endcan
 
                                         @can('tenant-delete', $resource)
-                                            <a class="btn btn-danger btn-xs" href="{{ route('tenant.resources.destroy', ['institute' => $institute, 'resource' => $resource]) }}"
+                                            <a class="btn btn-danger btn-xs" href="{{ $resource->url->delete }}"
                                                onclick="event.preventDefault();
                                                    document.getElementById('resource-delete-{{$resource->id}}').submit();">
                                                 <i class="fa fa-trash"></i>
                                             </a>
-                                            <form id="resource-delete-{{$resource->id}}" action="{{ route('tenant.resources.destroy',  ['institute' => $institute, 'resource' => $resource]) }}" method="POST" style="display: none;">
+                                            <form id="resource-delete-{{$resource->id}}" action="{{ $resource->url->delete }}" method="POST" style="display: none;">
                                                 @csrf
                                                 @method('delete')
                                             </form>

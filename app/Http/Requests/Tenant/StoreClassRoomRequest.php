@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Tenant;
 
-use App\Institute;
+use App\BranchOffice;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreClassRoomRequest extends FormRequest
@@ -12,7 +12,7 @@ class StoreClassRoomRequest extends FormRequest
         return true;
     }
 
-    public function rules ()
+    public function rules()
     {
         return [
             'name' => 'required|min:1|max:50',
@@ -20,7 +20,7 @@ class StoreClassRoomRequest extends FormRequest
         ];
     }
 
-    public function attributes ()
+    public function attributes()
     {
         return [
             'name' => 'nombre del aula',
@@ -28,9 +28,9 @@ class StoreClassRoomRequest extends FormRequest
         ];
     }
 
-    public function createClassRoom(Institute $institute)
+    public function createClassRoom(BranchOffice $branchOffice)
     {
-        $classroon = $institute->classrooms()->create($this->validated());
+        $classroon = $branchOffice->classrooms()->create($this->validated());
         return "Aula {$classroon->name} creado con éxito.";
     }
 }

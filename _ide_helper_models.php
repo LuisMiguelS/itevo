@@ -42,7 +42,7 @@ namespace App{
  * App\Promotion
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Course[] $courses
- * @property-read \App\institute $institute
+ * @property-read \App\BranchOffice $institute
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Student[] $students
  */
 	class Promotion extends \Eloquent {}
@@ -90,7 +90,7 @@ namespace App{
 /**
  * App\User
  *
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\institute[] $institutes
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\BranchOffice[] $institutes
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  */
 	class User extends \Eloquent {}

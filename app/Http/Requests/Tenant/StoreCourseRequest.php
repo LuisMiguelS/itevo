@@ -2,17 +2,17 @@
 
 namespace App\Http\Requests\Tenant;
 
-use App\Course;
+use App\BranchOffice;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCourseRequest extends FormRequest
 {
-    public function authorize ()
+    public function authorize()
     {
         return true;
     }
 
-    public function rules ()
+    public function rules()
     {
         return [
             'name' => 'required|min:2|max:255',
@@ -20,7 +20,7 @@ class StoreCourseRequest extends FormRequest
         ];
     }
 
-    public function attributes ()
+    public function attributes()
     {
         return [
             'name' => 'nombre',
@@ -28,9 +28,9 @@ class StoreCourseRequest extends FormRequest
         ];
     }
 
-    public function createCourse ()
+    public function createCourse(BranchOffice $branchOffice)
     {
-        $course = Course::create($this->validated());
+        $course = $branchOffice->courses()->create($this->validated());
         return "Curso {$course->name} creado con éxito.";
     }
 }

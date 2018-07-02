@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Tenant;
 
-use App\{Institute, Promotion};
+use App\{BranchOffice, Promotion};
 use App\Http\Controllers\Controller;
 
 class PromotionController extends Controller
@@ -16,14 +16,14 @@ class PromotionController extends Controller
     }
 
     /**
-     * @param \App\Institute $institute
+     * @param \App\BranchOffice $branchOffice
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index(Institute $institute)
+    public function index(BranchOffice $branchOffice)
     {
         $this->authorize('tenant-view', Promotion::class);
-        $promotions = $institute->promotions()->paginate();
-        return view('tenant.promotion.index', compact('institute', 'promotions'));
+        $promotions = $branchOffice->promotions()->paginate();
+        return view('tenant.promotion.index', compact('branchOffice', 'promotions'));
     }
 }

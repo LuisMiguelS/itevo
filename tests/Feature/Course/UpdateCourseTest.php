@@ -3,7 +3,7 @@
 namespace Tests\Feature\Course;
 
 use Tests\TestCase;
-use App\{Institute, User, Course};
+use App\{BranchOffice, User, Course};
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -21,7 +21,7 @@ class UpdateCourseTest extends TestCase
 
     private $user;
 
-    private $institute;
+    private $branchOffice;
 
     protected function setUp()
     {
@@ -29,7 +29,7 @@ class UpdateCourseTest extends TestCase
         $this->admin = $this->createAdmin();
         $this->course = factory(Course::class)->create();
         $this->user = factory(User::class)->create();
-        $this->institute = factory(Institute::class)->create();
+        $this->branchOffice = factory(BranchOffice::class)->create();
     }
 
 
@@ -37,10 +37,7 @@ class UpdateCourseTest extends TestCase
     function an_admin_can_update_course()
     {
         $this->actingAs($this->admin)
-            ->put(route('tenant.courses.update', [
-                'institute' => $this->institute,
-                'courses' => $this->course
-            ]), $this->withData([
+            ->put($this->course->url->update, $this->withData([
                 'type_course_id' => $this->course->type_course_id
             ]))
             ->assertStatus(Response::HTTP_FOUND)
@@ -52,14 +49,31 @@ class UpdateCourseTest extends TestCase
     }
 
     /** @test */
+    function an_admin_cannot_update_course_from_another_branch_office()
+    {
+        $this->withExceptionHandling();
+
+        $this->actingAs($this->admin)
+            ->put(route('tenant.courses.update', [
+                'branchOffice' => $this->branchOffice,
+                'course' => $this->course
+            ]), $this->withData([
+                'type_course_id' => $this->course->type_course_id
+            ]))
+            ->assertStatus(Response::HTTP_NOT_FOUND);
+
+        $this->assertDatabaseHas('courses', [
+            'id' => $this->course->id,
+            'name' => $this->course->name,
+        ]);
+    }
+
+    /** @test */
     function an_guest_cannot_update_course()
     {
         $this->withExceptionHandling();
 
-        $this->put(route('tenant.courses.update', [
-            'institute' => $this->institute,
-            'courses' => $this->course
-        ]), $this->withData([
+        $this->put($this->course->url->update, $this->withData([
             'type_course_id' => $this->course->type_course_id
         ]))
             ->assertStatus(Response::HTTP_FOUND)
@@ -76,10 +90,7 @@ class UpdateCourseTest extends TestCase
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
-            ->put(route('tenant.courses.update', [
-                'institute' => $this->institute,
-                'courses' => $this->course
-            ]), $this->withData([
+            ->put($this->course->url->update, $this->withData([
                 'type_course_id' => $this->course->type_course_id
             ]))
             ->assertStatus(Response::HTTP_FORBIDDEN);
@@ -95,10 +106,7 @@ class UpdateCourseTest extends TestCase
         $this->handleValidationExceptions();
 
         $this->actingAs($this->admin)
-            ->put(route('tenant.courses.update', [
-                'institute' => $this->institute,
-                'courses' => $this->course
-            ]), [])
+            ->put($this->course->url->update, [])
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasErrors(['name', 'type_course_id']);
 

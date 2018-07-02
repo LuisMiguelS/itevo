@@ -28,8 +28,8 @@ class StoreUserRequest extends FormRequest
             'name' => 'required|min:5|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-            'institutes' => 'required|array',
-            'role' => 'nullable|integer'
+            'branchOffices' => 'required|array',
+            'role' => 'nullable|String'
         ];
     }
 
@@ -39,7 +39,7 @@ class StoreUserRequest extends FormRequest
             'name' => 'nombre',
             'email' => 'correo electrónico',
             'password' => 'contraseña',
-            'institutes' => 'instituto',
+            'branchOffices' => 'sucursal',
             'role' => 'rol'
         ];
     }
@@ -50,8 +50,8 @@ class StoreUserRequest extends FormRequest
         if (isset($this->validated()['role'])){
             $user->assign($this->validated()['role']);
         }
-        if (isset($this->validated()['institutes'])){
-            $user->institutes()->attach($this->validated()['institutes']);
+        if (isset($this->validated()['branchOffices'])){
+            $user->branchOffices()->attach($this->validated()['branchOffices']);
         }
         return "Usuario {$user->name} creado con éxito.";
     }

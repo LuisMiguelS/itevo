@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Presenters\TypeCourse\UrlPresenter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -10,8 +11,14 @@ class TypeCourse extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name'
+        'name', 'branch_office_id'
     ];
+
+    protected $hidden = [
+        'url'
+    ];
+
+    protected $appends = ['url'];
 
     public function setNameAttribute($name)
     {
@@ -23,8 +30,23 @@ class TypeCourse extends Model
         return ucwords($name);
     }
 
+    public function getUrlAttribute()
+    {
+        return new UrlPresenter($this->branchOffice, $this);
+    }
+
     public function courses()
     {
         return $this->hasMany(Course::class);
+    }
+
+    public function branchOffice()
+    {
+        return $this->belongsTo(BranchOffice::class);
+    }
+
+    public function isRegisteredIn(BranchOffice $branchOffice)
+    {
+        return $this->branchOffice()->where('id', $branchOffice->id)->count() > 0;
     }
 }

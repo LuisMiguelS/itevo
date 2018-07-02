@@ -27,7 +27,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => 'required|min:5|max:255',
             'email' => 'required|email|max:255|unique:users,email,'. $this->user->id,
-            'institutes' => 'required|array',
+            'branchOffices' => 'required|array',
             'role' => 'nullable|String'
         ];
     }
@@ -37,7 +37,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => 'nombre',
             'email' => 'correo electrónico',
-            'institutes' => 'instituto',
+            'branchOffices' => 'sucursal',
             'role' => 'rol'
         ];
     }
@@ -51,9 +51,9 @@ class UpdateUserRequest extends FormRequest
         if (isset($this->validated()['role'])){
             $user->assign($this->validated()['role']);
         }
-        $user->institutes()->detach();
-        if (isset($this->validated()['institutes'])){
-            $user->institutes()->attach($this->validated()['institutes']);
+        $user->branchOffices()->detach();
+        if (isset($this->validated()['branchOffices'])){
+            $user->branchOffices()->attach($this->validated()['branchOffices']);
         }
         return "Usuario {$user->name} actualizado con exito.";
     }

@@ -8,15 +8,15 @@
                 <div class="card shadow-sm border-0">
                     <div class="card-header border-0">
                         <span class="font-weight-bold">Editar</span>
-                        {{ $institute->name }}</div>
+                        {{ $branchOffice->name }}</div>
                     <div class="card-body">
 
-                        <form action="{{ route('institutes.update', $institute) }}" method="POST">
+                        <form action="{{ $branchOffice->url->update }}" method="POST">
                             @csrf
                             @method('PUT')
 
                             <div class="form-group row">
-                                <label for="name" class="col-sm-4 col-form-label text-md-right">Nombre del instituto</label>
+                                <label for="name" class="col-sm-4 col-form-label text-md-right">Nombre</label>
 
                                 <div class="col-md-6">
                                     <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name', $institute->name) }}" required autofocus>

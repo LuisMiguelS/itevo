@@ -16,10 +16,13 @@ class CreateCoursesTable extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->unsignedInteger('branch_office_id');
             $table->unsignedInteger('type_course_id');
+            $table->unique(['name', 'branch_office_id', 'type_course_id']);
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreign('branch_office_id')->references('id')->on('branch_offices');
             $table->foreign('type_course_id')->references('id')->on('type_courses');
         });
     }

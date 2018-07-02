@@ -5,9 +5,10 @@ namespace App;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
+use App\Presenters\BranchOffice\UrlPresenter;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Institute extends Model
+class BranchOffice extends Model
 {
     use SoftDeletes, HasSlug;
 
@@ -15,17 +16,28 @@ class Institute extends Model
         'name', 'slug'
     ];
 
+    protected $hidden = [
+        'url'
+    ];
 
+    protected $appends = ['url'];
+
+    /**
+     * @param $name
+     */
     public function setNameAttribute($name)
     {
         $this->attributes['name'] = strtolower($name);
     }
 
+    /**
+     * @param $name
+     * @return string
+     */
     public function getNameAttribute($name)
     {
         return ucwords($name);
     }
-
 
     /**
      * Get the route key name for Laravel.
@@ -47,9 +59,14 @@ class Institute extends Model
             ->saveSlugsTo('slug');
     }
 
+    public function getUrlAttribute()
+    {
+        return new UrlPresenter($this);
+    }
+
     public function users()
     {
-        return $this->belongsToMany(User::class, 'institute_user')->withPivot('institute_id', 'user_id');
+        return $this->belongsToMany(User::class, 'branch_office_user')->withPivot('branch_office_id', 'user_id');
     }
 
     public function promotions()
@@ -62,15 +79,23 @@ class Institute extends Model
         return $this->hasMany(Classroom::class);
     }
 
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
+    }
+
+    public function typeCourses()
+    {
+        return $this->hasMany(TypeCourse::class);
+    }
+
     public function teachers()
     {
         return $this->hasMany(Teacher::class);
     }
 
-    public function scopeOnlyRelations($query, Institute $institute = null)
+    public function resources()
     {
-        return $query->unless(auth()->user()->isAdmin(), function ($q) use($institute){
-            $q->where('id', $institute->id);
-        })->orderBy('id','DESC');
+        return $this->hasMany(Resource::class);
     }
 }

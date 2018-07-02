@@ -30,6 +30,7 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+
     const ROLE_ADMIN = 'admin';
     const ROLE_TENANT_ADMIN = 'tenant admin';
 
@@ -53,13 +54,13 @@ class User extends Authenticatable
         return $this->isAn(User::ROLE_ADMIN);
     }
 
-    public function isAssignedTo(Institute $institute): bool
+    public function isAssignedTo(BranchOffice $branchOffice): bool
     {
-        return $this->institutes()->where('institute_id', $institute->id)->count() > 0;
+        return $this->branchOffices()->where('branch_office_id', $branchOffice->id)->count() > 0;
     }
 
-    public function institutes()
+    public function branchOffices()
     {
-        return $this->belongsToMany(Institute::class, 'institute_user')->withPivot('institute_id', 'user_id');
+        return $this->belongsToMany(BranchOffice::class, 'branch_office_user')->withPivot('branch_office_id', 'user_id');
     }
 }

@@ -3,7 +3,7 @@
 @section('title', 'Editar tipo de recurso '. $typeCourse->name)
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('typecourse-edit', $institute, $typeCourse) }}
+    {{ Breadcrumbs::render('typeCourse-edit', $branchOffice, $typeCourse) }}
 @endsection
 
 @section('content')
@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <form action="{{ route('tenant.typecourses.update', ['institute' => $institute, 'typeCourse' => $typeCourse]) }}" method="POST">
+                    <form action="{{ $typeCourse->url->update }}" method="POST">
                         @csrf
                         @method('PUT')
 

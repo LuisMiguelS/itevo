@@ -3,7 +3,7 @@
 namespace Tests\Feature\Teacher;
 
 use Tests\TestCase;
-use App\{Institute, Teacher, User};
+use App\{BranchOffice, Teacher, User};
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -36,10 +36,7 @@ class UpdateTeacherTest extends TestCase
     function an_admins_can_update_teachers()
     {
         $this->actingAs($this->admin)
-            ->put(route('tenant.teachers.update', [
-                'institute' => $this->teacher->institute,
-                'teacher' =>  $this->teacher
-            ]), $this->withData())
+            ->put($this->teacher->url->update, $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Profesor {$this->defaultData['name']} {$this->defaultData['last_name']} actualizado correctamente."]);
 
@@ -47,43 +44,13 @@ class UpdateTeacherTest extends TestCase
     }
 
     /** @test */
-    function a_guest_cannot_update_teachers()
-    {
-        $this->withExceptionHandling();
-
-        $this->put(route('tenant.teachers.update', [
-            'institute' => $this->teacher->institute,
-            'teacher' =>  $this->teacher
-            ]), $this->withData())
-            ->assertStatus(Response::HTTP_FOUND)
-            ->assertRedirect('/login');
-
-        $this->assertDatabaseMissing('teachers', $this->withData());
-    }
-
-    /** @test */
-    function an_unauthorized_user_cannot_update_teachers()
-    {
-        $this->withExceptionHandling();
-
-        $this->actingAs($this->user)
-            ->put(route('tenant.teachers.update', [
-                'institute' => $this->teacher->institute,
-                'teacher' =>  $this->teacher
-            ]), $this->withData())
-            ->assertStatus(Response::HTTP_FORBIDDEN);
-
-        $this->assertDatabaseMissing('teachers', $this->withData());
-    }
-
-    /** @test */
-    function an_institute_cannot_update_teacher_from_another_institute()
+    function an_admin_cannot_update_teacher_from_another_branch_office()
     {
         $this->withExceptionHandling();
 
         $this->actingAs($this->admin)
             ->put(route('tenant.teachers.destroy', [
-                'institute' => factory(Institute::class)->create(),
+                'branchOffice' => factory(BranchOffice::class)->create(),
                 'teacher' => $this->teacher
             ]),  $this->withData())
             ->assertStatus(Response::HTTP_NOT_FOUND);
@@ -96,15 +63,36 @@ class UpdateTeacherTest extends TestCase
     }
 
     /** @test */
+    function a_guest_cannot_update_teachers()
+    {
+        $this->withExceptionHandling();
+
+        $this->put($this->teacher->url->update, $this->withData())
+            ->assertStatus(Response::HTTP_FOUND)
+            ->assertRedirect('/login');
+
+        $this->assertDatabaseMissing('teachers', $this->withData());
+    }
+
+    /** @test */
+    function an_unauthorized_user_cannot_update_teachers()
+    {
+        $this->withExceptionHandling();
+
+        $this->actingAs($this->user)
+            ->put($this->teacher->url->update, $this->withData())
+            ->assertStatus(Response::HTTP_FORBIDDEN);
+
+        $this->assertDatabaseMissing('teachers', $this->withData());
+    }
+
+    /** @test */
     function it_can_see_validations_errors()
     {
         $this->withExceptionHandling();
 
         $this->actingAs($this->admin)
-            ->put(route('tenant.teachers.update', [
-                'institute' => $this->teacher->institute,
-                'teacher' =>  $this->teacher
-            ]), [])
+            ->put($this->teacher->url->update, [])
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasErrors(['name', 'last_name', 'id_card', 'phone']);
 
@@ -119,10 +107,7 @@ class UpdateTeacherTest extends TestCase
         $teacher = factory(Teacher::class)->create();
 
         $this->actingAs($this->admin)
-            ->put(route('tenant.teachers.update', [
-                'institute' => $this->teacher->institute,
-                'teacher' =>  $this->teacher
-            ]), $this->withData([
+            ->put($this->teacher->url->update, $this->withData([
                 'id_card' => $teacher->id_card
             ]))
             ->assertStatus(Response::HTTP_FOUND)
@@ -141,10 +126,7 @@ class UpdateTeacherTest extends TestCase
         $teacher = factory(Teacher::class)->create();
 
         $this->actingAs($this->admin)
-            ->put(route('tenant.teachers.update', [
-                'institute' => $this->teacher->institute,
-                'teacher' =>  $this->teacher
-            ]), $this->withData([
+            ->put($this->teacher->url->update, $this->withData([
                 'phone' => $teacher->phone
             ]))
             ->assertStatus(Response::HTTP_FOUND)

@@ -3,7 +3,7 @@
 @section('title', 'Todos los profesor')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('teacher', $institute) }}
+    {{ Breadcrumbs::render('teacher', $branchOffice) }}
 @endsection
 
 @section('content')
@@ -12,7 +12,7 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <div class="panel-title">
-                        <a class="btn btn-primary btn-sm" style="color: #fff;" href="{{ route('tenant.teachers.create', $institute) }}">Crear Profesor</a>
+                        <a class="btn btn-primary btn-sm" style="color: #fff;" href="{{ route('tenant.teachers.create', $branchOffice) }}">Crear Profesor</a>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -36,18 +36,18 @@
                                     <td>{{ $teacher->phone }}</td>
                                     <td>
                                         @can('tenant-update', $teacher)
-                                            <a class="btn btn-info btn-xs" href="{{ route('tenant.teachers.edit', ['institute' => $institute, 'teachers' => $teacher]) }}">
+                                            <a class="btn btn-info btn-xs" href="{{ $teacher->url->edit }}">
                                                 <i class="fa fa-pencil-alt"></i>
                                             </a>
                                         @endcan
 
                                         @can('tenant-delete', $teacher)
-                                            <a class="btn btn-danger btn-xs" href="{{ route('tenant.teachers.destroy', ['institute' => $institute, 'teachers' => $teacher]) }}"
+                                            <a class="btn btn-danger btn-xs" href="{{ $teacher->url->delete }}"
                                                onclick="event.preventDefault();
                                                    document.getElementById('teachers-delete-{{$teacher->id}}').submit();">
                                                 <i class="fa fa-trash"></i>
                                             </a>
-                                            <form id="teachers-delete-{{$teacher->id}}" action="{{ route('tenant.teachers.destroy',  ['institute' => $institute, 'teachers' => $teacher]) }}" method="POST" style="display: none;">
+                                            <form id="teachers-delete-{{$teacher->id}}" action="{{ $teacher->url->delete }}" method="POST" style="display: none;">
                                                 @csrf
                                                 @method('delete')
                                             </form>

@@ -65,27 +65,27 @@
                             <div class="form-group row">
                                 <label for="abilities" class="col-sm-4 col-form-label text-md-right">Institutos</label>
                                 <div class="col-md-6">
-                                    @if($institutes->count())
-                                        @foreach($institutes as $institute)
+                                    @if($branchOffices->count())
+                                        @foreach($branchOffices as $branchOffice)
                                             <div class="custom-control custom-checkbox custom-control-inline">
-                                                <input name="institutes[{{ $institute->id }}]"
-                                                       class="custom-control-input {{ $errors->has('institutes') ? ' is-invalid' : '' }}"
+                                                <input name="branchOffices[{{ $branchOffice->id }}]"
+                                                       class="custom-control-input {{ $errors->has('branchOffices') ? ' is-invalid' : '' }}"
                                                        type="checkbox"
-                                                       id="institutes{{ $institute->id }}"
-                                                       value="{{ $institute->id }}"
-                                                    {{ old("institutes.{$institute->id}") || in_array($institute->id, $user->institutes()->get()->pluck('pivot')->pluck('institute_id', 'institute_id')->toArray()) ? 'checked' : '' }}>
-                                                <label class="custom-control-label" for="institutes{{ $institute->id }}">{{ $institute->name }}</label>
+                                                       id="branchOffices{{ $branchOffice->id }}"
+                                                       value="{{ $branchOffice->id }}"
+                                                    {{ old("branchOffices.{$branchOffice->id}") || in_array($branchOffice->id, $user->branchOffices()->get()->pluck('pivot')->pluck('branch_office_id', 'branch_office_id')->toArray()) ? 'checked' : '' }}>
+                                                <label class="custom-control-label" for="branchOffices{{ $branchOffice->id }}">{{ $branchOffice->name }}</label>
                                             </div>
                                         @endforeach
-                                        @if ($errors->has('institutes'))
+                                        @if ($errors->has('branchOffices'))
                                             <br>
                                             <small style="color: #dc3545; font-size: 12px !important;">
-                                                <strong>{{ $errors->first('institutes') }}</strong>
+                                                <strong>{{ $errors->first('branchOffices') }}</strong>
                                             </small>
                                         @endif
                                         @else
                                         <div class="alert alert-primary" role="alert">
-                                            No hay institutos registrados
+                                            No hay sucursales registradas
                                         </div>
                                     @endif
                                 </div>

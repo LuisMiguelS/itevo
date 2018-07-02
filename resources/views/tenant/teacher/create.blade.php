@@ -3,7 +3,7 @@
 @section('title', 'Crear profesor')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('teacher-create', $institute) }}
+    {{ Breadcrumbs::render('teacher-create', $branchOffice) }}
 @endsection
 
 @section('content')
@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="panel-body">
-                    <form action="{{ route('tenant.teachers.store', $institute) }}" method="POST">
+                    <form action="{{ route('tenant.teachers.store', $branchOffice) }}" method="POST">
                         @csrf
 
                         <div class="form-group row">

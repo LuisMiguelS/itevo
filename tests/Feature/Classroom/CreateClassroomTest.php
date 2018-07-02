@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Classroom;
 
-use App\{Institute, User};
 use Tests\TestCase;
+use App\{BranchOffice, User};
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -18,25 +18,25 @@ class CreateClassroomTest extends TestCase
 
     private $admin;
 
-    private $institute;
+    private $branchOffice;
 
     protected function setUp()
     {
         parent::setUp();
         $this->admin = $this->createAdmin();
-        $this->institute = factory(Institute::class)->create();
+        $this->branchOffice = factory(BranchOffice::class)->create();
     }
 
     /** @test */
     function an_admin_can_create_classrooms()
     {
         $this->actingAs($this->admin)
-            ->post(route('tenant.classrooms.store', $this->institute), $this->withData())
+            ->post(route('tenant.classrooms.store', $this->branchOffice), $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Aula {$this->defaultData['name']} creado con éxito."]);
 
         $this->assertDatabaseHas('classrooms', $this->withData([
-            'institute_id' => $this->institute->id
+            'branch_office_id' => $this->branchOffice->id
         ]));
     }
 
@@ -45,24 +45,24 @@ class CreateClassroomTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $this->post(route('tenant.classrooms.store', $this->institute), $this->withData())
+        $this->post(route('tenant.classrooms.store', $this->branchOffice), $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
         $this->assertDatabaseMissing('classrooms', $this->withData([
-            'institute_id' => $this->institute->id
+            'branch_office_id' => $this->branchOffice->id
         ]));
     }
 
     /** @test */
-    function an_unauthorized_user_cannot_create_institute()
+    function an_unauthorized_user_cannot_create_branchOffice()
     {
         $this->withExceptionHandling();
 
         $user = factory(User::class)->create();
 
         $this->actingAs($user)
-            ->post(route('tenant.classrooms.store', $this->institute), $this->withData())
+            ->post(route('tenant.classrooms.store', $this->branchOffice), $this->withData())
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
         $this->assertDatabaseEmpty('classrooms');
@@ -74,7 +74,7 @@ class CreateClassroomTest extends TestCase
         $this->handleValidationExceptions();
 
         $this->actingAs($this->admin)
-            ->post(route('tenant.classrooms.store', $this->institute), [])
+            ->post(route('tenant.classrooms.store', $this->branchOffice), [])
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasErrors(['name', 'building']);
 

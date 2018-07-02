@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Institute;
+use App\BranchOffice;
 use Symfony\Component\HttpFoundation\Response;
 
 class TenantAccessMiddleware
@@ -28,18 +28,18 @@ class TenantAccessMiddleware
      */
     private function thisUserIsAuthorized($request): bool
     {
-        return auth()->user()->isAssignedTo($this->getInstaceInstitute($request->institute)) || auth()->user()->isAdmin();
+        return auth()->user()->isAssignedTo($this->getInstaceBranchOffice($request->branchOffice)) || auth()->user()->isAdmin();
     }
 
     /**
-     * @param $institute
+     * @param $branchOffice
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
-    private function getInstaceInstitute($institute)
+    private function getInstaceBranchOffice($branchOffice)
     {
-        if ($institute instanceof Institute) {
-            return $institute;
+        if ($branchOffice instanceof BranchOffice) {
+            return $branchOffice;
         }
-        return Institute::findOrFail($institute);
+        return BranchOffice::findOrFail($branchOffice);
     }
 }

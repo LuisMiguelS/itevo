@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateInstituteUserTable extends Migration
+class CreateBranchOfficeUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateInstituteUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('institute_user', function (Blueprint $table) {
-            $table->unsignedInteger('institute_id');
+        Schema::create('branch_office_user', function (Blueprint $table) {
+            $table->unsignedInteger('branch_office_id');
             $table->unsignedInteger('user_id');
 
-            $table->foreign('institute_id')->references('id')->on('institutes');
+            $table->foreign('branch_office_id')->references('id')->on('branch_offices');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }
@@ -29,6 +29,6 @@ class CreateInstituteUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('institute_user');
+        Schema::dropIfExists('branch_office_user');
     }
 }

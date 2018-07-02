@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Tenant;
 
-use App\{Institute, Teacher};
+use App\{BranchOffice, Teacher};
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Tenant\StoreTeacherRequest;
 use App\Http\Requests\Tenant\UpdateTeacherRequest;
@@ -21,94 +21,95 @@ class TeacherController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param \App\Institute $institute
+     * @param \App\BranchOffice $branchOffice
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index(Institute $institute)
+    public function index(BranchOffice $branchOffice)
     {
         $this->authorize('tenant-view', Teacher::class);
-        $teachers = $institute->teachers()->paginate();
-        return view('tenant.teacher.index', compact('institute','teachers'));
+        $teachers = $branchOffice->teachers()->paginate();
+        return view('tenant.teacher.index', compact('branchOffice','teachers'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @param \App\Institute $institute
+     * @param \App\BranchOffice $branchOffice
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create(Institute $institute)
+    public function create(BranchOffice $branchOffice)
     {
         $this->authorize('tenant-create', Teacher::class);
-        return view('tenant.teacher.create', compact('institute'));
+        return view('tenant.teacher.create', compact('branchOffice'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\Tenant\StoreTeacherRequest $request
-     * @param \App\Institute $institute
+     * @param \App\BranchOffice $branchOffice
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function store(StoreTeacherRequest $request, Institute $institute)
+    public function store(StoreTeacherRequest $request, BranchOffice $branchOffice)
     {
         $this->authorize('tenant-create', Teacher::class);
         return redirect()
-            ->route('tenant.teachers.index', $institute)
-            ->with(['flash_success' => $request->createTeacher($institute)]);
+            ->route('tenant.teachers.index', $branchOffice)
+            ->with(['flash_success' => $request->createTeacher($branchOffice)]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Institute $institute
+     * @param \App\BranchOffice $branchOffice
      * @param \App\Teacher $teacher
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function edit(Institute $institute, Teacher $teacher)
+    public function edit(BranchOffice $branchOffice, Teacher $teacher)
     {
         $this->authorize('tenant-update', $teacher);
-        abort_unless($teacher->isRegisteredIn($institute), Response::HTTP_NOT_FOUND);
-        return view('tenant.teacher.edit', compact('institute', 'teacher'));
+        abort_unless($teacher->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
+        return view('tenant.teacher.edit', compact('branchOffice', 'teacher'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param \App\Http\Requests\Tenant\UpdateTeacherRequest $request
-     * @param \App\Institute $institute
+     * @param \App\BranchOffice $branchOffice
      * @param \App\Teacher $teacher
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(UpdateTeacherRequest $request, Institute $institute, Teacher $teacher)
+    public function update(UpdateTeacherRequest $request, BranchOffice $branchOffice, Teacher $teacher)
     {
         $this->authorize('tenant-update', $teacher);
-        abort_unless($teacher->isRegisteredIn($institute), Response::HTTP_NOT_FOUND);
+        abort_unless($teacher->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
         return redirect()
-            ->route('tenant.teachers.index', $institute)
+            ->route('tenant.teachers.index', $branchOffice)
             ->with(['flash_success' => $request->updateTeacher($teacher)]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Institute $institute
+     * @param \App\BranchOffice $branchOffice
      * @param \App\Teacher $teacher
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Exception
      */
-    public function destroy(Institute $institute, Teacher $teacher)
+    public function destroy(BranchOffice $branchOffice, Teacher $teacher)
     {
         $this->authorize('tenant-delete', $teacher);
-        abort_unless($teacher->isRegisteredIn($institute), Response::HTTP_NOT_FOUND);
+        abort_unless($teacher->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
         $teacher->delete();
         return redirect()
-            ->route('tenant.teachers.index', $institute)
+            ->route('tenant.teachers.index', $branchOffice)
             ->with(['flash_success' => "Profesor {$teacher->full_name} eliminado con exito."]);
     }
 }

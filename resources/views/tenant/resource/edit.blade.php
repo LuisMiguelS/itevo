@@ -3,7 +3,7 @@
 @section('title', 'Editar recurso '. $resource->name)
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('resource-edit', $institute, $resource) }}
+    {{ Breadcrumbs::render('resource-edit', $branchOffice, $resource) }}
 @endsection
 
 @section('content')
@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <form action="{{ route('tenant.resources.update', ['institute' => $institute, 'resource' => $resource]) }}" method="POST">
+                    <form action="{{ $resource->url->update }}" method="POST">
                         @csrf
                         @method('PUT')
 

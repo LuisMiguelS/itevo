@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Tenant;
 
-use App\{Institute, Resource};
+use App\{BranchOffice, Resource};
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Tenant\StoreResourceRequest;
 use App\Http\Requests\Tenant\UpdateResourceRequest;
 
@@ -18,80 +19,85 @@ class ResourceController extends Controller
     }
 
     /**
-     * @param \App\Institute $institute
+     * @param \App\BranchOffice $branchOffice
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index(Institute $institute)
+    public function index(BranchOffice $branchOffice)
     {
         $this->authorize('tenant-view', Resource::class);
-        $resources = Resource::paginate();
-        return view('tenant.resource.index', compact('institute', 'resources'));
+        $resources = $branchOffice->resources()->paginate();
+        return view('tenant.resource.index', compact('branchOffice', 'resources'));
     }
 
     /**
-     * @param \App\Institute $institute
+     * @param \App\BranchOffice $branchOffice
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create(Institute $institute)
+    public function create(BranchOffice $branchOffice)
     {
         $this->authorize('tenant-create', Resource::class);
-        return view('tenant.resource.create', compact('institute'));
+        return view('tenant.resource.create', compact('branchOffice'));
     }
 
     /**
      * @param \App\Http\Requests\Tenant\StoreResourceRequest $request
-     * @param \App\Institute $institute
+     * @param \App\BranchOffice $branchOffice
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function store(StoreResourceRequest $request, Institute $institute)
+    public function store(StoreResourceRequest $request, BranchOffice $branchOffice)
     {
         $this->authorize('tenant-create', Resource::class);
         return redirect()
-            ->route('tenant.resources.index', $institute)
-            ->with(['flash_success' => $request->createResource()]);
+            ->route('tenant.resources.index', $branchOffice)
+            ->with(['flash_success' => $request->createResource($branchOffice)]);
     }
 
     /**
-     * @param \App\Institute $institute
+     * @param \App\BranchOffice $branchOffice
      * @param \App\Resource $resource
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function edit(Institute $institute, Resource $resource)
+    public function edit(BranchOffice $branchOffice, Resource $resource)
     {
         $this->authorize('tenant-update', $resource);
-        return view('tenant.resource.edit', compact('institute', 'resource'));
+        abort_unless($resource->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
+        return view('tenant.resource.edit', compact('branchOffice', 'resource'));
     }
 
     /**
      * @param \App\Http\Requests\Tenant\UpdateResourceRequest $request
-     * @param \App\Institute $institute
+     * @param \App\BranchOffice $branchOffice
      * @param \App\Resource $resource
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(UpdateResourceRequest $request, Institute $institute, Resource $resource)
+    public function update(UpdateResourceRequest $request, BranchOffice $branchOffice, Resource $resource)
     {
         $this->authorize('tenant-update', $resource);
+        abort_unless($resource->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
         return redirect()
-            ->route('tenant.resources.index', $institute)
+            ->route('tenant.resources.index', $branchOffice)
             ->with(['flash_success' => $request->updateResource($resource)]);
     }
 
     /**
+     * @param \App\BranchOffice $branchOffice
      * @param \App\Resource $resource
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Exception
      */
-    public function destroy(Institute $institute, Resource $resource)
+    public function destroy(BranchOffice $branchOffice, Resource $resource)
     {
         $this->authorize('tenant-delete', $resource);
+        abort_unless($resource->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
         $resource->delete();
         return redirect()
-            ->route('tenant.resources.index', $institute)
-            ->with(['flash_success' => "Curso {$resource->name} eliminado con éxito."]);
+            ->route('tenant.resources.index', $branchOffice)
+            ->with(['flash_success' => "Recurso {$resource->name} eliminado con éxito."]);
     }
 }

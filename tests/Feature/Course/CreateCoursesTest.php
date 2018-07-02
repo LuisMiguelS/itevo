@@ -3,9 +3,7 @@
 namespace Tests\Feature\Course;
 
 use Tests\TestCase;
-use App\{
-    Institute, TypeCourse, User
-};
+use App\{BranchOffice, TypeCourse, User};
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -23,7 +21,7 @@ class CreateCoursesTest extends TestCase
 
     private $user;
 
-    private $institute;
+    private $branchOffice;
 
     protected function setUp()
     {
@@ -31,14 +29,14 @@ class CreateCoursesTest extends TestCase
         $this->admin = $this->createAdmin();
         $this->user = factory(User::class)->create();
         $this->type_course = factory(TypeCourse::class)->create();
-        $this->institute = factory(Institute::class)->create();
+        $this->branchOffice = factory(BranchOffice::class)->create();
     }
 
     /** @test */
     function an_admin_can_create_course()
     {
        $this->actingAs($this->admin)
-           ->post(route('tenant.courses.store', $this->institute), $this->withData([
+           ->post(route('tenant.courses.store', $this->branchOffice), $this->withData([
                'type_course_id' => $this->type_course->id
            ]))
            ->assertStatus(Response::HTTP_FOUND)
@@ -52,7 +50,7 @@ class CreateCoursesTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $this->post(route('tenant.courses.store', $this->institute), $this->withData([
+        $this->post(route('tenant.courses.store', $this->branchOffice), $this->withData([
                 'type_course_id' => $this->type_course->id
             ]))
             ->assertStatus(Response::HTTP_FOUND)
@@ -62,12 +60,12 @@ class CreateCoursesTest extends TestCase
     }
 
     /** @test */
-    function an_unauthorized_user_cannot_create_institute()
+    function an_unauthorized_user_cannot_create_branch_office()
     {
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
-            ->post(route('tenant.courses.store', $this->institute), $this->withData([
+            ->post(route('tenant.courses.store', $this->branchOffice), $this->withData([
                 'type_course_id' => $this->type_course->id
             ]))
             ->assertStatus(Response::HTTP_FORBIDDEN);
@@ -81,7 +79,7 @@ class CreateCoursesTest extends TestCase
         $this->handleValidationExceptions();
 
         $this->actingAs($this->admin)
-            ->post(route('tenant.courses.store', $this->institute), [])
+            ->post(route('tenant.courses.store', $this->branchOffice), [])
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasErrors(['name', 'type_course_id']);
 

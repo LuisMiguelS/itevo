@@ -17,12 +17,12 @@ class CreateClassroomsTable extends Migration
             $table->increments('id');
             $table->string('name', 50);
             $table->string('building', 50);
-            $table->unsignedInteger('institute_id');
-            $table->unique(['institute_id', 'name', 'building']);
+            $table->unsignedInteger('branch_office_id');
+            $table->unique(['branch_office_id', 'name', 'building']);
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('institute_id')->references('id')->on('institutes');
+            $table->foreign('branch_office_id')->references('id')->on('branch_offices');
         });
     }
 

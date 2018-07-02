@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use Bouncer;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -16,6 +15,5 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
         $this->seed('BouncerSeeder');
         $this->withoutExceptionHandling();
-        Bouncer::refresh();
     }
 }

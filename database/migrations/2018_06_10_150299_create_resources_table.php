@@ -16,8 +16,12 @@ class CreateResourcesTable extends Migration
         Schema::create('resources', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50);
+            $table->unsignedInteger('branch_office_id');
+            $table->unique(['name', 'branch_office_id']);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('branch_office_id')->references('id')->on('branch_offices');
         });
     }
 

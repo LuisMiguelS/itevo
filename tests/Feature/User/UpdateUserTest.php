@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\User;
 
-use App\Institute;
+use App\BranchOffice;
 use App\User;
 use Tests\TestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,12 +21,14 @@ class UpdateUserTest extends TestCase
 
     private $admin;
 
+    private $branchOffice;
+
     protected function setUp()
     {
         parent::setUp();
         $this->user = factory(User::class)->create();
         $this->admin = $this->createAdmin();
-        $this->institute = factory(Institute::class)->create();
+        $this->branchOffice = factory(BranchOffice::class)->create();
     }
 
     /** @test */
@@ -34,7 +36,7 @@ class UpdateUserTest extends TestCase
     {
         $this->actingAs($this->admin)
             ->put(route('users.update', $this->user), $this->withData([
-                'institutes' => [$this->institute->id]
+                'branchOffices' => [$this->branchOffice->id]
             ]))
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Usuario Cristian Gomez actualizado con exito."]);
@@ -48,7 +50,7 @@ class UpdateUserTest extends TestCase
         $this->withExceptionHandling();
 
         $this->put(route('users.update', $this->user), $this->withData([
-            'institutes' => [$this->institute->id]
+            'branchOffices' => [$this->branchOffice->id]
         ]))
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
@@ -57,13 +59,13 @@ class UpdateUserTest extends TestCase
     }
 
     /** @test */
-    function an_unauthorized_user_cannot_update_institute()
+    function an_unauthorized_user_cannot_update_branchOffice()
     {
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
             ->put(route('users.update', $this->user), $this->withData([
-                'institutes' => [$this->institute->id]
+                'branchOffices' => [$this->branchOffice->id]
             ]))
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
@@ -92,7 +94,7 @@ class UpdateUserTest extends TestCase
 
         $this->actingAs($this->admin)
             ->put(route('users.update', $this->user), $this->withData([
-                'institutes' => [$this->institute->id],
+                'branchOffices' => [$this->branchOffice->id],
                 'email' => $user->email
             ]))
             ->assertStatus(Response::HTTP_FOUND)

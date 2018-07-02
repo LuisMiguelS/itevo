@@ -36,7 +36,7 @@ class CreateTeacherTest extends TestCase
     function an_admins_can_create_teachers()
     {
         $this->actingAs($this->admin)
-            ->post(route('tenant.teachers.store', $this->promotion->institute), $this->withData())
+            ->post(route('tenant.teachers.store', $this->promotion->branchOffice), $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Profesor {$this->defaultData['name']} {$this->defaultData['last_name']} creado correctamente."]);
 
@@ -48,7 +48,7 @@ class CreateTeacherTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $this->post(route('tenant.teachers.store', $this->promotion->institute), $this->withData())
+        $this->post(route('tenant.teachers.store', $this->promotion->branchOffice), $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
@@ -61,7 +61,7 @@ class CreateTeacherTest extends TestCase
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
-            ->post(route('tenant.teachers.store', $this->promotion->institute), $this->withData())
+            ->post(route('tenant.teachers.store', $this->promotion->branchOffice), $this->withData())
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
         $this->assertDatabaseEmpty('teachers');
@@ -73,7 +73,7 @@ class CreateTeacherTest extends TestCase
         $this->withExceptionHandling();
 
         $this->actingAs($this->admin)
-            ->post(route('tenant.teachers.store', $this->promotion->institute), [])
+            ->post(route('tenant.teachers.store', $this->promotion->branchOffice), [])
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasErrors(['name', 'last_name', 'id_card', 'phone']);
 
@@ -88,7 +88,7 @@ class CreateTeacherTest extends TestCase
         $this->withExceptionHandling();
 
         $this->actingAs($this->admin)
-            ->post(route('tenant.teachers.store', $this->promotion->institute), $this->withData([
+            ->post(route('tenant.teachers.store', $this->promotion->branchOffice), $this->withData([
                 'id_card' => $teacher->id_card
             ]))
             ->assertStatus(Response::HTTP_FOUND)
@@ -107,7 +107,7 @@ class CreateTeacherTest extends TestCase
         $this->withExceptionHandling();
 
         $this->actingAs($this->admin)
-            ->post(route('tenant.teachers.store', $this->promotion->institute), $this->withData([
+            ->post(route('tenant.teachers.store', $this->promotion->branchOffice), $this->withData([
                 'phone' => $teacher->phone
             ]))
             ->assertStatus(Response::HTTP_FOUND)

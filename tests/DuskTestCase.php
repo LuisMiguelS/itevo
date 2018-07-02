@@ -9,7 +9,7 @@ use Facebook\WebDriver\Remote\DesiredCapabilities;
 
 abstract class DuskTestCase extends BaseTestCase
 {
-    use CreatesApplication, TestHelpers;
+    use CreatesApplication;
 
     /**
      * Prepare for Dusk test execution.
@@ -31,7 +31,7 @@ abstract class DuskTestCase extends BaseTestCase
     {
         $options = (new ChromeOptions)->addArguments([
             '--disable-gpu',
-            //'--headless'
+            '--headless'
         ]);
 
         return RemoteWebDriver::create(

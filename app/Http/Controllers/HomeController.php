@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Institute;
+use App\BranchOffice;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -24,7 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $institutes = Institute::unless(auth()->user()->isAdmin(), function ($query) {
+        $institutes = BranchOffice::unless(auth()->user()->isAdmin(), function ($query) {
             $query->whereHas('users', function ($q) {
                 $q->where('user_id', auth()->id());
             });

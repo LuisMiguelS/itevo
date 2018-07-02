@@ -16,12 +16,12 @@ class Promotion extends Model
 
     protected $guarded = [];
 
-    public function institute()
+    public function branchOffice()
     {
-        return $this->belongsTo(Institute::class);
+        return $this->belongsTo(BranchOffice::class);
     }
 
-    public function coursePromotion()
+    public function coursePromotions()
     {
         return $this->hasMany(CoursePromotion::class);
     }

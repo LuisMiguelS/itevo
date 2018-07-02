@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Feature\Institute;
+namespace Tests\Feature\BranchOffice;
 
 use App\User;
 use Tests\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class CreateInstituteTest extends TestCase
+class CreateBranchOfficeTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -16,42 +16,42 @@ class CreateInstituteTest extends TestCase
     ];
 
     /** @test */
-    function an_admin_can_create_institute()
+    function an_admin_can_create_branch_office()
     {
         $admin = $this->createAdmin();
 
         $this->actingAs($admin)
-            ->post(route('institutes.store'), $this->withData())
+            ->post(route('branchOffices.store'), $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
-            ->assertSessionHas(['flash_success' => "Instituto {$this->defaultData['name']} creado con exito."]);
+            ->assertSessionHas(['flash_success' => "Sucursal {$this->defaultData['name']} creado con exito."]);
 
-        $this->assertDatabaseHas('institutes', $this->withData());
+        $this->assertDatabaseHas('branch_offices', $this->withData());
     }
 
     /** @test */
-    function an_guest_cannot_create_institute()
+    function an_guest_cannot_create_branch_office()
     {
         $this->withExceptionHandling();
 
-        $this->post(route('institutes.store'), $this->withData())
+        $this->post(route('branchOffices.store'), $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
-        $this->assertDatabaseMissing('institutes', $this->withData( ));
+        $this->assertDatabaseMissing('branch_offices', $this->withData( ));
     }
 
     /** @test */
-    function an_unauthorized_user_cannot_create_institute()
+    function an_unauthorized_user_cannot_create_branch_office()
     {
         $this->withExceptionHandling();
 
         $user = factory(User::class)->create();
 
         $this->actingAs($user)
-            ->post(route('institutes.store'), $this->withData())
+            ->post(route('branchOffices.store'), $this->withData())
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
-        $this->assertDatabaseEmpty('institutes');
+        $this->assertDatabaseEmpty('branch_offices');
     }
 
     /** @test */
@@ -62,10 +62,10 @@ class CreateInstituteTest extends TestCase
         $admin = $this->createAdmin();
 
         $this->actingAs($admin)
-            ->post(route('institutes.store'), [])
+            ->post(route('branchOffices.store'), [])
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasErrors(['name']);
 
-        $this->assertDatabaseEmpty('institutes');
+        $this->assertDatabaseEmpty('branch_offices');
     }
 }

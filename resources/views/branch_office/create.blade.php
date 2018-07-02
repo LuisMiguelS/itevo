@@ -6,14 +6,14 @@
           <div class="col-md-8">
 
               <div class="card shadow-sm border-0">
-                  <div class="card-header border-0 font-weight-bold">Crear Instituto</div>
+                  <div class="card-header border-0 font-weight-bold">Crear Sucursal</div>
                   <div class="card-body">
 
-                      <form action="{{ route('institutes.store') }}" method="POST">
+                      <form action="{{ route('branchOffices.store') }}" method="POST">
                           @csrf
 
                           <div class="form-group row">
-                              <label for="name" class="col-sm-4 col-form-label text-md-right">Nombre del instituto</label>
+                              <label for="name" class="col-sm-4 col-form-label text-md-right">Nombre</label>
 
                               <div class="col-md-6">
                                   <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>

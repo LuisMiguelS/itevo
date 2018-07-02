@@ -1,11 +1,9 @@
 <?php
 
-namespace Tests\Feature\Institute;
+namespace Tests\Feature\BranchOffice;
 
 use Tests\TestCase;
-use App\{
-    Teacher, User, Institute
-};
+use App\{Teacher, User, BranchOffice};
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -31,10 +29,7 @@ class DeleteTeacherTest extends TestCase
     function an_admin_can_delete_teacher()
     {
         $this->actingAs($this->admin)
-            ->delete(route('tenant.teachers.destroy', [
-                'institute' => $this->teacher->institute,
-                'teacher' => $this->teacher
-            ]))
+            ->delete($this->teacher->url->delete)
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Profesor {$this->teacher->full_name} eliminado con exito."]);
 
@@ -45,14 +40,29 @@ class DeleteTeacherTest extends TestCase
     }
 
     /** @test */
+    function an_admin_cannot_delete_teacher_from_another_branch_office()
+    {
+        $this->withExceptionHandling();
+
+        $this->actingAs($this->admin)
+            ->delete(route('tenant.teachers.destroy', [
+                'branchOffice' => factory(BranchOffice::class)->create(),
+                'teacher' => $this->teacher
+            ]))
+            ->assertStatus(Response::HTTP_NOT_FOUND);
+
+        $this->assertDatabaseHas('teachers', [
+            'id' => $this->teacher->id,
+            'name' => $this->teacher->name,
+        ]);
+    }
+
+    /** @test */
     function an_guest_cannot_delete_teacher()
     {
         $this->withExceptionHandling();
 
-        $this->delete(route('tenant.teachers.destroy', [
-            'institute' => $this->teacher->institute,
-            'teacher' => $this->teacher
-        ]))
+        $this->delete($this->teacher->url->delete)
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
@@ -68,29 +78,8 @@ class DeleteTeacherTest extends TestCase
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
-            ->delete(route('tenant.teachers.destroy', [
-                'institute' => $this->teacher->institute,
-                'teacher' => $this->teacher
-            ]))
+            ->delete($this->teacher->url->delete)
             ->assertStatus(Response::HTTP_FORBIDDEN);
-
-        $this->assertDatabaseHas('teachers', [
-            'id' => $this->teacher->id,
-            'name' => $this->teacher->name,
-        ]);
-    }
-
-    /** @test */
-    function an_institute_cannot_delete_teacher_from_another_institute()
-    {
-        $this->withExceptionHandling();
-
-        $this->actingAs($this->admin)
-            ->delete(route('tenant.teachers.destroy', [
-                'institute' => factory(Institute::class)->create(),
-                'teacher' => $this->teacher
-            ]))
-            ->assertStatus(Response::HTTP_NOT_FOUND);
 
         $this->assertDatabaseHas('teachers', [
             'id' => $this->teacher->id,

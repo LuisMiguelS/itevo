@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Presenters\Teacher\UrlPresenter;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Teacher extends Model
@@ -10,8 +11,14 @@ class Teacher extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'institute_id', 'id_card', 'name', 'last_name', 'phone'
+        'branch_office_id', 'id_card', 'name', 'last_name', 'phone'
     ];
+
+    protected $hidden = [
+        'url'
+    ];
+
+    protected $appends = ['url'];
 
     public function setNameAttribute($name)
     {
@@ -33,6 +40,11 @@ class Teacher extends Model
         return ucwords($last_name);
     }
 
+    public function getUrlAttribute()
+    {
+        return new UrlPresenter($this->branchOffice, $this);
+    }
+
     public function getFullNameAttribute()
     {
         return $this->name. ' '.$this->last_name;
@@ -43,13 +55,13 @@ class Teacher extends Model
         return $this->hasMany(CoursePromotion::class);
     }
 
-    public function institute()
+    public function branchOffice()
     {
-        return $this->belongsTo(Institute::class);
+        return $this->belongsTo(BranchOffice::class);
     }
 
-    public function isRegisteredIn(Institute $institute)
+    public function isRegisteredIn(BranchOffice $branchOffice)
     {
-        return $this->institute()->where('id', $institute->id)->count() > 0;
+        return $this->branchOffice()->where('id', $branchOffice->id)->count() > 0;
     }
 }

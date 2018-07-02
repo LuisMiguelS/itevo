@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Institute;
+use App\BranchOffice;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateInstituteRequest extends FormRequest
+class CreateBranchOfficeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -36,14 +36,9 @@ class UpdateInstituteRequest extends FormRequest
         ];
     }
 
-    /**
-     * @param \App\Institute $institute
-     * @return string
-     */
-    public function updateInstitute(Institute $institute)
+    public function createBranchOffice()
     {
-        $institute->update($this->validated());
-
-        return "Instituto {$this->institute->name} actualizado con exito.";
+        $branchOffice = BranchOffice::create($this->validated());
+        return "Sucursal {$branchOffice->name} creado con exito.";
     }
 }

@@ -3,7 +3,7 @@
 namespace Tests\Feature\Classroom;
 
 use Tests\TestCase;
-use App\{Classroom, User, Institute};
+use App\{Classroom, User, BranchOffice};
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -18,16 +18,18 @@ class UpdateClassroomTest extends TestCase
 
     private $admin;
 
-    private $institute;
+    private $brachOffice;
 
     private $classroom;
+
+    private $user;
 
     protected function setUp()
     {
         parent::setUp();
         $this->admin = $this->createAdmin();
         $this->user = factory(User::class)->create();
-        $this->institute = factory(Institute::class)->create();
+        $this->brachOffice = factory(BranchOffice::class)->create();
         $this->classroom = factory(Classroom::class)->create();
     }
 
@@ -36,10 +38,7 @@ class UpdateClassroomTest extends TestCase
     function an_admin_can_update_classroom()
     {
         $this->actingAs($this->admin)
-            ->put(route('tenant.classrooms.update', [
-                'institute' => $this->classroom->institute,
-                'classroom' => $this->classroom
-            ]), $this->withData())
+            ->put($this->classroom->url->update, $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Aula {$this->defaultData['name']} actualizada con éxito."]);
 
@@ -47,14 +46,29 @@ class UpdateClassroomTest extends TestCase
     }
 
     /** @test */
+    function an_admin_cannot_update_classroom_from_another_brach_office()
+    {
+        $this->withExceptionHandling();
+
+        $this->actingAs($this->admin)
+            ->put(route('tenant.classrooms.update', [
+                'brachOffice' => factory(BranchOffice::class)->create(),
+                'classrooms' => $this->classroom
+            ]), $this->withData())
+            ->assertStatus(Response::HTTP_NOT_FOUND);
+
+        $this->assertDatabaseHas('classrooms', [
+            'id' => $this->classroom->id,
+            'name' => $this->classroom->name,
+        ]);
+    }
+
+    /** @test */
     function an_guest_cannot_update_classroom()
     {
         $this->withExceptionHandling();
 
-        $this->put(route('tenant.classrooms.update', [
-                'institute' => $this->institute,
-                'classroom' => $this->classroom
-            ]), $this->withData())
+        $this->put($this->classroom->url->update, $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
@@ -67,10 +81,7 @@ class UpdateClassroomTest extends TestCase
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
-            ->put(route('tenant.classrooms.update', [
-                'institute' => $this->institute,
-                'classroom' => $this->classroom
-            ]), $this->withData())
+            ->put($this->classroom->url->update, $this->withData())
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
         $this->assertDatabaseMissing('classrooms', $this->withData());
@@ -82,32 +93,10 @@ class UpdateClassroomTest extends TestCase
         $this->handleValidationExceptions();
 
         $this->actingAs($this->admin)
-            ->put(route('tenant.classrooms.update', [
-                'institute' => $this->institute,
-                'classroom' => $this->classroom
-            ]), [])
+            ->put($this->classroom->url->update, [])
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasErrors(['name', 'building']);
 
         $this->assertDatabaseMissing('classrooms', $this->withData());
-    }
-
-
-    /** @test */
-    function an_institute_cannot_update_classroom_from_another_institute()
-    {
-        $this->withExceptionHandling();
-
-        $this->actingAs($this->admin)
-            ->put(route('tenant.classrooms.update', [
-                'institute' => factory(Institute::class)->create(),
-                'classrooms' => $this->classroom
-            ]), $this->withData())
-            ->assertStatus(Response::HTTP_NOT_FOUND);
-
-        $this->assertDatabaseHas('classrooms', [
-            'id' => $this->classroom->id,
-            'name' => $this->classroom->name,
-        ]);
     }
 }

@@ -1,6 +1,6 @@
-@can('tenant-view', \App\Institute::class)
+@can('tenant-view', \App\BranchOffice::class)
     <li class="opened">
-        <a href="{{ route('tenant.dashboard', $institute) }}">
+        <a href="{{ route('tenant.dashboard', $branchOffice) }}">
             <i class="fas fa-home"></i>
             <span class="title">Dashboard</span>
         </a>
@@ -15,7 +15,7 @@
     <ul>
         @can('tenant-view', \App\Classroom::class)
         <li>
-            <a href="{{ route('tenant.classrooms.index', $institute) }}">
+            <a href="{{ route('tenant.classrooms.index', $branchOffice) }}">
                 <span class="title">Todas las aulas</span>
             </a>
         </li>
@@ -23,7 +23,7 @@
 
         @can('tenant-create', \App\Classroom::class)
         <li>
-            <a href="{{ route('tenant.classrooms.create', $institute) }}">
+            <a href="{{ route('tenant.classrooms.create', $branchOffice) }}">
                 <span class="title">Crear aula</span>
             </a>
         </li>
@@ -40,7 +40,7 @@
     <ul>
         @can('tenant-view', \App\Course::class)
         <li>
-            <a href="{{ route('tenant.courses.index', $institute) }}">
+            <a href="{{ route('tenant.courses.index', $branchOffice) }}">
                 <span class="title">Todas los cursos</span>
             </a>
         </li>
@@ -48,7 +48,7 @@
 
         @can('tenant-create', \App\Course::class)
         <li>
-            <a href="{{ route('tenant.courses.create', $institute) }}">
+            <a href="{{ route('tenant.courses.create', $branchOffice) }}">
                 <span class="title">Crear cursos</span>
             </a>
         </li>
@@ -64,7 +64,7 @@
     <ul>
         @can('tenant-view', \App\TypeCourse::class)
         <li>
-            <a href="{{ route('tenant.typecourses.index', $institute) }}">
+            <a href="{{ route('tenant.typeCourses.index', $branchOffice) }}">
                 <span class="title">Todos los tipos de curso</span>
             </a>
         </li>
@@ -72,7 +72,7 @@
 
         @can('tenant-create', \App\TypeCourse::class)
         <li>
-            <a href="{{ route('tenant.typecourses.create', $institute) }}">
+            <a href="{{ route('tenant.typeCourses.create', $branchOffice) }}">
                 <span class="title">Crear tipo de curso</span>
             </a>
         </li>
@@ -88,7 +88,7 @@
     <ul>
         @can('tenant-view', \App\Resource::class)
         <li>
-            <a href="{{ route('tenant.resources.index', $institute) }}">
+            <a href="{{ route('tenant.resources.index', $branchOffice) }}">
                 <span class="title">Todos los recursos</span>
             </a>
         </li>
@@ -97,22 +97,13 @@
         @can('tenant-create', \App\Resource::class)
         <li>
 
-            <a href="{{ route('tenant.resources.create', $institute) }}">
+            <a href="{{ route('tenant.resources.create', $branchOffice) }}">
                 <span class="title">Crear recurso</span>
             </a>
         </li>
         @endcan
     </ul>
 </li>
-
-@can('tenant-view', \App\Promotion::class)
-<li class="opened">
-    <a href="{{ route('tenant.promotions.index', $institute) }}">
-        <i class="fa fa-calendar-alt"></i>
-        <span class="title">Promociones</span>
-    </a>
-</li>
-@endcan
 
 <li class="has-sub">
     <a href="#">
@@ -122,7 +113,7 @@
     <ul>
         @can('tenant-view', \App\Teacher::class)
         <li>
-            <a href="{{ route('tenant.teachers.index', $institute) }}">
+            <a href="{{ route('tenant.teachers.index', $branchOffice) }}">
                 <span class="title">Todos los profesores</span>
             </a>
         </li>
@@ -130,10 +121,19 @@
 
         @can('tenant-create', \App\Teacher::class)
         <li>
-            <a href="{{ route('tenant.teachers.create', $institute) }}">
+            <a href="{{ route('tenant.teachers.create', $branchOffice) }}">
                 <span class="title">Crear profesor</span>
             </a>
         </li>
         @endcan
     </ul>
 </li>
+
+@can('tenant-view', \App\Promotion::class)
+    <li class="opened">
+        <a href="{{ route('tenant.promotions.index', $branchOffice) }}">
+            <i class="fa fa-calendar-alt"></i>
+            <span class="title">Promociones</span>
+        </a>
+    </li>
+@endcan

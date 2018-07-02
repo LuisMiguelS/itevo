@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card border-0 shadow-sm">
-                <div class="card-header border-0 font-weight-bold text-uppercase text-center">Esto son los institutos a los que peteneces</div>
+                <div class="card-header border-0 font-weight-bold text-uppercase text-center">Esto son las sucursal a los que peteneces</div>
 
                 <div class="card-body">
                    @if($institutes->count())
@@ -18,7 +18,7 @@
                             @endforeach
                         </ul>
                        @else
-                       No tienes un instituto asignado...
+                       No tienes una sucursal asignada...
                    @endif
                 </div>
             </div>

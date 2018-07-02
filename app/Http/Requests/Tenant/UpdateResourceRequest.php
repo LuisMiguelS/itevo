@@ -30,6 +30,6 @@ class UpdateResourceRequest extends FormRequest
     {
         $resource->update($this->validated());
 
-        return "Recurso {$resource->name} actualizada con éxito.";
+        return "Recurso {$resource->name} actualizado con éxito.";
     }
 }

@@ -7,11 +7,11 @@
 
                 <div class="card shadow-sm border-0">
                     <div class="card-header border-0 font-weight-bold">
-                        Todos los institutos
-                        <a class="btn btn-primary btn-sm" href="{{ route('institutes.create') }}">Crear instituto</a>
+                        Todos las sucursal
+                        <a class="btn btn-primary btn-sm" href="{{ route('branchOffices.create') }}">Crear sucursal</a>
                     </div>
                     <div class="card-body">
-                        @if($institutes->count())
+                        @if($branchOffices->count())
                         <table class="table">
                             <thead>
                             <tr>
@@ -21,22 +21,22 @@
                             </tr>
                             </thead>
                             <tbody>
-                                @foreach($institutes  as $institute)
+                                @foreach($branchOffices  as $branchOffice)
                                     <tr>
-                                        <th>{{ $institute->id }}</th>
-                                        <td>{{ $institute->name }}</td>
+                                        <th>{{ $branchOffice->id }}</th>
+                                        <td>{{ $branchOffice->name }}</td>
                                         <td>
-                                            @can('update', $institute)
-                                                <a class="btn btn-info btn-sm" href="{{ route('institutes.edit', $institute) }}"><i class="fas fa-pencil-alt"></i></a>
+                                            @can('update', $branchOffice)
+                                                <a class="btn btn-info btn-sm" href="{{ $branchOffice->url->update }}"><i class="fas fa-pencil-alt"></i></a>
                                             @endcan
 
-                                            @can('delete', $institute)
-                                                <a class="btn btn-danger btn-sm" href="{{ route('institutes.destroy', $institute) }}"
+                                            @can('delete', $branchOffice)
+                                                <a class="btn btn-danger btn-sm" href="{{ $branchOffice->url->delete }}"
                                                    onclick="event.preventDefault();
-                                                 document.getElementById('institutes-delete-{{$institute->id}}').submit();">
+                                                 document.getElementById('sucursal-delete-{{$branchOffice->id}}').submit();">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
-                                                <form id="institutes-delete-{{$institute->id}}" action="{{ route('institutes.destroy', $institute) }}" method="POST" style="display: none;">
+                                                <form id="sucursal-delete-{{$branchOffice->id}}" action="{{ $branchOffice->url->delete }}" method="POST" style="display: none;">
                                                     @csrf
                                                     @method('delete')
                                                 </form>
@@ -46,9 +46,9 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $institutes->links() }}
+                        {{ $branchOffices->links() }}
                         @else
-                            No hay instittuos registrados
+                            No hay sucursales registrados
                         @endif
                     </div>
                 </div>

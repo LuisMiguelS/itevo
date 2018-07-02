@@ -3,7 +3,7 @@
 @section('title', 'Todos los tipos de cursos')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('typecourse', $institute) }}
+    {{ Breadcrumbs::render('typeCourse', $branchOffice) }}
 @endsection
 
 @section('content')
@@ -12,7 +12,7 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <div class="panel-title">
-                        <a class="btn btn-primary btn-sm" style="color: #fff;" href="{{ route('tenant.typecourses.create', $institute) }}">Crear Tipo de Curso</a>
+                        <a class="btn btn-primary btn-sm" style="color: #fff;" href="{{ route('tenant.typeCourses.create', $branchOffice) }}">Crear Tipo de Curso</a>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -32,18 +32,18 @@
                                     <td>{{ $typeCourse->name }}</td>
                                     <td>
                                         @can('tenant-update', $typeCourse)
-                                            <a class="btn btn-info btn-xs" href="{{ route('tenant.typecourses.edit', ['institute' => $institute, 'typeCourse' => $typeCourse]) }}">
+                                            <a class="btn btn-info btn-xs" href="{{ $typeCourse->url->edit }}">
                                                 <i class="fa fa-pencil-alt"></i>
                                             </a>
                                         @endcan
 
                                         @can('tenant-delete', $typeCourse)
-                                            <a class="btn btn-danger btn-xs" href="{{ route('tenant.typecourses.destroy', ['institute' => $institute, 'typeCourse' => $typeCourse]) }}"
+                                            <a class="btn btn-danger btn-xs" href="{{ $typeCourse->url->delete }}"
                                                onclick="event.preventDefault();
                                                    document.getElementById('typeCourse-delete-{{$typeCourse->id}}').submit();">
                                                 <i class="fa fa-trash"></i>
                                             </a>
-                                            <form id="typeCourse-delete-{{$typeCourse->id}}" action="{{ route('tenant.typecourses.destroy',  ['institute' => $institute, 'typeCourse' => $typeCourse]) }}" method="POST" style="display: none;">
+                                            <form id="typeCourse-delete-{{$typeCourse->id}}" action="{{ $typeCourse->url->delete }}" method="POST" style="display: none;">
                                                 @csrf
                                                 @method('delete')
                                             </form>

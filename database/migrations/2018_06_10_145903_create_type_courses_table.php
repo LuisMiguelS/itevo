@@ -15,9 +15,13 @@ class CreateTypeCoursesTable extends Migration
     {
         Schema::create('type_courses', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name');
+            $table->unsignedInteger('branch_office_id');
+            $table->unique(['name', 'branch_office_id']);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('branch_office_id')->references('id')->on('branch_offices');
         });
     }
 

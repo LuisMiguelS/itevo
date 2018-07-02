@@ -3,7 +3,7 @@
 namespace Tests\Feature\course;
 
 use Tests\TestCase;
-use App\{Course, Institute, User};
+use App\{Course, BranchOffice, User};
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -17,7 +17,7 @@ class DeleteCourseTest extends TestCase
 
     private $admin;
 
-    private $institute;
+    private $branchOffice;
 
     protected function setUp()
     {
@@ -25,17 +25,14 @@ class DeleteCourseTest extends TestCase
         $this->course = factory(Course::class)->create();
         $this->user = factory(User::class)->create();
         $this->admin = $this->createAdmin();
-        $this->institute = factory(Institute::class)->create();
+        $this->branchOffice = factory(BranchOffice::class)->create();
     }
 
     /** @test */
-        function an_admin_can_delete_type_course()
+    function an_admin_can_delete_course()
     {
         $this->actingAs($this->admin)
-            ->delete(route('tenant.courses.destroy', [
-                'institute' => $this->institute,
-                'courses' => $this->course
-            ]))
+            ->delete($this->course->url->delete)
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Curso {$this->course->name} eliminado con éxito."]);
 
@@ -46,14 +43,29 @@ class DeleteCourseTest extends TestCase
     }
 
     /** @test */
-    function an_guest_cannot_delete_type_course()
+    function an_admin_cannot_delete_course_from_another_branch_office()
     {
         $this->withExceptionHandling();
 
-        $this->delete(route('tenant.courses.destroy', [
-            'institute' => $this->institute,
-            'courses' => $this->course
-        ]))
+        $this->actingAs($this->admin)
+            ->delete(route('tenant.courses.destroy', [
+                'branchOffice' => $this->branchOffice,
+                'courses' => $this->course
+            ]))
+            ->assertStatus(Response::HTTP_NOT_FOUND);
+
+        $this->assertDatabaseHas('courses', [
+            'id' => $this->course->id,
+            'name' => $this->course->name,
+        ]);
+    }
+
+    /** @test */
+    function an_guest_cannot_delete_course()
+    {
+        $this->withExceptionHandling();
+
+        $this->delete($this->course->url->delete)
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
@@ -64,15 +76,12 @@ class DeleteCourseTest extends TestCase
     }
 
     /** @test */
-    function an_unauthorized_user_cannot_delete_type_course()
+    function an_unauthorized_user_cannot_delete_course()
     {
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
-            ->put(route('tenant.courses.destroy', [
-                'institute' => $this->institute,
-                'courses' => $this->course
-            ]))
+            ->put($this->course->url->delete)
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
         $this->assertDatabaseHas('courses', [

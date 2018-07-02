@@ -62,7 +62,7 @@
                 <div class="col-md-6 col-sm-8 clearfix">
                     <ul class="list-inline links-list pull-left">
                         <li class="nav-item">
-                            {{ $institute->name }}
+                            {{ $branchOffice->name }}
                         </li>
                     </ul>
                 </div>
