@@ -45,7 +45,7 @@ class CreateAdmin extends Command
             'password' => $this->secret('Your password ? (Default "secret")') ?? 'secret',
         ]);
 
-        Bouncer::assign('admin')->to($user);
+        Bouncer::assign(User::ROLE_ADMIN)->to($user);
 
         $this->info("Name: {$user->name} email: {$user->email}");
     }

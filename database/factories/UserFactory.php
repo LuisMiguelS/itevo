@@ -63,8 +63,7 @@ $factory->define(App\Course::class, function (Faker $faker) {
 $factory->define(App\Promotion::class, function (Faker $faker) {
     return [
         'branch_office_id' => factory(App\BranchOffice::class)->create(),
-        'period' => $faker->randomElement([\App\Promotion::PROMOTION_NO_1, \App\Promotion::PROMOTION_NO_2, \App\Promotion::PROMOTION_NO_3]),
-        'status' => $faker->randomElement([\App\Promotion::STATUS_INSCRIPTION, \App\Promotion::STATUS_CURRENT, \App\Promotion::STATUS_FINISHED])
+        'promotion_no' => $faker->randomDigit,
     ];
 });
 

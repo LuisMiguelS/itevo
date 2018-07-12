@@ -17,9 +17,9 @@ class CreatePromotionsTable extends Migration
         Schema::create('promotions', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('branch_office_id');
-            $table->integer('period');
-            $table->enum('status', [Promotion::STATUS_CURRENT, Promotion::STATUS_FINISHED, Promotion::STATUS_INSCRIPTION])->default(Promotion::STATUS_INSCRIPTION);
-            $table->unique(['branch_office_id', 'period', 'created_at']);
+            $table->integer('promotion_no');
+            $table->enum('status', [Promotion::STATUS_CURRENT, Promotion::STATUS_FINISHED])->default(Promotion::STATUS_CURRENT);
+            $table->unique(['branch_office_id', 'promotion_no']);
             $table->timestamps();
 
             $table->foreign('branch_office_id')->references('id')->on('branch_offices');

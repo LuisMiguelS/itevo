@@ -29,7 +29,6 @@ class UpdateResourceRequest extends FormRequest
     public function updateResource (Resource $resource)
     {
         $resource->update($this->validated());
-
         return "Recurso {$resource->name} actualizado con éxito.";
     }
 }

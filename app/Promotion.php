@@ -2,19 +2,28 @@
 
 namespace App;
 
+use App\Presenters\Promotion\UrlPresenter;
 use Illuminate\Database\Eloquent\Model;
 
 class Promotion extends Model
 {
-    const STATUS_INSCRIPTION = 'inscripción';
-    const STATUS_CURRENT = 'corriente';
+    protected $fillable = [
+        'promotion_no', 'status'
+    ];
+
+    protected $hidden = [
+        'url'
+    ];
+
+    protected $appends = ['url'];
+
+    const STATUS_CURRENT = 'actual';
     const STATUS_FINISHED = 'terminado';
 
-    const PROMOTION_NO_1 = 1;
-    const PROMOTION_NO_2 = 2;
-    const PROMOTION_NO_3 = 3;
-
-    protected $guarded = [];
+    public function getUrlAttribute()
+    {
+        return new UrlPresenter($this->branchOffice, $this);
+    }
 
     public function branchOffice()
     {
@@ -29,5 +38,15 @@ class Promotion extends Model
     public function students()
     {
         return $this->hasMany(Student::class);
+    }
+
+    public function periods()
+    {
+        return $this->hasMany(Period::class);
+    }
+
+    public function isRegisteredIn(BranchOffice $branchOffice)
+    {
+        return $this->branchOffice()->where('id', $branchOffice->id)->count() > 0;
     }
 }

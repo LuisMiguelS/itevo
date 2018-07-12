@@ -52,7 +52,7 @@ Route::prefix('{branchOffice}')->middleware('tenantAccess')->name('tenant.')->gr
     ]);
     Route::resource('courses', 'Tenant\CourseController');
     Route::resource('resources', 'Tenant\ResourceController');
-    Route::resource('promotions', 'Tenant\PromotionController')->only('index');
+    Route::resource('promotions', 'Tenant\PromotionController');
     Route::resource('teachers', 'Tenant\TeacherController');
 });
 
