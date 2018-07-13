@@ -3,6 +3,7 @@
 namespace Tests\Feature\Promotion;
 
 use App\Period;
+use App\Promotion;
 use App\User;
 use Tests\TestCase;
 use App\BranchOffice;
@@ -85,5 +86,23 @@ class CreatePromotionTest extends TestCase
             ->assertSessionHasErrors(['promotion_no']);
 
         $this->assertDatabaseEmpty('promotions');
+    }
+
+    /** @test */
+    function its_cannot_create_promotion_if_current_promotion_is_active()
+    {
+        $this->withExceptionHandling();
+
+        $this->be($this->admin);
+
+        $this->post(route('tenant.promotions.store', $this->branchOffice), $this->withData([
+            'promotion_no' => 1,
+        ]));
+
+        $this->post(route('tenant.promotions.store', $this->branchOffice), $this->withData([
+            'promotion_no' => 2,
+        ]));
+
+        $this->assertCount(1, $this->branchOffice->promotions);
     }
 }

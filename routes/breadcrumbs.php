@@ -1,7 +1,7 @@
 <?php
 
 use App\{
-    Classroom, Course, BranchOffice, Resource, Teacher, TypeCourse
+    Classroom, Course, BranchOffice, Promotion, Resource, Teacher, TypeCourse
 };
 
 Breadcrumbs::for('home', function ($breadcrumbs) {
@@ -83,9 +83,9 @@ Breadcrumbs::for('teacher', function ($breadcrumbs, BranchOffice $branchOffice) 
     $breadcrumbs->push('Profesor', route('tenant.teachers.index', $branchOffice));
 });
 
-Breadcrumbs::for('teacher-create', function ($breadcrumbs, BranchOffice $institute) {
-    $breadcrumbs->parent('teacher', $institute);
-    $breadcrumbs->push('Crear', route('tenant.teachers.create', $institute));
+Breadcrumbs::for('teacher-create', function ($breadcrumbs, BranchOffice $branchOffice) {
+    $breadcrumbs->parent('teacher', $branchOffice);
+    $breadcrumbs->push('Crear', route('tenant.teachers.create', $branchOffice));
 });
 
 Breadcrumbs::for('teacher-edit', function ($breadcrumbs, BranchOffice $branchOffice, Teacher $teacher) {
@@ -97,4 +97,14 @@ Breadcrumbs::for('teacher-edit', function ($breadcrumbs, BranchOffice $branchOff
 Breadcrumbs::for('promotion', function ($breadcrumbs, BranchOffice $branchOffice) {
     $breadcrumbs->parent('dashboard', $branchOffice);
     $breadcrumbs->push('Promociones', route('tenant.promotions.index', $branchOffice));
+});
+
+Breadcrumbs::for('promotion-create', function ($breadcrumbs, BranchOffice $branchOffice) {
+    $breadcrumbs->parent('promotion', $branchOffice);
+    $breadcrumbs->push('Crear', route('tenant.promotions.create', $branchOffice));
+});
+
+Breadcrumbs::for('promotion-edit', function ($breadcrumbs, BranchOffice $branchOffice, Promotion $promotion) {
+    $breadcrumbs->parent('teacher', $branchOffice);
+    $breadcrumbs->push("Promocion {$promotion->promotion_no}", $promotion->url->edit);
 });

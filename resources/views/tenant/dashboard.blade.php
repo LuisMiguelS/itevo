@@ -41,13 +41,14 @@
 	</div>
 
 	<div class="col-md-3 col-sm-6 col-xs-12">
-		<div class="tile-stats tile-blue">
-			<div class="icon"><i class="fa fa-calendar"></i></div>
-			<div class="num" data-start="0" data-end="52" data-postfix="" data-duration="1500" data-delay="1800">0</div>
-
-			<h3>Promociones</h3>
-			<p>Todas las promociones</p>
-		</div>
+		<a href="{{ $branchOffice->currentPromotion()->url->show ?? '#' }}">
+			<div class="tile-stats tile-blue">
+				<div class="icon"><i class="fa fa-calendar"></i></div>
+				<div class="num">{{ $branchOffice->currentPromotion()->promotion_no ?? 0 }}</div>
+				<h3>{{$branchOffice->currentPromotion() ? 'Promocion en transcurso' : 'No hay promocion en transcurso' }}</h3>
+				<p>{{$branchOffice->currentPromotion() ? 'Ver mas detalles' : '' }}</p>
+			</div>
+		</a>
 	</div>
 </div>
 @endsection

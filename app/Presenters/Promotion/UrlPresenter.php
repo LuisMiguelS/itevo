@@ -56,4 +56,22 @@ class UrlPresenter
             'promotion' => $this->promotion
         ]);
     }
+
+    public function show()
+    {
+        return route('tenant.promotions.show',[
+            'branchOffice' => $this->branchOffice,
+            'promotion' => $this->promotion
+        ]);
+    }
+
+    public function status()
+    {
+        return route('tenant.promotions.status',[
+            'branchOffice' => $this->branchOffice,
+            'promotion' => $this->promotion
+        ]);
+    }
+
+
 }

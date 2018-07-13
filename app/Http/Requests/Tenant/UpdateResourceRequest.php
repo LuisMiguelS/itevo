@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Tenant;
 
 use App\Resource;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateResourceRequest extends FormRequest
@@ -12,10 +13,25 @@ class UpdateResourceRequest extends FormRequest
         return true;
     }
 
-    public function rules ()
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
     {
         return [
-            'name' => 'required|min:2|max:50'
+            'name' => [
+                'required',
+                'min:4',
+                'max:50',
+                Rule::unique('type_courses')->ignore($this->resource->id)->where(function ($query) {
+                    return $query->where([
+                        ['branch_office_id', $this->branchOffice->id],
+                        ['name', $this->request->get('name')],
+                    ]);
+                }),
+            ]
         ];
     }
 

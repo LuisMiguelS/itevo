@@ -20,7 +20,6 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th><strong>#</strong></th>
                                 <th><strong>Nombre</strong></th>
                                 <th><strong>Cedula</strong></th>
                                 <th><strong>Telefono</strong></th>
@@ -30,7 +29,6 @@
                             <tbody>
                             @foreach($teachers  as $teacher)
                                 <tr>
-                                    <th>{{ $teacher->id }}</th>
                                     <td>{{ $teacher->full_name }}</td>
                                     <td>{{ $teacher->id_card }}</td>
                                     <td>{{ $teacher->phone }}</td>
@@ -59,7 +57,9 @@
                         </table>
                         {{ $teachers->links() }}
                     @else
-                        No hay profesores registrados
+                        <div class="alert alert-info" role="alert">
+                            No hay profesores registrados
+                        </div>
                     @endif
                 </div>
             </div>

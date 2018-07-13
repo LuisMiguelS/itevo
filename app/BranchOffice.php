@@ -98,4 +98,9 @@ class BranchOffice extends Model
     {
         return $this->hasMany(Resource::class);
     }
+
+    public function currentPromotion()
+    {
+        return $this->promotions()->where('status', Promotion::STATUS_CURRENT)->first();
+    }
 }

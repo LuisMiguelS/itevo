@@ -20,16 +20,14 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th><strong>#</strong></th>
-                            <th><strong>Curso</strong></th>
-                            <th><strong>Tipo de curso</strong></th>
-                            <th><strong>Acciones</strong></th>
+                            <th><b>Curso</b></th>
+                            <th><b>Tipo de curso</b></th>
+                            <th><b>Acciones</b></th>
                         </tr>
                         </thead>
                         <tbody>
                             @foreach($courses  as $course)
                                 <tr>
-                                    <th>{{ $course->id }}</th>
                                     <td>{{ $course->name }}</td>
                                     <td>{{ $course->typecourse->name }}</td>
                                     <td>
@@ -57,7 +55,7 @@
                     </table>
                     {{ $courses->links() }}
                     @else
-                        No hay cursos registrados
+                        <div class="alert alert-info" role="alert">No hay cursos registrados</div>
                     @endif
                 </div>
             </div>

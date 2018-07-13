@@ -264,6 +264,26 @@ class BouncerSeeder extends Seeder
             'name' => 'tenant-view',
             'title' => 'Ver promociones'
         ]);
+
+        Bouncer::ability()->createForModel(Promotion::class, [
+            'name' => 'tenant-create',
+            'title' => 'Crear promocion'
+        ]);
+
+        Bouncer::ability()->createForModel(Promotion::class, [
+            'name' => 'tenant-delete',
+            'title' => 'Eliminar promocion'
+        ]);
+
+        Bouncer::ability()->createForModel(Promotion::class, [
+            'name' => 'tenant-update',
+            'title' => 'Actualizar promocion'
+        ]);
+
+        Bouncer::ability()->createForModel(Promotion::class, [
+            'name' => 'tenant-change-status',
+            'title' => 'Cambiar estado de las promociones'
+        ]);
     }
 
     protected function userAbilities(): void

@@ -38,7 +38,7 @@ class CourseController extends Controller
     public function create(BranchOffice $branchOffice)
     {
         $this->authorize('tenant-create', Course::class);
-        $typeCourses = $branchOffice->typecourses;
+        $typeCourses = $branchOffice->typecourses()->orderByDesc('id')->paginate();
         return view('tenant.course.create', compact('branchOffice', 'typeCourses'));
     }
 

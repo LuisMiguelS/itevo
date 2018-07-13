@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Tenant;
 
 use App\{BranchOffice, Period};
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StorePromotionRequest extends FormRequest
@@ -25,7 +26,23 @@ class StorePromotionRequest extends FormRequest
     public function rules()
     {
         return [
-            'promotion_no' => 'required|numeric'
+            'promotion_no' => [
+                'required',
+                'numeric',
+                Rule::unique('promotions')->where(function ($query) {
+                    return $query->where([
+                        ['branch_office_id', $this->branchOffice->id],
+                        ['promotion_no', $this->request->get('promotion_no')],
+                    ]);
+                }),
+            ]
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'promotion_no' => 'numero de promocion',
         ];
     }
 

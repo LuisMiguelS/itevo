@@ -26,7 +26,7 @@ class ResourceController extends Controller
     public function index(BranchOffice $branchOffice)
     {
         $this->authorize('tenant-view', Resource::class);
-        $resources = $branchOffice->resources()->paginate();
+        $resources = $branchOffice->resources()->orderByDesc('id')->paginate();
         return view('tenant.resource.index', compact('branchOffice', 'resources'));
     }
 

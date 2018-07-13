@@ -20,7 +20,6 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th><strong>#</strong></th>
                             <th><strong>Recurso</strong></th>
                             <th><strong>Acciones</strong></th>
                         </tr>
@@ -28,7 +27,6 @@
                         <tbody>
                             @foreach($resources  as $resource)
                                 <tr>
-                                    <th>{{ $resource->id }}</th>
                                     <td>{{ $resource->name }}</td>
                                     <td>
                                         @can('tenant-update', $resource)
@@ -55,7 +53,9 @@
                     </table>
                     {{ $resources->links() }}
                     @else
-                        No hay recursos registrados
+                        <div class="alert alert-info" role="alert">
+                            No hay recursos registrados
+                        </div>
                     @endif
                 </div>
             </div>

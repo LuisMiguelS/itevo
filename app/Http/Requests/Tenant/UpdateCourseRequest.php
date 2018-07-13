@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Tenant;
 
 use App\Course;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCourseRequest extends FormRequest
@@ -12,11 +13,32 @@ class UpdateCourseRequest extends FormRequest
         return true;
     }
 
-    public function rules ()
+    public function rules()
     {
         return [
-            'name' => 'required|min:2|max:255',
-            'type_course_id' => 'required|numeric'
+            'name' => [
+                'required',
+                'min:2',
+                'max:255',
+                Rule::unique('courses')->ignore($this->course->id)->where(function ($query) {
+                    return $query->where([
+                        ['branch_office_id', $this->branchOffice->id],
+                        ['name', $this->request->get('name')],
+                        ['type_course_id', $this->request->get('type_course_id')],
+                    ]);
+                }),
+            ],
+            'type_course_id' => [
+                'required',
+                'numeric',
+                Rule::unique('courses')->ignore($this->course->id)->where(function ($query) {
+                    return $query->where([
+                        ['branch_office_id', $this->branchOffice->id],
+                        ['name', $this->request->get('name')],
+                        ['type_course_id', $this->request->get('type_course_id')],
+                    ]);
+                }),
+            ]
         ];
     }
 

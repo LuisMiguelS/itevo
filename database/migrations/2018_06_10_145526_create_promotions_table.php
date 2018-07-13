@@ -21,6 +21,7 @@ class CreatePromotionsTable extends Migration
             $table->enum('status', [Promotion::STATUS_CURRENT, Promotion::STATUS_FINISHED])->default(Promotion::STATUS_CURRENT);
             $table->unique(['branch_office_id', 'promotion_no']);
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('branch_office_id')->references('id')->on('branch_offices');
         });

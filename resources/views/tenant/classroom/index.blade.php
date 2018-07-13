@@ -20,7 +20,6 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th><strong>#</strong></th>
                             <th><strong>Aula</strong></th>
                             <th><strong>Edificio</strong></th>
                             <th><strong>Acciones</strong></th>
@@ -29,7 +28,6 @@
                         <tbody>
                             @foreach($classrooms  as $classroom)
                                 <tr>
-                                    <th>{{ $classroom->id }}</th>
                                     <td>{{ $classroom->name }}</td>
                                     <td>{{ $classroom->building }}</td>
                                     <td>
@@ -55,7 +53,9 @@
                     </table>
                     {{ $classrooms->links() }}
                     @else
-                        No hay aulas registradas
+                        <div class="alert alert-info" role="alert">
+                            No hay aulas registradas
+                        </div>
                     @endif
                 </div>
             </div>

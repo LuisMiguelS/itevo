@@ -28,7 +28,7 @@ class TeacherController extends Controller
     public function index(BranchOffice $branchOffice)
     {
         $this->authorize('tenant-view', Teacher::class);
-        $teachers = $branchOffice->teachers()->paginate();
+        $teachers = $branchOffice->teachers()->orderByDesc('id')->paginate();
         return view('tenant.teacher.index', compact('branchOffice','teachers'));
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Tenant;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePromotionRequest extends FormRequest
@@ -24,7 +25,23 @@ class UpdatePromotionRequest extends FormRequest
     public function rules()
     {
         return [
-            'promotion_no' => 'required|numeric'
+            'promotion_no' => [
+                'required',
+                'numeric',
+                Rule::unique('promotions')->ignore($this->promotion->id)->where(function ($query) {
+                    return $query->where([
+                        ['branch_office_id', $this->branchOffice->id],
+                        ['promotion_no', $this->request->get('promotion_no')],
+                    ]);
+                }),
+            ]
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'promotion_no' => 'numero de promocion',
         ];
     }
 

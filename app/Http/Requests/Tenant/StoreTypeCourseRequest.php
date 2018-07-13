@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Tenant;
 
 use App\BranchOffice;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTypeCourseRequest extends FormRequest
@@ -25,7 +26,17 @@ class StoreTypeCourseRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:4|max:50|unique:type_courses'
+            'name' => [
+                'required',
+                'min:4',
+                'max:50',
+                Rule::unique('type_courses')->where(function ($query) {
+                    return $query->where([
+                        ['branch_office_id', $this->branchOffice->id],
+                        ['name', $this->request->get('name')],
+                    ]);
+                }),
+                ]
         ];
     }
 

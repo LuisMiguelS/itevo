@@ -4,6 +4,7 @@ namespace App\Http\Requests\Tenant;
 
 use App\TypeCourse;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateTypeCourseRequest extends FormRequest
 {
@@ -25,7 +26,17 @@ class UpdateTypeCourseRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:4|max:50|unique:type_courses,name,'.  $this->typeCourse->id,
+            'name' => [
+                'required',
+                'min:4',
+                'max:50',
+                Rule::unique('type_courses')->ignore($this->typeCourse->id)->where(function ($query) {
+                    return $query->where([
+                        ['branch_office_id', $this->branchOffice->id],
+                        ['name', $this->request->get('name')],
+                    ]);
+                }),
+                ]
         ];
     }
 

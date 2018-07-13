@@ -28,7 +28,7 @@ class TypeCourseController extends Controller
     public function index(BranchOffice $branchOffice)
     {
         $this->authorize('tenant-view', TypeCourse::class);
-        $typeCourses = $branchOffice->typecourses()->paginate();
+        $typeCourses = $branchOffice->typecourses()->orderByDesc('id')->paginate();
         return view('tenant.type_course.index', compact('branchOffice','typeCourses'));
     }
 

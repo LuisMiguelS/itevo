@@ -25,7 +25,7 @@ class ClassRoomController extends Controller
     public function index(BranchOffice $branchOffice)
     {
         $this->authorize('tenant-view', Classroom::class);
-        $classrooms = $branchOffice->classrooms()->paginate();
+        $classrooms = $branchOffice->classrooms()->orderByDesc('id')->paginate();
         return view('tenant.classroom.index', compact('branchOffice','classrooms'));
     }
 

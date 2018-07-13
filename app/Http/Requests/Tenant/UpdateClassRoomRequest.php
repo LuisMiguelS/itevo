@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Tenant;
 
 use App\Classroom;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateClassRoomRequest extends FormRequest
@@ -15,8 +16,30 @@ class UpdateClassRoomRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:1|max:50',
-            'building' => 'required|min:1|max:50',
+            'name' => [
+                'required',
+                'min:1',
+                'max:50',
+                Rule::unique('classrooms')->ignore($this->classroom->id)->where(function ($query) {
+                    return $query->where([
+                        ['branch_office_id', $this->branchOffice->id],
+                        ['name', $this->request->get('name')],
+                        ['building', $this->request->get('building')],
+                    ]);
+                }),
+            ],
+            'building' => [
+                'required',
+                'min:1',
+                'max:50',
+                Rule::unique('classrooms')->ignore($this->classroom->id)->where(function ($query) {
+                    return $query->where([
+                        ['branch_office_id', $this->branchOffice->id],
+                        ['name', $this->request->get('name')],
+                        ['building', $this->request->get('building')],
+                    ]);
+                }),
+            ],
         ];
     }
 

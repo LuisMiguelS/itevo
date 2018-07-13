@@ -20,15 +20,13 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th><strong>#</strong></th>
-                            <th><strong>Tipo de curso</strong></th>
-                            <th><strong>Acciones</strong></th>
+                            <th><b>Tipo de curso</b></th>
+                            <th><b>Acciones</b></th>
                         </tr>
                         </thead>
                         <tbody>
                             @foreach($typeCourses  as $typeCourse)
                                 <tr>
-                                    <th>{{ $typeCourse->id }}</th>
                                     <td>{{ $typeCourse->name }}</td>
                                     <td>
                                         @can('tenant-update', $typeCourse)
@@ -55,7 +53,9 @@
                     </table>
                     {{ $typeCourses->links() }}
                     @else
-                        No hay Tipos de cursos registrados
+                        <div class="alert alert-info" role="alert">
+                            No hay Tipos de cursos registrados
+                        </div>
                     @endif
                 </div>
             </div>

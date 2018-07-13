@@ -24,7 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $institutes = BranchOffice::unless(auth()->user()->isAdmin(), function ($query) {
+        $branchOffices = BranchOffice::unless(auth()->user()->isAdmin(), function ($query) {
             $query->whereHas('users', function ($q) {
                 $q->where('user_id', auth()->id());
             });
@@ -32,6 +32,6 @@ class HomeController extends Controller
             ->orderBy('id','DESC')
             ->paginate();
 
-        return view('home', compact('institutes'));
+        return view('home', compact('branchOffices'));
     }
 }

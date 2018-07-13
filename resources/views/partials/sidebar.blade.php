@@ -129,11 +129,27 @@
     </ul>
 </li>
 
-@can('tenant-view', \App\Promotion::class)
-    <li class="opened">
-        <a href="{{ route('tenant.promotions.index', $branchOffice) }}">
-            <i class="fa fa-calendar-alt"></i>
-            <span class="title">Promociones</span>
-        </a>
-    </li>
-@endcan
+
+<li class="has-sub">
+    <a href="#">
+        <i class="fa fa-calendar-alt"></i>
+        <span class="title">Promociones</span>
+    </a>
+    <ul>
+        @can('tenant-view', \App\Promotion::class)
+           <li>
+               <a href="{{ route('tenant.promotions.index', $branchOffice) }}">
+                   <span class="title">Todas las promociones</span>
+               </a>
+           </li>
+        @endcan
+
+        @can('tenant-create', \App\Promotion::class)
+            <li>
+                <a href="{{ route('tenant.promotions.create', $branchOffice) }}">
+                    <span class="title">Crear promocion</span>
+                </a>
+            </li>
+        @endcan
+    </ul>
+</li>
