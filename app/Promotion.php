@@ -2,13 +2,14 @@
 
 namespace App;
 
+use App\Traits\DatesTranslator;
 use Illuminate\Database\Eloquent\Model;
 use App\Presenters\Promotion\UrlPresenter;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Promotion extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, DatesTranslator;
 
     protected $fillable = [
         'promotion_no', 'status'

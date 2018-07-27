@@ -2,13 +2,14 @@
 
 namespace App;
 
+use App\Traits\DatesTranslator;
 use Illuminate\Database\Eloquent\Model;
 use App\Presenters\Classroom\UrlPresenter;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Classroom extends Model
 {
-	use SoftDeletes;
+	use SoftDeletes, DatesTranslator;
 
     protected $fillable = [
     	'name', 'building', 'branch_office_id'

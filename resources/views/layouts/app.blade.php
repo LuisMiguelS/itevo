@@ -38,7 +38,7 @@
                         @if (auth()->check())
                             <li><a class="nav-link" href="{{ route('home') }}">Home</a></li>
 
-                            @if(auth()->user()->isAn(\App\User::ROLE_ADMIN))
+                            @if(auth()->user()->isSuperAdmin())
                                 <li class="nav-item"><a class="nav-link" href="{{ route('branchOffices.index') }}">Sucursales</a></li>
                             @endif
 
@@ -90,7 +90,7 @@
         </nav>
 
         <main class="py-4">
-            @include('partials.alert')
+            @include('partials._alert')
 
             @yield('content')
         </main>

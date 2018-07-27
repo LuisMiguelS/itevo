@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Tenant;
 
-use App\{BranchOffice, Resource};
+use App\{BranchOffice, DataTables\TenantResourceDataTable, Resource};
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Tenant\StoreResourceRequest;
@@ -19,15 +19,17 @@ class ResourceController extends Controller
     }
 
     /**
+     * @param \App\DataTables\TenantResourceDataTable $dataTable
      * @param \App\BranchOffice $branchOffice
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index(BranchOffice $branchOffice)
+    public function index(TenantResourceDataTable $dataTable, BranchOffice $branchOffice)
     {
         $this->authorize('tenant-view', Resource::class);
-        $resources = $branchOffice->resources()->orderByDesc('id')->paginate();
-        return view('tenant.resource.index', compact('branchOffice', 'resources'));
+        $breadcrumbs = 'resource';
+        $title = 'Todos los recursos';
+        return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
     }
 
     /**
@@ -38,7 +40,8 @@ class ResourceController extends Controller
     public function create(BranchOffice $branchOffice)
     {
         $this->authorize('tenant-create', Resource::class);
-        return view('tenant.resource.create', compact('branchOffice'));
+        $resource = new Resource;
+        return view('tenant.resource.create', compact('branchOffice', 'resource'));
     }
 
     /**

@@ -6,7 +6,7 @@
             <div class="col-md-8">
 
                 <div class="card border-0 shadow-sm">
-                    <div class="card-header border-0 font-weight-bold">
+                    <div class="card-header border-0 font-weight-bold bg-white">
                         Todas las habilidades
                     </div>
                     <div class="card-body">

@@ -3,6 +3,7 @@
 namespace App;
 
 use Spatie\Sluggable\HasSlug;
+use App\Traits\DatesTranslator;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
 use App\Presenters\BranchOffice\UrlPresenter;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BranchOffice extends Model
 {
-    use SoftDeletes, HasSlug;
+    use SoftDeletes, HasSlug, DatesTranslator;
 
     protected $fillable = [
         'name', 'slug'

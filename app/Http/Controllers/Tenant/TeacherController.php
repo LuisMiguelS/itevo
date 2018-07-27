@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Tenant;
 
-use App\{BranchOffice, Teacher};
+use App\{BranchOffice, DataTables\TenantTeacherDataTable, Teacher};
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Tenant\StoreTeacherRequest;
 use App\Http\Requests\Tenant\UpdateTeacherRequest;
@@ -21,15 +21,17 @@ class TeacherController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param \App\DataTables\TenantTeacherDataTable $dataTable
      * @param \App\BranchOffice $branchOffice
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index(BranchOffice $branchOffice)
+    public function index(TenantTeacherDataTable $dataTable, BranchOffice $branchOffice)
     {
         $this->authorize('tenant-view', Teacher::class);
-        $teachers = $branchOffice->teachers()->orderByDesc('id')->paginate();
-        return view('tenant.teacher.index', compact('branchOffice','teachers'));
+        $breadcrumbs = 'teacher';
+        $title = 'Todos los Profesores';
+        return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
     }
 
     /**
@@ -42,7 +44,8 @@ class TeacherController extends Controller
     public function create(BranchOffice $branchOffice)
     {
         $this->authorize('tenant-create', Teacher::class);
-        return view('tenant.teacher.create', compact('branchOffice'));
+        $teacher = new Teacher;
+        return view('tenant.teacher.create', compact('branchOffice', 'teacher'));
     }
 
     /**

@@ -5,7 +5,13 @@ namespace App\Http\Controllers\Tenant;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Tenant\StoreClassRoomRequest;
 use App\Http\Requests\Tenant\UpdateClassRoomRequest;
-use App\{Http\Controllers\Controller, BranchOffice, Classroom};
+use App\{
+    DataTables\Tenant_Classroom_DataTable,
+    DataTables\TenantClassroomDataTable,
+    Http\Controllers\Controller,
+    BranchOffice,
+    Classroom
+};
 
 class ClassRoomController extends Controller
 {
@@ -19,14 +25,16 @@ class ClassRoomController extends Controller
 
     /**
      * @param \App\BranchOffice $branchOffice
+     * @param \App\DataTables\TenantClassroomDataTable $dataTable
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index(BranchOffice $branchOffice)
+    public function index(TenantClassroomDataTable $dataTable, BranchOffice $branchOffice)
     {
         $this->authorize('tenant-view', Classroom::class);
-        $classrooms = $branchOffice->classrooms()->orderByDesc('id')->paginate();
-        return view('tenant.classroom.index', compact('branchOffice','classrooms'));
+        $breadcrumbs = 'classroom';
+        $title = 'Todas las aulas';
+        return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
     }
 
     /**
@@ -37,7 +45,8 @@ class ClassRoomController extends Controller
     public function create(BranchOffice $branchOffice)
     {
         $this->authorize('tenant-create', Classroom::class);
-        return view('tenant.classroom.create', compact('branchOffice'));
+        $classroom = new Classroom;
+        return view('tenant.classroom.create', compact('branchOffice', 'classroom'));
     }
 
     /**

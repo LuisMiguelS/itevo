@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card border-0 shadow-sm">
-                    <div class="card-header border-0 font-weight-bold">Crear Role</div>
+                    <div class="card-header border-0 font-weight-bold bg-white">Crear Role</div>
                     <div class="card-body">
                         <form action="{{ route('roles.store') }}" method="POST">
                             @csrf
@@ -28,7 +28,7 @@
                                 <label for="name" class="col-sm-4 col-form-label text-md-right">Habiliades</label>
                                 <div class="col-md-6">
                                     @foreach($abilities as $abilitie)
-                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                        <div class="custom-control custom-checkbox">
                                             <input name="abilities[{{ $abilitie->id }}]"
                                                    class="custom-control-input"
                                                    type="checkbox"

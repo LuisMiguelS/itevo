@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Tenant;
 
 use App\{BranchOffice,Promotion};
 use App\Http\Controllers\Controller;
+use App\DataTables\TenantPromotionDataTable;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Tenant\StorePromotionRequest;
 use App\Http\Requests\Tenant\UpdatePromotionRequest;
@@ -19,15 +20,17 @@ class PromotionController extends Controller
     }
 
     /**
+     * @param \App\DataTables\TenantPromotionDataTable $dataTable
      * @param \App\BranchOffice $branchOffice
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index(BranchOffice $branchOffice)
+    public function index(TenantPromotionDataTable $dataTable, BranchOffice $branchOffice)
     {
         $this->authorize('tenant-view', Promotion::class);
-        $promotions = $branchOffice->promotions()->orderByDesc('promotion_no')->paginate();
-        return view('tenant.promotion.index', compact('branchOffice', 'promotions'));
+        $breadcrumbs = 'promotion';
+        $title = 'Todas las promociones';
+        return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
     }
 
     /**
@@ -50,7 +53,8 @@ class PromotionController extends Controller
     {
         $this->authorize('tenant-create', Promotion::class);
         $this->thereIsCurrentPromotion($branchOffice);
-        return view('tenant.promotion.create', compact('branchOffice'));
+        $promotion = new Promotion;
+        return view('tenant.promotion.create', compact('branchOffice', 'promotion'));
     }
 
     /**

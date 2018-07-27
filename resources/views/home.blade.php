@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <ul class="list-group">
-                <li class="list-group-item list-group-item-secondary font-weight-bold text-center text-uppercase">Sucursales</li>
+                <li class="list-group-item list-group-item font-weight-bold text-center text-uppercase">Sucursales</li>
                 @if($branchOffices->count())
                         @foreach($branchOffices as $branchOffice)
                         <a href="{{ route('tenant.dashboard', $branchOffice) }}" class="list-group-item list-group-item-action">

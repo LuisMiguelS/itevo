@@ -15,12 +15,22 @@ class CreateBranchOfficeTest extends TestCase
         'name' => 'Itevo La Vega',
     ];
 
-    /** @test */
-    function an_admin_can_create_branch_office()
-    {
-        $admin = $this->createAdmin();
+    private $admin;
 
-        $this->actingAs($admin)
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->admin = tap(factory(User::class)->create([
+            'email' => 'thepany96@gmail.com'
+        ]), function ($user) {
+            $user->assign(User::ROLE_ADMIN);
+        });
+    }
+
+    /** @test */
+    function an_super_admin_can_create_branch_office()
+    {
+        $this->actingAs($this->admin)
             ->post(route('branchOffices.store'), $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Sucursal {$this->defaultData['name']} creado con exito."]);
@@ -59,9 +69,7 @@ class CreateBranchOfficeTest extends TestCase
     {
         $this->handleValidationExceptions();
 
-        $admin = $this->createAdmin();
-
-        $this->actingAs($admin)
+        $this->actingAs($this->admin)
             ->post(route('branchOffices.store'), [])
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasErrors(['name']);

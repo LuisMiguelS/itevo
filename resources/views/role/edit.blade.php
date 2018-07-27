@@ -6,7 +6,7 @@
             <div class="col-md-8">
 
                 <div class="card border-0 shadow-sm">
-                    <div class="card-header border-0">
+                    <div class="card-header border-0 bg-white">
                         <span class="font-weight-bold">Editar</span>
                         {{ $role->name }}</div>
                     <div class="card-body">

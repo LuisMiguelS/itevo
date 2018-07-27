@@ -23,6 +23,7 @@ class BranchOfficeController extends Controller
     public function index()
     {
         $this->authorize('view', BranchOffice::class);
+        $this->userIsAuthorized();
         $branchOffices = BranchOffice::paginate();
         return view('branch_office.index', compact('branchOffices'));
     }
@@ -34,6 +35,7 @@ class BranchOfficeController extends Controller
     public function create()
     {
         $this->authorize('create', BranchOffice::class);
+        $this->userIsAuthorized();
         return view('branch_office.create');
     }
 
@@ -45,6 +47,7 @@ class BranchOfficeController extends Controller
     public function store(CreateBranchOfficeRequest $request)
     {
         $this->authorize('create', BranchOffice::class);
+        $this->userIsAuthorized();
         return redirect()
             ->route('branchOffices.index')
             ->with(['flash_success' => $request->createBranchOffice()]);
@@ -59,6 +62,7 @@ class BranchOfficeController extends Controller
     public function edit(BranchOffice $branchOffice)
     {
         $this->authorize('update', $branchOffice);
+        $this->userIsAuthorized();
         return view('branch_office.edit', compact('branchOffice'));
     }
 
@@ -71,6 +75,7 @@ class BranchOfficeController extends Controller
     public function update(UpdateBranchOfficeRequest $request, BranchOffice $branchOffice)
     {
         $this->authorize('update', $branchOffice);
+        $this->userIsAuthorized();
         return redirect()
             ->route('branchOffices.index')
             ->with(['flash_success' => $request->updateBranchOffice($branchOffice)]);
@@ -85,6 +90,7 @@ class BranchOfficeController extends Controller
     public function destroy(BranchOffice $branchOffice)
     {
         $this->authorize('delete', $branchOffice);
+        $this->userIsAuthorized();
         $branchOffice->delete();
         return back()->with(['flash_success' => "Sucursal {$branchOffice->name} eliminado con exito."]);
     }
@@ -98,5 +104,10 @@ class BranchOfficeController extends Controller
     {
         $this->authorize('tenant-view', BranchOffice::class);
         return view('tenant.dashboard', compact('branchOffice'));
+    }
+
+    public function userIsAuthorized()
+    {
+        abort_unless(auth()->user()->isSuperAdmin(), 403);
     }
 }

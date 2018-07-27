@@ -9,7 +9,7 @@
 
 <li class="has-sub">
     <a href="#">
-        <i class="fa fa-school"></i>
+        <i class="fas fa-th-large"></i>
         <span class="title">Aulas</span>
     </a>
     <ul>
@@ -34,7 +34,7 @@
 
 <li class="has-sub">
     <a href="#">
-        <i class="fa fa-puzzle-piece"></i>
+        <i class="fas fa-th-large"></i>
         <span class="title">Cursos</span>
     </a>
     <ul>
@@ -82,7 +82,7 @@
 
 <li class="has-sub">
     <a href="#">
-        <i class="fa fa-sign"></i>
+        <i class="fas fa-th-large"></i>
         <span class="title">Recursos</span>
     </a>
     <ul>
@@ -107,7 +107,7 @@
 
 <li class="has-sub">
     <a href="#">
-        <i class="fa fa-chalkboard-teacher"></i>
+        <i class="fas fa-th-large"></i>
         <span class="title">Profesores</span>
     </a>
     <ul>
@@ -132,7 +132,7 @@
 
 <li class="has-sub">
     <a href="#">
-        <i class="fa fa-calendar-alt"></i>
+        <i class="fas fa-th-large"></i>
         <span class="title">Promociones</span>
     </a>
     <ul>

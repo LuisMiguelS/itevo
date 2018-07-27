@@ -11,12 +11,12 @@
     <title>@yield('title', config('app.name', 'Laravel'))</title>
 
     <!-- Scripts -->
-    <script src="{{ mix('js/tenant_panel.js') }}" defer></script>
+    <script src="{{ mix('js/tenant.js') }}" defer></script>
     @stack('scripts')
 
     <!-- Styles -->
-    <link href="{{ mix('css/tenant_panel.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+    <link href="{{ mix('css/tenant.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
 
 </head>
 <body class="page-body">
@@ -52,7 +52,7 @@
                 </div>
 
                 <ul id="main-menu" class="main-menu">
-                    @include('partials.sidebar')
+                    @include('partials._sidebar_tenant')
                 </ul>
             </div>
         </div>
@@ -94,7 +94,7 @@
                     <h1>@yield('title', config('app.name', 'Laravel'))</h1>
                 </div>
 
-                @include('partials.alert-tenant')
+                @include('partials._alert_tenant')
 
                 @yield('content')
             </div>

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Tenant;
 
-use App\{Course, BranchOffice};
+use App\{Course, BranchOffice, DataTables\TenantCourseDataTable};
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Tenant\StoreCourseRequest;
@@ -19,15 +19,17 @@ class CourseController extends Controller
     }
 
     /**
+     * @param \App\DataTables\TenantCourseDataTable $dataTable
      * @param \App\BranchOffice $branchOffice
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index(BranchOffice $branchOffice)
+    public function index(TenantCourseDataTable $dataTable,BranchOffice $branchOffice)
     {
         $this->authorize('tenant-view', Course::class);
-        $courses = $branchOffice->courses()->paginate();
-        return view('tenant.course.index', compact('branchOffice', 'courses'));
+        $breadcrumbs = 'course';
+        $title = 'Todos los cursos';
+        return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
     }
 
     /**
@@ -39,7 +41,8 @@ class CourseController extends Controller
     {
         $this->authorize('tenant-create', Course::class);
         $typeCourses = $branchOffice->typecourses()->orderByDesc('id')->paginate();
-        return view('tenant.course.create', compact('branchOffice', 'typeCourses'));
+        $course = new Course;
+        return view('tenant.course.create', compact('branchOffice', 'typeCourses', 'course'));
     }
 
     /**
