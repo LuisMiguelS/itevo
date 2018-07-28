@@ -153,3 +153,28 @@
         @endcan
     </ul>
 </li>
+
+<li class="has-sub">
+    <a href="#">
+        <i class="fas fa-th-large"></i>
+        <span class="title">Studiantes</span>
+    </a>
+    <ul>
+        @can('tenant-view', \App\Student::class)
+            <li>
+                <a href="{{ route('tenant.students.index', $branchOffice) }}">
+                    <span class="title">Todos los estudiantes</span>
+                </a>
+            </li>
+        @endcan
+
+        @can('tenant-create', \App\Student::class)
+            <li>
+                <a href="{{ route('tenant.students.create', $branchOffice) }}">
+                    <span class="title">Crear studiante</span>
+                </a>
+            </li>
+        @endcan
+    </ul>
+</li>
+

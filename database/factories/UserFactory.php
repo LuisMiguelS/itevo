@@ -76,3 +76,18 @@ $factory->define(App\Teacher::class, function (Faker $faker) {
         'phone' => substr($faker->unique()->phoneNumber, 0, 13)
     ];
 });
+
+$factory->define(App\Student::class, function (Faker $faker) {
+    $promotion = factory(App\Promotion::class)->create();
+
+    return [
+        'branch_office_id' => $promotion->branchOffice,
+        'promotion_id' => $promotion,
+        'id_card' => substr($faker->unique()->creditCardNumber, 0, 13),
+        'name' => $faker->name,
+        'last_name' => $faker->lastName,
+        'phone' => substr($faker->unique()->phoneNumber, 0, 13),
+        'is_adult' => $faker->randomElement([true, false]),
+        'address' => $faker->paragraph(1)
+    ];
+});

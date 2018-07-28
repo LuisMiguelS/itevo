@@ -16,10 +16,11 @@ class CreateTeachersTable extends Migration
         Schema::create('teachers', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('branch_office_id');
-            $table->string('id_card', 13)->unique();
+            $table->string('id_card', 13);
             $table->string('name', 70);
             $table->string('last_name', 70);
-            $table->string('phone', 17)->unique();
+            $table->string('phone', 17);
+            $table->unique(['branch_office_id', 'id_card', 'phone']);
             $table->timestamps();
             $table->softDeletes();
 

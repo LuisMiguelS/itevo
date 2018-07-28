@@ -6,7 +6,7 @@
           <div class="col-md-8">
 
               <div class="card shadow-sm border-0">
-                  <div class="card-header border-0 font-weight-bold">Crear Sucursal</div>
+                  <div class="card-header border-0 font-weight-bold bg-white">Crear Sucursal</div>
                   <div class="card-body">
 
                       <form action="{{ route('branchOffices.store') }}" method="POST">

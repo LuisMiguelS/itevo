@@ -55,6 +55,8 @@ Route::prefix('{branchOffice}')->middleware('tenantAccess')->name('tenant.')->gr
     Route::post('promotions/{promotion}/status/change', 'Tenant\PromotionController@changeStatus')->name('promotions.status');
     Route::resource('promotions', 'Tenant\PromotionController');
     Route::resource('teachers', 'Tenant\TeacherController');
+    Route::resource('students', 'Tenant\StudentController');
+
 });
 
 

@@ -100,6 +100,11 @@ class BranchOffice extends Model
         return $this->hasMany(Resource::class);
     }
 
+    public function students()
+    {
+        return $this->hasMany(Student::class);
+    }
+
     public function currentPromotion()
     {
         return $this->promotions()->where('status', Promotion::STATUS_CURRENT)->first();

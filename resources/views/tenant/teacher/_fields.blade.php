@@ -32,7 +32,7 @@
     <label for="name" class="col-sm-4 col-form-label text-md-right">Cédula: <span class="text-danger"><strong>*</strong></span></label>
 
     <div class="col-md-12">
-        <input id="id_card" type="number" class="form-control{{ $errors->has('id_card') ? ' is-invalid' : '' }}" name="id_card" value="{{ old('id_card', $teacher->id_card) }}" required>
+        <input id="id_card" type="text" class="form-control{{ $errors->has('id_card') ? ' is-invalid' : '' }}" name="id_card" value="{{ old('id_card', $teacher->id_card) }}" required>
 
         @if ($errors->has('id_card'))
             <span class="invalid-feedback">
@@ -46,7 +46,7 @@
     <label for="name" class="col-sm-4 col-form-label text-md-right">Teléfono: <span class="text-danger"><strong>*</strong></span></label>
 
     <div class="col-md-12">
-        <input id="phone" type="number" class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" name="phone" value="{{ old('phone', $teacher->phone) }}" required>
+        <input id="phone" type="text" class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" name="phone" value="{{ old('phone', $teacher->phone) }}" required>
 
         @if ($errors->has('phone'))
             <span class="invalid-feedback">

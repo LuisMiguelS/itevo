@@ -2,10 +2,10 @@
 
 namespace App\DataTables;
 
-use App\Teacher;
+use App\Student;
 use Yajra\DataTables\Services\DataTable;
 
-class TenantTeacherDataTable extends DataTable
+class TenantStudentDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -16,13 +16,13 @@ class TenantTeacherDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->editColumn('created_at', function(Teacher $teacher) {
-                return $teacher->created_at->format('l j F Y');
+            ->editColumn('created_at', function(Student $student) {
+                return $student->created_at->format('l j F Y');
             })
-            ->editColumn('updated_at', function(Teacher $teacher) {
-                return $teacher->updated_at->format('l j F Y');
+            ->editColumn('updated_at', function(Student $student) {
+                return $student->updated_at->format('l j F Y');
             })
-            ->addColumn('action', 'tenantteacher.action');
+            ->addColumn('action', 'tenantstudent.action');
     }
 
     /**
@@ -32,7 +32,7 @@ class TenantTeacherDataTable extends DataTable
      */
     public function query()
     {
-        return request()->branchOffice->teachers;
+        return request()->branchOffice->students;
     }
 
     /**
@@ -62,6 +62,11 @@ class TenantTeacherDataTable extends DataTable
             'last_name' => ['title' => 'Apellido(s)'],
             'id_card' => ['title' => 'Cedula'],
             'phone' => ['title' => 'Telefono'],
+            'address' => ['title' => 'Direccion'],
+            'is_adult' => ['title' => 'Adulto'],
+            'tutor_id_card' => ['title' => 'Cedula del tutor'],
+            'signed_up' => ['title' => 'Inscrito'],
+            'birthdate' => ['title' => 'Fecha de nacimiento'],
             'created_at' => ['title' => 'Fecha de Creacion'],
             'updated_at' => ['title' => 'Fecha de Actualizacion']
         ];
@@ -74,6 +79,6 @@ class TenantTeacherDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'TenantTeacher_' . date('YmdHis');
+        return 'TenantStudent_' . date('YmdHis');
     }
 }

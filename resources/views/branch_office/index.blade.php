@@ -6,7 +6,7 @@
             <div class="col-md-8">
 
                 <div class="card shadow-sm border-0">
-                    <div class="card-header border-0 font-weight-bold">
+                    <div class="card-header border-0 font-weight-bold bg-white">
                         Todos las sucursal
                         <a class="btn btn-primary btn-sm" href="{{ route('branchOffices.create') }}">Crear sucursal</a>
                     </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Tenant;
 
 use App\Teacher;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTeacherRequest extends FormRequest
@@ -25,10 +26,32 @@ class UpdateTeacherRequest extends FormRequest
     public function rules()
     {
         return [
-            'id_card' => 'required|unique:teachers,id_card,'. $this->teacher->id,
+            'id_card' => [
+                'required',
+                'min:13',
+                'max:13',
+                'unique:teachers,id_card,'. $this->teacher->id,
+                Rule::unique('teachers')->ignore($this->teacher->id)->where(function ($query) {
+                    return $query->where([
+                        ['branch_office_id', $this->branchOffice->id],
+                        ['id_card', $this->request->get('id_card')],
+                    ]);
+                })
+            ],
             'name' => 'required',
             'last_name' => 'required',
-            'phone' => 'required|unique:teachers,phone,'. $this->teacher->id,
+            'phone' => [
+                'min:9',
+                'max:17',
+                'required',
+                'unique:teachers,phone,'. $this->teacher->id,
+                Rule::unique('teachers')->ignore($this->teacher->id)->where(function ($query) {
+                    return $query->where([
+                        ['branch_office_id', $this->branchOffice->id],
+                        ['phone', $this->request->get('phone')],
+                    ]);
+                })
+            ]
         ];
     }
 

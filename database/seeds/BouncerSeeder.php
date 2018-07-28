@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Silber\Bouncer\Database\Ability;
-use App\{Promotion, Resource, Teacher, User, Course, TypeCourse, Classroom, BranchOffice};
+use App\{Promotion, Resource, Student, Teacher, User, Course, TypeCourse, Classroom, BranchOffice};
 use Silber\Bouncer\Database\Role;
 
 class BouncerSeeder extends Seeder
@@ -30,6 +30,7 @@ class BouncerSeeder extends Seeder
         $this->promotionAbility();
         $this->userAbilities();
         $this->roleAbilities();
+        $this->studentAbilities();
     }
 
     protected function createRole()
@@ -345,6 +346,37 @@ class BouncerSeeder extends Seeder
         Bouncer::ability()->createForModel(Role::class, [
             'name' => 'update',
             'title' => 'Actualizar rol'
+        ]);
+    }
+
+    protected function studentAbilities(): void
+    {
+        /*
+       |--------------------------------------------------------------------------
+       | Students Habilidades
+       |--------------------------------------------------------------------------
+       |
+       | Todas la habilidades para la gestion del crud de estudiantes
+       */
+
+        Bouncer::ability()->createForModel(Student::class, [
+            'name' => 'view',
+            'title' => 'Ver Estudiantes'
+        ]);
+
+        Bouncer::ability()->createForModel(Student::class, [
+            'name' => 'create',
+            'title' => 'Crear Estudiante'
+        ]);
+
+        Bouncer::ability()->createForModel(Student::class, [
+            'name' => 'delete',
+            'title' => 'Eliminar Estudiante'
+        ]);
+
+        Bouncer::ability()->createForModel(Student::class, [
+            'name' => 'update',
+            'title' => 'Actualizar Estudiante'
         ]);
     }
 }
