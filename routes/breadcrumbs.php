@@ -108,3 +108,14 @@ Breadcrumbs::for('promotion-edit', function ($breadcrumbs, BranchOffice $branchO
     $breadcrumbs->parent('teacher', $branchOffice);
     $breadcrumbs->push("Promocion {$promotion->promotion_no}", $promotion->url->edit);
 });
+
+// Student
+Breadcrumbs::for('student', function ($breadcrumbs, BranchOffice $branchOffice) {
+    $breadcrumbs->parent('dashboard', $branchOffice);
+    $breadcrumbs->push('Estudiantes', route('tenant.students.index', $branchOffice));
+});
+
+Breadcrumbs::for('student-create', function ($breadcrumbs, BranchOffice $branchOffice) {
+    $breadcrumbs->parent('student', $branchOffice);
+    $breadcrumbs->push('Crear', route('tenant.students.create', $branchOffice));
+});

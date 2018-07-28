@@ -28,7 +28,7 @@ class StudentController extends Controller
     public function index(TenantStudentDataTable $dataTable, BranchOffice $branchOffice)
     {
         $this->authorize('tenant-view', Student::class);
-        $breadcrumbs = 'teacher';
+        $breadcrumbs = 'student';
         $title = 'Todos los Estudiantes';
         return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
     }
@@ -39,7 +39,7 @@ class StudentController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create()
+    public function create(BranchOffice $branchOffice)
     {
         $this->authorize('tenant-create', Student::class);
         $student = new Student;
@@ -58,7 +58,7 @@ class StudentController extends Controller
     {
         $this->authorize('tenant-create', Student::class);
         return redirect()
-            ->route('tenant.resources.index', $branchOffice)
+            ->route('tenant.students.index', $branchOffice)
             ->with(['flash_success' => $request->createStudent($branchOffice)]);
     }
 
