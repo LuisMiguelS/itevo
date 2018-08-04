@@ -22,7 +22,10 @@ class TenantStudentDataTable extends DataTable
             ->editColumn('updated_at', function(Student $student) {
                 return $student->updated_at->format('l j F Y');
             })
-            ->addColumn('action', 'tenantstudent.action');
+            ->addColumn('action', function (Student $student) {
+                return view('tenant.student._actions', compact('student'));
+            })
+            ->rawColumns(['action']);
     }
 
     /**
@@ -60,15 +63,15 @@ class TenantStudentDataTable extends DataTable
             'id' => ['title' => 'Identificador', 'visible' => false, 'exportable' => false, 'printable' => false,],
             'name' => ['title' => 'Nombre(s)'],
             'last_name' => ['title' => 'Apellido(s)'],
-            'id_card' => ['title' => 'Cedula'],
-            'phone' => ['title' => 'Telefono'],
-            'address' => ['title' => 'Direccion'],
+            'id_card' => ['title' => 'Cédula'],
+            'phone' => ['title' => 'Teléfono'],
+            'address' => ['title' => 'Dirección'],
             'is_adult' => ['title' => 'Adulto'],
-            'tutor_id_card' => ['title' => 'Cedula del tutor'],
+            'tutor_id_card' => ['title' => 'Cédula del tutor'],
             'signed_up' => ['title' => 'Inscrito'],
             'birthdate' => ['title' => 'Fecha de nacimiento'],
-            'created_at' => ['title' => 'Fecha de Creacion'],
-            'updated_at' => ['title' => 'Fecha de Actualizacion']
+            'created_at' => ['title' => 'Fecha de creación'],
+            'updated_at' => ['title' => 'Fecha de actualización']
         ];
     }
 

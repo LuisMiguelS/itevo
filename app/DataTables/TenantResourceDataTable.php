@@ -22,7 +22,10 @@ class TenantResourceDataTable extends DataTable
             ->editColumn('updated_at', function(Resource $resource) {
                 return $resource->updated_at->format('l j F Y');
             })
-            ->addColumn('action', 'tenantresource.action');
+            ->addColumn('action', function (Resource $resource) {
+                return view('tenant.resource._actions', compact('resource'));
+            })
+            ->rawColumns(['action']);
     }
 
     /**
@@ -59,8 +62,8 @@ class TenantResourceDataTable extends DataTable
         return [
             'id' => ['title' => 'Identificador', 'visible' => false, 'exportable' => false, 'printable' => false,],
             'name' => ['title' => 'Nombre del recurso'],
-            'created_at' => ['title' => 'Fecha de Creacion'],
-            'updated_at' => ['title' => 'Fecha de Actualizacion']
+            'created_at' => ['title' => 'Fecha de creación'],
+            'updated_at' => ['title' => 'Fecha de actualización']
         ];
     }
 

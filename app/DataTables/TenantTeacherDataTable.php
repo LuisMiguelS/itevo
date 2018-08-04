@@ -22,7 +22,10 @@ class TenantTeacherDataTable extends DataTable
             ->editColumn('updated_at', function(Teacher $teacher) {
                 return $teacher->updated_at->format('l j F Y');
             })
-            ->addColumn('action', 'tenantteacher.action');
+            ->addColumn('action', function (Teacher $teacher) {
+                return view('tenant.teacher._actions', compact('teacher'));
+            })
+            ->rawColumns(['action']);
     }
 
     /**
@@ -61,9 +64,9 @@ class TenantTeacherDataTable extends DataTable
             'name' => ['title' => 'Nombre(s)'],
             'last_name' => ['title' => 'Apellido(s)'],
             'id_card' => ['title' => 'Cedula'],
-            'phone' => ['title' => 'Telefono'],
-            'created_at' => ['title' => 'Fecha de Creacion'],
-            'updated_at' => ['title' => 'Fecha de Actualizacion']
+            'phone' => ['title' => 'Teléfono'],
+            'created_at' => ['title' => 'Fecha de creación'],
+            'updated_at' => ['title' => 'Fecha de actualización']
         ];
     }
 

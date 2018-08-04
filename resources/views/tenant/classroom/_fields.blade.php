@@ -1,7 +1,7 @@
 @csrf
 
 <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
-    <label class="control-label">Nombre del aula <span class="text-danger">*</span></label>
+    <label class="control-label">Nombre del aula: <span class="text-danger">*</span></label>
 
     <input type="text"
            name="name"
@@ -18,7 +18,7 @@
 </div>
 
 <div class="form-group {{ $errors->has('building') ? 'has-error' : '' }}">
-    <label class="control-label">Nombre del edificio <span class="text-danger">*</span></label>
+    <label class="control-label">Nombre del edificio: <span class="text-danger">*</span></label>
 
     <input type="text"
            name="building"

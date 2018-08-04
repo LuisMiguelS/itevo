@@ -1,6 +1,6 @@
 @extends('layouts.tenant')
 
-@section('title', 'Crear profesor')
+@section('title', 'Crear estudiante')
 
 @section('breadcrumb')
     {{ Breadcrumbs::render('student-create', $branchOffice) }}

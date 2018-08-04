@@ -63,8 +63,8 @@ class TenantClassroomDataTable extends DataTable
             'id' => ['title' => 'Identificador', 'visible' => false, 'exportable' => false, 'printable' => false,],
             'name' => ['title' => 'Aula'],
             'building' => ['title' => 'Edificio'],
-            'created_at' => ['title' => 'Fecha de Creacion'],
-            'updated_at' => ['title' => 'Fecha de Actualizacion']
+            'created_at' => ['title' => 'Fecha de creación'],
+            'updated_at' => ['title' => 'Fecha de actualización']
         ];
     }
 

@@ -1,7 +1,7 @@
 <aside class="main-sidebar">
     <section class="sidebar">
         <ul class="sidebar-menu" data-widget="tree">
-            <li class="header">MAIN NAVIGATION</li>
+            <li class="header text-center">PANEL DE NAVEGACIÓN</li>
             @can('tenant-view', \App\BranchOffice::class)
             <li>
                 <a href="{{ route('tenant.dashboard', $branchOffice) }}">
@@ -134,7 +134,7 @@
                     @can('tenant-create', \App\Promotion::class)
                         <li>
                             <a href="{{ route('tenant.promotions.create', $branchOffice) }}">
-                                <i class="fa fa-circle-o"></i> Crear promocion
+                                <i class="fa fa-circle-o"></i> Crear promoción
                             </a>
                         </li>
                     @endcan

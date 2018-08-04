@@ -22,7 +22,10 @@ class TenantTypeCourseDataTable extends DataTable
             ->editColumn('updated_at', function(TypeCourse $typeCourse) {
                 return $typeCourse->updated_at->format('l j F Y');
             })
-            ->addColumn('action', 'tenanttypecourse.action');
+            ->addColumn('action', function (TypeCourse $typeCourse) {
+                return view('tenant.type_course._actions', compact('typeCourse'));
+            })
+            ->rawColumns(['action']);
     }
 
     /**
@@ -58,9 +61,9 @@ class TenantTypeCourseDataTable extends DataTable
     {
         return [
             'id' => ['title' => 'Identificador', 'visible' => false, 'exportable' => false, 'printable' => false,],
-            'name' => ['title' => 'Tipo de Recurso'],
-            'created_at' => ['title' => 'Fecha de Creacion'],
-            'updated_at' => ['title' => 'Fecha de Actualizacion']
+            'name' => ['title' => 'Tipo de recurso'],
+            'created_at' => ['title' => 'Fecha de creación'],
+            'updated_at' => ['title' => 'Fecha de actualización']
         ];
     }
 

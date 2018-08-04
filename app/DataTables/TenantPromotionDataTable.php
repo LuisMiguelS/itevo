@@ -22,7 +22,10 @@ class TenantPromotionDataTable extends DataTable
             ->editColumn('updated_at', function(Promotion $promotion) {
                 return $promotion->updated_at->format('l j F Y');
             })
-            ->addColumn('action', 'tenantpromotion.action');
+            ->addColumn('action', function (Promotion $promotion) {
+                return view('tenant.promotion._actions', compact('promotion'));
+            })
+            ->rawColumns(['action']);
     }
 
     /**
@@ -60,8 +63,8 @@ class TenantPromotionDataTable extends DataTable
             'id' => ['title' => 'Identificador', 'visible' => false, 'exportable' => false, 'printable' => false,],
             'promotion_no' => ['title' => 'Promocion no.'],
             'status' => ['title' => 'Estado'],
-            'created_at' => ['title' => 'Fecha de Creacion'],
-            'updated_at' => ['title' => 'Fecha de Actualizacion']
+            'created_at' => ['title' => 'Fecha de creación'],
+            'updated_at' => ['title' => 'Fecha de actualización']
         ];
     }
 

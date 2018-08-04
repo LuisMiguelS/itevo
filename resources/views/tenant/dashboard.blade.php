@@ -8,48 +8,45 @@
 
 @section('content')
 
-
 	<div class="row">
 		<div class="col-lg-3 col-xs-6">
-
 			<div class="small-box bg-aqua">
 				<div class="inner">
 					<h3>150</h3>
-
-					<p>New Orders</p>
+					<p><strong>Cantidad de Estudiantes</strong></p>
 				</div>
 				<div class="icon">
-					<i class="ion ion-bag"></i>
+					<i class="fa fa-users"></i>
 				</div>
-				<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+				<a href="#" class="small-box-footer">Ver detalle <i class="fa fa-arrow-circle-right"></i></a>
 			</div>
 		</div>
 
 		<div class="col-lg-3 col-xs-6">
 			<div class="small-box bg-green">
 				<div class="inner">
-					<h3>53<sup style="font-size: 20px">%</sup></h3>
+					<h3>100,000.00</h3>
 
-					<p>Bounce Rate</p>
+					<p><strong>Ingresos del día</strong></p>
 				</div>
 				<div class="icon">
-					<i class="ion ion-stats-bars"></i>
+					<i class="fa fa-dollar"></i>
 				</div>
-				<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+				<a href="#" class="small-box-footer">Ver detalle <i class="fa fa-arrow-circle-right"></i></a>
 			</div>
 		</div>
 
 		<div class="col-lg-3 col-xs-6">
 			<div class="small-box bg-yellow">
 				<div class="inner">
-					<h3>44</h3>
+					<h3>10</h3>
 
-					<p>User Registrations</p>
+					<p><strong>Cursos activos</strong></p>
 				</div>
 				<div class="icon">
-					<i class="ion ion-person-add"></i>
+					<i class="fa fa-list"></i>
 				</div>
-				<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+				<a href="#" class="small-box-footer">Ver detalle <i class="fa fa-arrow-circle-right"></i></a>
 			</div>
 		</div>
 
@@ -59,12 +56,12 @@
 				<div class="inner">
 					<h3>{{ $branchOffice->currentPromotion()->promotion_no ?? 0 }}</h3>
 
-					<p>{{$branchOffice->currentPromotion() ? 'Promocion en transcurso' : 'No hay promocion en transcurso' }}</p>
+					<p><strong>{{ $branchOffice->currentPromotion() ? 'Promoción en curso' : 'No hay promoción en curso' }}</strong></p>
 				</div>
 				<div class="icon">
-					<i class="ion ion-pie-graph"></i>
+					<i class="fa fa-spinner"></i>
 				</div>
-				<a href="{{ $branchOffice->currentPromotion()->url->show ?? '#' }}" class="small-box-footer">Mas informacion <i class="fa fa-arrow-circle-right"></i></a>
+				<a href="{{ $branchOffice->currentPromotion()->url->show ?? '#' }}" class="small-box-footer">Más informacion <i class="fa fa-arrow-circle-right"></i></a>
 			</div>
 		</div>
 	</div>
