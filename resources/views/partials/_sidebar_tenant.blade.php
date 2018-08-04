@@ -1,180 +1,202 @@
-@can('tenant-view', \App\BranchOffice::class)
-    <li class="opened">
-        <a href="{{ route('tenant.dashboard', $branchOffice) }}">
-            <i class="fas fa-home"></i>
-            <span class="title">Dashboard</span>
-        </a>
-    </li>
-@endcan
-
-<li class="has-sub">
-    <a href="#">
-        <i class="fas fa-th-large"></i>
-        <span class="title">Aulas</span>
-    </a>
-    <ul>
-        @can('tenant-view', \App\Classroom::class)
-        <li>
-            <a href="{{ route('tenant.classrooms.index', $branchOffice) }}">
-                <span class="title">Todas las aulas</span>
-            </a>
-        </li>
-        @endcan
-
-        @can('tenant-create', \App\Classroom::class)
-        <li>
-            <a href="{{ route('tenant.classrooms.create', $branchOffice) }}">
-                <span class="title">Crear aula</span>
-            </a>
-        </li>
-        @endcan
-    </ul>
-</li>
-
-
-<li class="has-sub">
-    <a href="#">
-        <i class="fas fa-th-large"></i>
-        <span class="title">Cursos</span>
-    </a>
-    <ul>
-        @can('tenant-view', \App\Course::class)
-        <li>
-            <a href="{{ route('tenant.courses.index', $branchOffice) }}">
-                <span class="title">Todas los cursos</span>
-            </a>
-        </li>
-        @endcan
-
-        @can('tenant-create', \App\Course::class)
-        <li>
-            <a href="{{ route('tenant.courses.create', $branchOffice) }}">
-                <span class="title">Crear cursos</span>
-            </a>
-        </li>
-        @endcan
-    </ul>
-</li>
-
-<li class="has-sub">
-    <a href="#">
-        <i class="fas fa-th-large"></i>
-        <span class="title">Tipo de curso</span>
-    </a>
-    <ul>
-        @can('tenant-view', \App\TypeCourse::class)
-        <li>
-            <a href="{{ route('tenant.typeCourses.index', $branchOffice) }}">
-                <span class="title">Todos los tipos de curso</span>
-            </a>
-        </li>
-        @endcan
-
-        @can('tenant-create', \App\TypeCourse::class)
-        <li>
-            <a href="{{ route('tenant.typeCourses.create', $branchOffice) }}">
-                <span class="title">Crear tipo de curso</span>
-            </a>
-        </li>
-        @endcan
-    </ul>
-</li>
-
-<li class="has-sub">
-    <a href="#">
-        <i class="fas fa-th-large"></i>
-        <span class="title">Recursos</span>
-    </a>
-    <ul>
-        @can('tenant-view', \App\Resource::class)
-        <li>
-            <a href="{{ route('tenant.resources.index', $branchOffice) }}">
-                <span class="title">Todos los recursos</span>
-            </a>
-        </li>
-        @endcan
-
-        @can('tenant-create', \App\Resource::class)
-        <li>
-
-            <a href="{{ route('tenant.resources.create', $branchOffice) }}">
-                <span class="title">Crear recurso</span>
-            </a>
-        </li>
-        @endcan
-    </ul>
-</li>
-
-<li class="has-sub">
-    <a href="#">
-        <i class="fas fa-th-large"></i>
-        <span class="title">Profesores</span>
-    </a>
-    <ul>
-        @can('tenant-view', \App\Teacher::class)
-        <li>
-            <a href="{{ route('tenant.teachers.index', $branchOffice) }}">
-                <span class="title">Todos los profesores</span>
-            </a>
-        </li>
-        @endcan
-
-        @can('tenant-create', \App\Teacher::class)
-        <li>
-            <a href="{{ route('tenant.teachers.create', $branchOffice) }}">
-                <span class="title">Crear profesor</span>
-            </a>
-        </li>
-        @endcan
-    </ul>
-</li>
-
-
-<li class="has-sub">
-    <a href="#">
-        <i class="fas fa-th-large"></i>
-        <span class="title">Promociones</span>
-    </a>
-    <ul>
-        @can('tenant-view', \App\Promotion::class)
-           <li>
-               <a href="{{ route('tenant.promotions.index', $branchOffice) }}">
-                   <span class="title">Todas las promociones</span>
-               </a>
-           </li>
-        @endcan
-
-        @can('tenant-create', \App\Promotion::class)
+<aside class="main-sidebar">
+    <section class="sidebar">
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="header">MAIN NAVIGATION</li>
+            @can('tenant-view', \App\BranchOffice::class)
             <li>
-                <a href="{{ route('tenant.promotions.create', $branchOffice) }}">
-                    <span class="title">Crear promocion</span>
+                <a href="{{ route('tenant.dashboard', $branchOffice) }}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Dashboard</span>
                 </a>
             </li>
-        @endcan
-    </ul>
-</li>
+            @endcan
 
-<li class="has-sub">
-    <a href="#">
-        <i class="fas fa-th-large"></i>
-        <span class="title">Studiantes</span>
-    </a>
-    <ul>
-        @can('tenant-view', \App\Student::class)
-            <li>
-                <a href="{{ route('tenant.students.index', $branchOffice) }}">
-                    <span class="title">Todos los estudiantes</span>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-book"></i> <span>Aulas</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
                 </a>
-            </li>
-        @endcan
+                <ul class="treeview-menu">
+                    @can('tenant-view', \App\Classroom::class)
+                        <li>
+                            <a href="{{ route('tenant.classrooms.index', $branchOffice) }}">
+                                <i class="fa fa-circle-o"></i> Todas las aulas
+                            </a>
+                        </li>
+                    @endcan
 
-        @can('tenant-create', \App\Student::class)
-            <li>
-                <a href="{{ route('tenant.students.create', $branchOffice) }}">
-                    <span class="title">Crear studiante</span>
+                    @can('tenant-create', \App\Classroom::class)
+                        <li>
+                            <a href="{{ route('tenant.classrooms.create', $branchOffice) }}">
+                                <i class="fa fa-circle-o"></i> Crear aula
+                            </a>
+                        </li>
+                    @endcan
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-book"></i> <span>Cursos</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
                 </a>
-            </li>
-        @endcan
-    </ul>
-</li>
+                <ul class="treeview-menu">
+                    @can('tenant-view', \App\Course::class)
+                        <li>
+                            <a href="{{ route('tenant.courses.index', $branchOffice) }}">
+                                <i class="fa fa-circle-o"></i> Todos los cursos
+                            </a>
+                        </li>
+                    @endcan
 
+                    @can('tenant-create', \App\Course::class)
+                        <li>
+                            <a href="{{ route('tenant.courses.create', $branchOffice) }}">
+                                <i class="fa fa-circle-o"></i> Crear curso
+                            </a>
+                        </li>
+                    @endcan
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-book"></i> <span>Tipos de cursos</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    @can('tenant-view', \App\TypeCourse::class)
+                        <li>
+                            <a href="{{ route('tenant.typeCourses.index', $branchOffice) }}">
+                                <i class="fa fa-circle-o"></i> Todos los tipos de cursos
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('tenant-create', \App\TypeCourse::class)
+                        <li>
+                            <a href="{{ route('tenant.typeCourses.create', $branchOffice) }}">
+                                <i class="fa fa-circle-o"></i> Crear tipo de curso
+                            </a>
+                        </li>
+                    @endcan
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-book"></i> <span>Recursos</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    @can('tenant-view', \App\Resource::class)
+                        <li>
+                            <a href="{{ route('tenant.resources.index', $branchOffice) }}">
+                                <i class="fa fa-circle-o"></i> Todos los recursos
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('tenant-create', \App\Resource::class)
+                        <li>
+                            <a href="{{ route('tenant.resources.create', $branchOffice) }}">
+                                <i class="fa fa-circle-o"></i> Crear recurso
+                            </a>
+                        </li>
+                    @endcan
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-book"></i> <span>Promociones</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    @can('tenant-view', \App\Promotion::class)
+                        <li>
+                            <a href="{{ route('tenant.promotions.index', $branchOffice) }}">
+                                <i class="fa fa-circle-o"></i> Todas las promociones
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('tenant-create', \App\Promotion::class)
+                        <li>
+                            <a href="{{ route('tenant.promotions.create', $branchOffice) }}">
+                                <i class="fa fa-circle-o"></i> Crear promocion
+                            </a>
+                        </li>
+                    @endcan
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-book"></i> <span>Profesores</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    @can('tenant-view', \App\Teacher::class)
+                        <li>
+                            <a href="{{ route('tenant.teachers.index', $branchOffice) }}">
+                                <i class="fa fa-circle-o"></i> Todos los profesores
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('tenant-create', \App\Teacher::class)
+                        <li>
+                            <a href="{{ route('tenant.teachers.create', $branchOffice) }}">
+                                <i class="fa fa-circle-o"></i> Crear profesor
+                            </a>
+                        </li>
+                    @endcan
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-book"></i> <span>Estudiantes</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    @can('tenant-view', \App\Student::class)
+                        <li>
+                            <a href="{{ route('tenant.students.index', $branchOffice) }}">
+                                <i class="fa fa-circle-o"></i> Todos los estudiantes
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('tenant-create', \App\Student::class)
+                        <li>
+                            <a href="{{ route('tenant.students.create', $branchOffice) }}">
+                                <i class="fa fa-circle-o"></i> Crear estudiante
+                            </a>
+                        </li>
+                    @endcan
+                </ul>
+            </li>
+
+            <li class="header">LABELS</li>
+            <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
+            <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
+            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
+        </ul>
+    </section>
+</aside>

@@ -38,8 +38,8 @@ class UpdateTeacherRequest extends FormRequest
                     ]);
                 })
             ],
-            'name' => 'required',
-            'last_name' => 'required',
+            'name' => 'required|min:4',
+            'last_name' => 'required|min:4',
             'phone' => [
                 'min:9',
                 'max:17',

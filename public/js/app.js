@@ -47420,11 +47420,19 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/tenant/sass/app.scss":
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ 0:
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__("./resources/assets/js/app.js");
-module.exports = __webpack_require__("./resources/assets/sass/app.scss");
+__webpack_require__("./resources/assets/sass/app.scss");
+module.exports = __webpack_require__("./resources/assets/tenant/sass/app.scss");
 
 
 /***/ })

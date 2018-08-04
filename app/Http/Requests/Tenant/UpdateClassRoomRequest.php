@@ -18,7 +18,7 @@ class UpdateClassRoomRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                'min:1',
+                'min:3',
                 'max:50',
                 Rule::unique('classrooms')->ignore($this->classroom->id)->where(function ($query) {
                     return $query->where([
@@ -30,7 +30,7 @@ class UpdateClassRoomRequest extends FormRequest
             ],
             'building' => [
                 'required',
-                'min:1',
+                'min:3',
                 'max:50',
                 Rule::unique('classrooms')->ignore($this->classroom->id)->where(function ($query) {
                     return $query->where([

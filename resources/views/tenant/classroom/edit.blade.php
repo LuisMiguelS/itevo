@@ -10,7 +10,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8 col-sm-offset-2">
 
-            @panel
+            @box
                 @slot('title')
                     Editar Aula: <strong>{{ $classroom->name }}</strong>
                 @endslot
@@ -28,7 +28,7 @@
                         </div>
                     </div>
                 </form>
-            @endpanel
+            @endbox
         </div>
     </div>
 @endsection

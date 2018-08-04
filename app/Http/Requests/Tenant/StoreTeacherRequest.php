@@ -38,8 +38,8 @@ class StoreTeacherRequest extends FormRequest
                     ]);
                 })
             ],
-            'name' => 'required',
-            'last_name' => 'required',
+            'name' => 'required|min:4',
+            'last_name' => 'required|min:4',
             'phone' => [
                 'required',
                 'min:9',

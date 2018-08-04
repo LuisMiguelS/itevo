@@ -22,7 +22,10 @@ class TenantClassroomDataTable extends DataTable
             ->editColumn('updated_at', function(Classroom $classroom) {
                 return $classroom->updated_at->format('l j F Y');
             })
-            ->addColumn('action', 'tenantclassroom.action');
+            ->addColumn('action', function (Classroom $classroom) {
+                return view('tenant.classroom._actions', compact('classroom'));
+            })
+            ->rawColumns(['action']);
     }
 
     /**

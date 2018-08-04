@@ -10,7 +10,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8 col-md-offset-2">
 
-            @panel
+            @box
             <form action="{{ route('tenant.courses.store', $branchOffice) }}" method="POST">
 
                 @include('tenant.course._fields')
@@ -23,7 +23,7 @@
                     </div>
                 </div>
             </form>
-            @endpanel
+            @endbox
 
         </div>
     </div>

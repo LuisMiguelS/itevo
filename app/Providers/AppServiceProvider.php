@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Carbon::setLocale(config('app.locale'));
-        \Blade::component('partials._panel_tenant', 'panel');
+        \Blade::component('partials._box_tenant', 'box');
     }
 
     /**
