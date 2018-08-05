@@ -12,7 +12,7 @@
             @box
             <form action="{{ route('tenant.students.store', $branchOffice) }}" method="POST">
 
-                @include('tenant.student._fileds')
+                @include('tenant.student._fields')
 
                 <div class="form-group row mb-0">
                     <div class="col-md-12">
@@ -26,3 +26,7 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+
+@endpush

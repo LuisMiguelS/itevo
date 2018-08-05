@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests\Tenant;
 
-use App\BranchOffice;
+use App\Student;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreStudentRequest extends FormRequest
+class UpdateStudentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,7 +32,7 @@ class StoreStudentRequest extends FormRequest
                 'nullable',
                 'min:13',
                 'max:13',
-                Rule::unique('students')->where(function ($query) {
+                Rule::unique('students')->ignore($this->student->id)->where(function ($query) {
                     return $query->where([
                         ['branch_office_id', $this->branchOffice->id],
                         ['id_card', $this->request->get('id_card')],
@@ -43,7 +43,7 @@ class StoreStudentRequest extends FormRequest
                 'nullable',
                 'min:13',
                 'max:13',
-                Rule::unique('students')->where(function ($query) {
+                Rule::unique('students')->ignore($this->student->id)->where(function ($query) {
                     return $query->where([
                         ['branch_office_id', $this->branchOffice->id],
                         ['tutor_id_card', $this->request->get('tutor_id_card')],
@@ -54,7 +54,7 @@ class StoreStudentRequest extends FormRequest
                 'required',
                 'min:9',
                 'max:17',
-                Rule::unique('students')->where(function ($query) {
+                Rule::unique('students')->ignore($this->student->id)->where(function ($query) {
                     return $query->where([
                         ['branch_office_id', $this->branchOffice->id],
                         ['phone', $this->request->get('phone')],
@@ -79,15 +79,12 @@ class StoreStudentRequest extends FormRequest
         ];
     }
 
-    public function createStudent(BranchOffice $branchOffice)
+    public function updateStudent(Student $student)
     {
-        abort_unless($branchOffice->currentPromotion() 
-            && $this->there_is_some_registered_id_card($this->validated()), 422, 'Registraste mal los datos :/');
+        abort_unless($this->there_is_some_registered_id_card($this->validated()), 422, 'Registraste mal los datos :/');
 
-        $fileds = $this->validated();
-        $fileds['promotion_id'] = $branchOffice->currentPromotion()->id;
-        $estudiante = $branchOffice->students()->create($fileds);
-        return "Estudiante {$estudiante->full_name} creado correctamente.";
+        $student->update($this->validated());
+        return "Estudiante {$student->full_name} actualizado con éxito.";
     }
 
     public function there_is_some_registered_id_card($data)

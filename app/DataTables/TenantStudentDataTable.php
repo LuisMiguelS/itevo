@@ -66,7 +66,6 @@ class TenantStudentDataTable extends DataTable
             'id_card' => ['title' => 'Cédula'],
             'phone' => ['title' => 'Teléfono'],
             'address' => ['title' => 'Dirección'],
-            'is_adult' => ['title' => 'Adulto'],
             'tutor_id_card' => ['title' => 'Cédula del tutor'],
             'signed_up' => ['title' => 'Inscrito'],
             'birthdate' => ['title' => 'Fecha de nacimiento'],

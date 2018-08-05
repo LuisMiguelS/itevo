@@ -38,11 +38,9 @@ require('./libs/jquery.slimscroll');
 require('./libs/fastclick');
 require('./libs/adminlte/adminlte');
 require('./libs/input-mask/jquery.inputmask');
-
-$(document).ready(function () {
-    $('.sidebar-menu').tree()
-});
+require('moment');
 
 $(document).ready(function(){
+    $('.sidebar-menu').tree();
     $(":input").inputmask();
 });

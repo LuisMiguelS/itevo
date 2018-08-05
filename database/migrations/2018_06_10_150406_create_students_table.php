@@ -22,10 +22,9 @@ class CreateStudentsTable extends Migration
             $table->string('id_card', 13);
             $table->string('phone', 17);
             $table->string('address');
-            $table->tinyInteger('is_adult');
             $table->string('tutor_id_card', 13)->nullable();
             $table->unique(['branch_office_id', 'promotion_id']);
-            $table->unique(['branch_office_id', 'id_card', 'phone', 'tutor_id_card']);
+            $table->unique(['branch_office_id', 'id_card', 'phone']);
             $table->timestamp('birthdate')->nullable();
             $table->timestamp('signed_up')->nullable();
             $table->timestamps();

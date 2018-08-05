@@ -49,7 +49,7 @@ class UpdateTeacherTest extends TestCase
         $this->withExceptionHandling();
 
         $this->actingAs($this->admin)
-            ->put(route('tenant.teachers.destroy', [
+            ->put(route('tenant.teachers.update', [
                 'branchOffice' => factory(BranchOffice::class)->create(),
                 'teacher' => $this->teacher
             ]),  $this->withData())

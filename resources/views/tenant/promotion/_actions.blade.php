@@ -4,7 +4,11 @@
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        @can('tenant-update', $promotion)
         <li><a href="{{ $promotion->url->edit }}"> Editar</a></li>
+        @endcan
+
+        @can('tenant-delete', $promotion)
         <li>
             <a href="{{ $promotion->url->delete }}"
                onclick="event.preventDefault();
@@ -18,6 +22,7 @@
             @csrf
             @method('DELETE')
         </form>
+        @endcan
         <li role="separator" class="divider"></li>
         <li><a href="#">Something else here</a></li>
     </ul>

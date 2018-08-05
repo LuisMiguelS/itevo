@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Tenant;
 use App\{BranchOffice, Student};
 use App\Http\Controllers\Controller;
 use App\DataTables\TenantStudentDataTable;
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Tenant\StoreStudentRequest;
+use App\Http\Requests\Tenant\UpdateStudentRequest;
 
 class StudentController extends Controller
 {
@@ -29,13 +31,14 @@ class StudentController extends Controller
     {
         $this->authorize('tenant-view', Student::class);
         $breadcrumbs = 'student';
-        $title = 'Todos los Estudiantes';
+        $title = 'Todos los estudiantes';
         return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
+     * @param \App\BranchOffice $branchOffice
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
@@ -76,33 +79,51 @@ class StudentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Student  $student
+     * @param \App\BranchOffice $branchOffice
+     * @param  \App\Student $student
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function edit(Student $student)
+    public function edit(BranchOffice $branchOffice, Student $student)
     {
-        //
+        $this->authorize('tenant-update', $student);
+        abort_unless($student->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
+        return view('tenant.student.edit', compact('branchOffice', 'student'));
     }
 
     /**
      * Update the specified resource in storage.
      *
+     * @param \App\Http\Requests\Tenant\UpdateStudentRequest $request
+     * @param \App\BranchOffice $branchOffice
      * @param  \App\Student $student
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Student $student)
+    public function update(UpdateStudentRequest $request, BranchOffice $branchOffice, Student $student)
     {
-        //
+        $this->authorize('tenant-update', $student);
+        abort_unless($student->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
+        return redirect()
+            ->route('tenant.students.index', $branchOffice)
+            ->with(['flash_success' => $request->updateStudent($student)]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Student  $student
+     * @param \App\BranchOffice $branchOffice
+     * @param  \App\Student $student
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function destroy(Student $student)
+    public function destroy(BranchOffice $branchOffice, Student $student)
     {
-        //
+        $this->authorize('tenant-delete', $student);
+        abort_unless($student->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
+        $student->delete();
+        return redirect()
+            ->route('tenant.students.index', $branchOffice)
+            ->with(['flash_success' => "Estudiante {$student->full_name} eliminado con exito."]);
     }
 }
