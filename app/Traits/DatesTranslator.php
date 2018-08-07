@@ -32,4 +32,13 @@ trait DatesTranslator
     {
         return new Date($deleted_at);
     }
+
+    /**
+     * @param $birthdate
+     * @return \Jenssegers\Date\Date
+     */
+    public function getBirthdateAttribute($birthdate)
+    {
+        return new Date($birthdate);
+    }
 }

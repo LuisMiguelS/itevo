@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Tenant;
 
 use App\Student;
+use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -43,17 +44,11 @@ class UpdateStudentRequest extends FormRequest
                 'nullable',
                 'min:13',
                 'max:13',
-                Rule::unique('students')->ignore($this->student->id)->where(function ($query) {
-                    return $query->where([
-                        ['branch_office_id', $this->branchOffice->id],
-                        ['tutor_id_card', $this->request->get('tutor_id_card')],
-                    ]);
-                }),
             ],
             'phone' => [
                 'required',
-                'min:9',
-                'max:17',
+                'min:14',
+                'max:14',
                 Rule::unique('students')->ignore($this->student->id)->where(function ($query) {
                     return $query->where([
                         ['branch_office_id', $this->branchOffice->id],
@@ -61,7 +56,7 @@ class UpdateStudentRequest extends FormRequest
                     ]);
                 }),
             ],
-            'birthdate' => 'nullable|date',
+            'birthdate' => 'required|date',
             'address' => 'required|min:15|max:255'
         ];
     }
@@ -81,17 +76,29 @@ class UpdateStudentRequest extends FormRequest
 
     public function updateStudent(Student $student)
     {
-        abort_unless($this->there_is_some_registered_id_card($this->validated()), 422, 'Registraste mal los datos :/');
-
-        $student->update($this->validated());
+        $student->update($this->getFields($this->validated()));
         return "Estudiante {$student->full_name} actualizado con éxito.";
     }
 
-    public function there_is_some_registered_id_card($data)
+    public function getFields($data)
     {
-        if ((isset($data['id_card']) && $data['id_card'] === null) || (isset($data['tutor_id_card']) && $data['tutor_id_card'] === null))
-            false;
+        $data['birthdate'] = new Carbon($data['birthdate']);
 
-        return true;
+        if ($this->isAdult($data['birthdate'])){
+            abort_if(isset($data['id_card']) && $data['id_card'] === null, 400, 'Debe especificar la cedula, si el estudiante es mayor de edad');
+
+            $data['tutor_id_card'] = null;
+
+            return $data;
+        }
+
+        abort_unless(isset($data['tutor_id_card']) && $data['tutor_id_card'] === null, 400, 'Debe especificar la cedula del tutor, si el estudiante no es mayor de edad');
+
+        return $data;
+    }
+
+    protected function isAdult($birthday)
+    {
+        return $birthday->age >= config('itevo.adulthood');
     }
 }

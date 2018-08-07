@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Student;
 
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\{User, Student, BranchOffice};
 use Symfony\Component\HttpFoundation\Response;
@@ -15,9 +16,9 @@ class UpdateStudentTest extends TestCase
         'name' => 'Cristian',
         'last_name' => 'Gomez',
         'id_card' => '999-9999999-9',
-        'phone' => '809-999-7643',
-        'is_adult' => true,
-        'address' => 'Rep. Dominicana, La vega'
+        'phone' => '(809) 999-7643',
+        'address' => 'Rep. Dominicana, La vega',
+        'birthdate' => '3/7/1996'
     ];
 
     private $admin;
@@ -42,7 +43,9 @@ class UpdateStudentTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Estudiante {$this->defaultData['name']} {$this->defaultData['last_name']} actualizado con éxito."]);
 
-        $this->assertDatabaseHas('students', $this->withData());
+        $this->assertDatabaseHas('students', $this->withData([
+            'birthdate' => new Carbon($this->defaultData['birthdate'])
+        ]));
     }
 
     /** @test */
@@ -96,7 +99,7 @@ class UpdateStudentTest extends TestCase
         $this->actingAs($this->admin)
             ->put($this->student->url->update, [])
             ->assertStatus(Response::HTTP_FOUND)
-            ->assertSessionHasErrors(['name', 'last_name', 'phone', 'is_adult', 'address']);
+            ->assertSessionHasErrors(['name', 'last_name', 'phone', 'address']);
 
         $this->assertDatabaseHas('students', [
             'id' => $this->student->id,
@@ -105,7 +108,7 @@ class UpdateStudentTest extends TestCase
     }
 
     /** @test */
-    function a_student_id_card_must_be_unique()
+    function a_student_id_card_must_be_unique_in_form_update()
     {
         $this->withExceptionHandling();
 
@@ -124,7 +127,7 @@ class UpdateStudentTest extends TestCase
     }
 
     /** @test */
-    function a_student_phone_must_be_unique()
+    function a_student_phone_must_be_unique_in_form_update()
     {
         $this->withExceptionHandling();
 

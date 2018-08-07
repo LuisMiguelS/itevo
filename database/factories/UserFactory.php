@@ -87,7 +87,7 @@ $factory->define(App\Student::class, function (Faker $faker) {
         'name' => $faker->name,
         'last_name' => $faker->lastName,
         'phone' => substr($faker->unique()->phoneNumber, 0, 13),
-        'is_adult' => $faker->randomElement([true, false]),
-        'address' => $faker->paragraph(1)
+        'address' => $faker->paragraph(1),
+        'birthdate' => $faker->dateTime(),
     ];
 });

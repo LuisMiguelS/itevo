@@ -25,7 +25,7 @@ class CreateStudentsTable extends Migration
             $table->string('tutor_id_card', 13)->nullable();
             $table->unique(['branch_office_id', 'promotion_id']);
             $table->unique(['branch_office_id', 'id_card', 'phone']);
-            $table->timestamp('birthdate')->nullable();
+            $table->timestamp('birthdate');
             $table->timestamp('signed_up')->nullable();
             $table->timestamps();
             $table->softDeletes();

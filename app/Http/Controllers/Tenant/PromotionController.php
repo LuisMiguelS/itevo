@@ -118,13 +118,13 @@ class PromotionController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function changeStatus(BranchOffice $branchOffice, Promotion $promotion)
+    public function finish(BranchOffice $branchOffice, Promotion $promotion)
     {
-        $this->authorize('tenant-change-status', $promotion);
+        $this->authorize('tenant-finish', $promotion);
         abort_unless($promotion->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
         $promotion->status = Promotion::STATUS_FINISHED;
         $promotion->save();
-        return redirect()->route('tenant.promotions.index', $branchOffice)->with(['flash_success' => "Estado de la promocion no. {$promotion->promotion_no} cambiado"]);
+        return redirect()->route('tenant.promotions.index', $branchOffice)->with(['flash_success' => "Estado de la promocion no. {$promotion->promotion_no} finalizado"]);
     }
 
     /**
@@ -133,7 +133,7 @@ class PromotionController extends Controller
     public function thereIsCurrentPromotion(BranchOffice $branchOffice): void
     {
         abort_if($branchOffice->promotions()->where('status', Promotion::STATUS_CURRENT)->count() > 0,
-            Response::HTTP_CONFLICT,
+            Response::HTTP_BAD_REQUEST,
             'Debes finalizar la promoción actual antes de crear otra');
     }
 }

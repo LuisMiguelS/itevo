@@ -16,6 +16,13 @@ class TenantPromotionDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
+            ->editColumn('status', function(Promotion $promotion) {
+                if ($promotion->status === Promotion::STATUS_CURRENT) {
+                    return "<span class=\"label label-primary\">".strtoupper($promotion->status)."</span>";
+                }
+                return "<span class=\"label label-success\">".strtoupper($promotion->status)."</span>";
+
+            })
             ->editColumn('created_at', function(Promotion $promotion) {
                 return $promotion->created_at->format('l j F Y');
             })
@@ -25,7 +32,7 @@ class TenantPromotionDataTable extends DataTable
             ->addColumn('action', function (Promotion $promotion) {
                 return view('tenant.promotion._actions', compact('promotion'));
             })
-            ->rawColumns(['action']);
+            ->rawColumns(['status', 'action']);
     }
 
     /**

@@ -24,6 +24,13 @@
         </form>
         @endcan
         <li role="separator" class="divider"></li>
-        <li><a href="#">Something else here</a></li>
+
+        <li><a href="">Períodos</a></li>
+
+       @if($promotion->status === \App\Promotion::STATUS_CURRENT)
+            @can('tenant-finish', $promotion)
+            <li><a href="{{ $promotion->url->finish }}">Finalizar promocion</a></li>
+            @endcan
+        @endif
     </ul>
 </div>

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Student;
 
+use Carbon\Carbon;
 use Tests\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 use App\{BranchOffice, Promotion, Student, User};
@@ -15,9 +16,9 @@ class CreateStudentTest extends TestCase
         'name' => 'Cristian',
         'last_name' => 'Gomez',
         'id_card' => '999-9999999-9',
-        'phone' => '809-999-7643',
-        'is_adult' => true,
-        'address' => 'Rep. Dominicana, La vega'
+        'phone' => '(809) 999-7643',
+        'address' => 'Rep. Dominicana, La vega',
+        'birthdate' => '3/7/1996'
     ];
 
     private $admin;
@@ -42,7 +43,9 @@ class CreateStudentTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Estudiante {$this->defaultData['name']} {$this->defaultData['last_name']} creado correctamente."]);
 
-        $this->assertDatabaseHas('students', $this->withData());
+        $this->assertDatabaseHas('students', $this->withData([
+            'birthdate' => new Carbon($this->defaultData['birthdate'])
+        ]));
     }
 
     /** @test */
@@ -77,13 +80,13 @@ class CreateStudentTest extends TestCase
         $this->actingAs($this->admin)
             ->post(route('tenant.students.store', $this->promotion->branchOffice), [])
             ->assertStatus(Response::HTTP_FOUND)
-            ->assertSessionHasErrors(['name', 'last_name', 'phone', 'is_adult', 'address']);
+            ->assertSessionHasErrors(['name', 'last_name', 'phone', 'address']);
 
         $this->assertDatabaseEmpty('students');
     }
 
     /** @test */
-    function a_student_id_card_must_be_unique()
+    function a_student_id_card_must_be_unique_in_form_store()
     {
         $this->withExceptionHandling();
 
@@ -97,12 +100,12 @@ class CreateStudentTest extends TestCase
             ->assertSessionHasErrors(['id_card']);
 
         $this->assertDatabaseMissing('students', $this->withData([
-            'id_card' => $student->id_card
+            'id_card' => $student->id_card,
         ]));
     }
 
     /** @test */
-    function a_student_phone_must_be_unique()
+    function a_student_phone_must_be_unique_in_from_store()
     {
         $this->withExceptionHandling();
 
@@ -116,7 +119,7 @@ class CreateStudentTest extends TestCase
             ->assertSessionHasErrors(['phone']);
 
         $this->assertDatabaseMissing('students', $this->withData([
-            'phone' => $student->phone
+            'phone' => $student->phone,
         ]));
     }
 
@@ -129,7 +132,7 @@ class CreateStudentTest extends TestCase
 
         $this->actingAs($this->admin)
             ->post(route('tenant.students.store', $branchOffice), $this->withData())
-            ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+            ->assertStatus(Response::HTTP_BAD_REQUEST);
 
         $this->assertDatabaseMissing('students', $this->withData());
     }
@@ -145,7 +148,7 @@ class CreateStudentTest extends TestCase
             ->post(route('tenant.students.store', $branchOffice), $this->withData([
                 'id_card' => null
             ]))
-            ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+            ->assertStatus(Response::HTTP_BAD_REQUEST);
 
         $this->assertDatabaseMissing('students', $this->withData());
     }

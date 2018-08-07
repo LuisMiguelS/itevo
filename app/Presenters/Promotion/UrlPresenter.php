@@ -73,5 +73,13 @@ class UrlPresenter
         ]);
     }
 
+    public function finish()
+    {
+        return route('tenant.promotions.finish', [
+            'branchOffice' => $this->promotion->branchOffice,
+            'promotion' => $this->promotion
+        ]);
+    }
+
 
 }

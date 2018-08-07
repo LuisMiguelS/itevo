@@ -16,6 +16,9 @@ class TenantStudentDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
+            ->editColumn('birthdate', function(Student $student) {
+                return $student->birthdate->format('l j F Y');
+            })
             ->editColumn('created_at', function(Student $student) {
                 return $student->created_at->format('l j F Y');
             })

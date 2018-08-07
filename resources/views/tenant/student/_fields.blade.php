@@ -78,7 +78,7 @@
               type="text"
               class="form-control"
               name="address"
-              required>{{ old('phone', $student->address) }}</textarea>
+              required>{{ old('address', $student->address) }}</textarea>
 
     @if ($errors->has('address'))
         <span class="help-block">
@@ -88,13 +88,13 @@
 </div>
 
 <div class="form-group {{ $errors->has('birthdate') ? 'has-error' : '' }}" >
-    <label  class="control-label">Fecha de nacimiento</label>
+    <label  class="control-label">Fecha de nacimiento <span class="text-danger">*</span></label>
 
     <input id="birthdate"
-           type="text"
+           type="date"
            class="form-control"
            name="birthdate"
-           value="{{ old('birthdate', $student->birthdate) }}">
+           value="{{ old('birthdate', $student->birthdate->format('Y-m-d')) }}">
 
     @if ($errors->has('birthdate'))
         <span class="help-block">

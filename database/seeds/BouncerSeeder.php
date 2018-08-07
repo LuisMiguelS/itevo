@@ -282,8 +282,8 @@ class BouncerSeeder extends Seeder
         ]);
 
         Bouncer::ability()->createForModel(Promotion::class, [
-            'name' => 'tenant-change-status',
-            'title' => 'Cambiar estado de las promociones'
+            'name' => 'tenant-finish',
+            'title' => 'Finalizar promocion'
         ]);
     }
 
