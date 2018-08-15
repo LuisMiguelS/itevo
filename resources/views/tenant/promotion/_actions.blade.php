@@ -25,7 +25,11 @@
         @endcan
         <li role="separator" class="divider"></li>
 
-        <li><a href="">Períodos</a></li>
+        <li>
+            <a href="{{ route('tenant.promotions.periods.index', ['branchOffice' => request()->branchOffice, 'promotion' => $promotion]) }}">
+                Períodos
+            </a>
+        </li>
 
        @if($promotion->status === \App\Promotion::STATUS_CURRENT)
             @can('tenant-finish', $promotion)

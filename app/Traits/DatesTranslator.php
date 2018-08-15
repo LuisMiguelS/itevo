@@ -41,4 +41,23 @@ trait DatesTranslator
     {
         return new Date($birthdate);
     }
+
+    /**
+     * @param $start_date_at
+     * @return \Jenssegers\Date\Date
+     */
+    public function getStartDateAtAttribute($start_date_at)
+    {
+        return new Date($start_date_at);
+    }
+
+    /**
+     * @param $ends_at
+     * @return \Jenssegers\Date\Date
+     */
+    public function getEndsAtAttribute($ends_at)
+    {
+        return new Date($ends_at);
+    }
+
 }

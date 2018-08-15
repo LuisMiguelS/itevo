@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Silber\Bouncer\Database\Ability;
-use App\{Promotion, Resource, Student, Teacher, User, Course, TypeCourse, Classroom, BranchOffice};
 use Silber\Bouncer\Database\Role;
+use Silber\Bouncer\Database\Ability;
+use App\{Period, Promotion, Resource, Student, Teacher, User, Course, TypeCourse, Classroom, BranchOffice};
 
 class BouncerSeeder extends Seeder
 {
@@ -31,6 +31,7 @@ class BouncerSeeder extends Seeder
         $this->userAbilities();
         $this->roleAbilities();
         $this->studentAbilities();
+        $this->periodAbilities();
     }
 
     protected function createRole()
@@ -377,6 +378,37 @@ class BouncerSeeder extends Seeder
         Bouncer::ability()->createForModel(Student::class, [
             'name' => 'update',
             'title' => 'Actualizar Estudiante'
+        ]);
+    }
+
+    protected function periodAbilities(): void
+    {
+        /*
+       |--------------------------------------------------------------------------
+       | Period Habilidades
+       |--------------------------------------------------------------------------
+       |
+       | Todas la habilidades para la gestion del crud de periodos
+       */
+
+        Bouncer::ability()->createForModel(Period::class, [
+            'name' => 'view',
+            'title' => 'Ver Periodos'
+        ]);
+
+        Bouncer::ability()->createForModel(Period::class, [
+            'name' => 'create',
+            'title' => 'Crear Periodo'
+        ]);
+
+        Bouncer::ability()->createForModel(Period::class, [
+            'name' => 'delete',
+            'title' => 'Eliminar Periodo'
+        ]);
+
+        Bouncer::ability()->createForModel(Period::class, [
+            'name' => 'update',
+            'title' => 'Actualizar Periodo'
         ]);
     }
 }

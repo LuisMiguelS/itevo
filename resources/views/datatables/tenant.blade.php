@@ -3,7 +3,9 @@
 @section('title', $title ?? 'Datatables')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render($breadcrumbs, $branchOffice) }}
+   @isset($breadcrumbs)
+       {{ Breadcrumbs::render($breadcrumbs, $branchOffice) }}
+    @endisset
 @endsection
 
 @section('content')

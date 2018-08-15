@@ -2,12 +2,13 @@
 
 namespace App\Http\Requests\Tenant;
 
+use App\Period;
+use App\Promotion;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
-use App\{BranchOffice, Period, Promotion};
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePeriodRequest extends FormRequest
+class UpdatePeriodRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,7 +31,7 @@ class StorePeriodRequest extends FormRequest
             'period_no' => [
                 'required',
                 'in:' .Period::PERIOD_NO_1. ',' .Period::PERIOD_NO_2. ',' .Period::PERIOD_NO_3,
-                Rule::unique('periods')->where(function ($query) {
+                Rule::unique('periods')->ignore($this->period->id)->where(function ($query) {
                     return $query->where([
                         ['promotion_id', $this->promotion->id],
                         ['period_no', $this->request->get('period_no')],
@@ -49,30 +50,35 @@ class StorePeriodRequest extends FormRequest
     public function attributes()
     {
         return [
-            'period_no' => 'perido',
+            'period_no' => 'periodo',
             'start_date_at' => 'inicio del periodo',
             'ends_at' => 'fin del periodo',
             'status' => 'estado'
         ];
     }
 
-    public function createPeriod(Promotion $promotion)
+    public function updatePeriod(Period $period)
     {
-        $promotion->periods()->create($this->getFields($promotion));
-        return "Periodo creado correctamente.";
+        $period->update($this->getFields($period->promotion));
+        return "Periodo {$period->period} actualizado correctamente.";
     }
 
     protected function getFields(Promotion $promotion)
     {
-        $previous_period = $promotion->periods()->orderByDesc('id')->first();
+        $previous_period = $promotion->periods()
+            ->where('id', '<>', $this->period->id)
+            ->orderByDesc('id')->first();
 
         $this->isLastPeriodEndsAtGreater($previous_period);
 
         $this->isStartDateAtGraterThanOrEqualToEndsAt();
 
-        $data = $this->validated();
-        $data['start_date_at'] = new Carbon($this->validated()['start_date_at']);
-        $data['ends_at'] = new Carbon($this->validated()['ends_at']);
+        $data = $this->cannotChangeDateIfStatusIfCurrent();
+        if ($this->period->status === Period::STATUS_CURRENT
+            && $this->validated()['status'] === Period::STATUS_WITHOUT_STARTING) {
+
+            $data['status'] = $this->period->status;
+        }
         return $data;
     }
 
@@ -98,5 +104,20 @@ class StorePeriodRequest extends FormRequest
         if ($start_date_at->greaterThanOrEqualTo($ends_at)) {
             abort(400, 'La fecha de inicio no puede ser mayor que la de finalizacion');
         }
+    }
+
+    protected function cannotChangeDateIfStatusIfCurrent()
+    {
+        $data = $this->validated();
+
+        if ($this->period->status == Period::STATUS_CURRENT) {
+            $data['start_date_at'] = $this->period->start_date_at;
+            $data['ends_at'] = $this->period->ends_at;
+        }else{
+            $data['start_date_at'] = new Carbon($this->validated()['start_date_at']);
+            $data['ends_at'] = new Carbon($this->validated()['ends_at']);
+        }
+
+        return $data;
     }
 }

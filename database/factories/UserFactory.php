@@ -91,3 +91,13 @@ $factory->define(App\Student::class, function (Faker $faker) {
         'birthdate' => $faker->dateTime(),
     ];
 });
+
+$factory->define(App\Period::class, function (Faker $faker) {
+
+    return [
+        'promotion_id' => factory(App\Promotion::class)->create(),
+        'period_no' => $faker->unique()->randomElement([\App\Period::PERIOD_NO_1, \App\Period::PERIOD_NO_2, \App\Period::PERIOD_NO_3]),
+        'start_date_at' => \Carbon\Carbon::now(),
+        'ends_at' =>\Carbon\Carbon::now()->addMonth(4),
+    ];
+});

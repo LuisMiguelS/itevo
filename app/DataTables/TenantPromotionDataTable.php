@@ -7,6 +7,11 @@ use Yajra\DataTables\Services\DataTable;
 
 class TenantPromotionDataTable extends DataTable
 {
+    private $label_status = [
+        Promotion::STATUS_CURRENT => 'primary',
+        Promotion::STATUS_FINISHED => 'success',
+    ];
+
     /**
      * Build DataTable class.
      *
@@ -17,11 +22,7 @@ class TenantPromotionDataTable extends DataTable
     {
         return datatables($query)
             ->editColumn('status', function(Promotion $promotion) {
-                if ($promotion->status === Promotion::STATUS_CURRENT) {
-                    return "<span class=\"label label-primary\">".strtoupper($promotion->status)."</span>";
-                }
-                return "<span class=\"label label-success\">".strtoupper($promotion->status)."</span>";
-
+                return $this->status($promotion);
             })
             ->editColumn('created_at', function(Promotion $promotion) {
                 return $promotion->created_at->format('l j F Y');
@@ -83,5 +84,10 @@ class TenantPromotionDataTable extends DataTable
     protected function filename()
     {
         return 'TenantPromotion_' . date('YmdHis');
+    }
+
+    public function status(Promotion $promotion)
+    {
+        return "<span class=\"label label-{$this->label_status[$promotion->status]}\">".strtoupper($promotion->status)."</span>";
     }
 }

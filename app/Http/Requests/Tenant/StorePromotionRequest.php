@@ -50,7 +50,7 @@ class StorePromotionRequest extends FormRequest
     {
         $promotion = $branchOffice->promotions()->create($this->validated());
         $promotion->periods()->create([
-            'status' => Period::STATUS_CURRENT,
+            'status' => Period::STATUS_WITHOUT_STARTING,
             'period' => Period::PERIOD_NO_1,
         ]);
         return "Promocion No. {$promotion->promotion_no} creada correctamente.";

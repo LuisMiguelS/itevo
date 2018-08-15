@@ -36,7 +36,8 @@ class BranchOfficeController extends Controller
     {
         $this->authorize('create', BranchOffice::class);
         $this->userIsAuthorized();
-        return view('branch_office.create');
+        $branchOffice = new BranchOffice;
+        return view('branch_office.create', compact('branchOffice'));
     }
 
     /**

@@ -54,7 +54,7 @@ Route::prefix('{branchOffice}')->middleware('tenantAccess')->name('tenant.')->gr
     Route::resource('resources', 'Tenant\ResourceController');
     Route::get('promotions/{promotion}/finish', 'Tenant\PromotionController@finish')->name('promotions.finish');
     Route::resource('promotions', 'Tenant\PromotionController');
-    Route::resource('promotions.periods', 'Tenant\PeriodController');
+    Route::resource('promotions.periods', 'Tenant\PeriodController')->except('show', 'destroy');
     Route::resource('teachers', 'Tenant\TeacherController');
     Route::resource('students', 'Tenant\StudentController');
 

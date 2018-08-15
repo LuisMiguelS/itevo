@@ -2,12 +2,15 @@
 
 namespace App;
 
+use App\Traits\DatesTranslator;
 use Illuminate\Database\Eloquent\Model;
 
 class Period extends Model
 {
+    use DatesTranslator;
+
     protected $fillable = [
-        'period', 'status', 'start_date_at', 'ends_at'
+       'promotion_id', 'period_no', 'status', 'start_date_at', 'ends_at'
     ];
 
     const STATUS_WITHOUT_STARTING = 'sin comenzar';

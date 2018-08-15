@@ -11,6 +11,8 @@
                         <a class="btn btn-primary btn-sm" href="{{ route('branchOffices.create') }}">Crear sucursal</a>
                     </div>
                     <div class="card-body">
+                        @include('partials._alert')
+
                         @if($branchOffices->count())
                         <table class="table">
                             <thead>
@@ -27,7 +29,7 @@
                                         <td>{{ $branchOffice->name }}</td>
                                         <td>
                                             @can('update', $branchOffice)
-                                                <a class="btn btn-info btn-sm" href="{{ $branchOffice->url->update }}"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="btn btn-info btn-sm" href="{{ $branchOffice->url->edit }}"><i class="fas fa-pencil-alt"></i></a>
                                             @endcan
 
                                             @can('delete', $branchOffice)

@@ -58,7 +58,7 @@
                         </table>
                         {{ $users->links() }}
                         @else
-                            No hay Tipos de cursos registrados
+                            No hay usuarios registrados
                         @endif
                     </div>
                 </div>

@@ -11,6 +11,7 @@
                         <a class="btn btn-primary btn-sm" href="{{ route('roles.create') }}">Crear Rol</a>
                     </div>
                     <div class="card-body">
+                        @include('partials._alert')
                         @if($roles->count())
                             <table class="table">
                                 <thead>

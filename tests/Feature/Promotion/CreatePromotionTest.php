@@ -45,8 +45,8 @@ class CreatePromotionTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('periods', [
-            'status' => Period::STATUS_CURRENT,
-            'period' => Period::PERIOD_NO_1,
+            'status' => Period::STATUS_WITHOUT_STARTING,
+            'period_no' => Period::PERIOD_NO_1,
         ]);
     }
 

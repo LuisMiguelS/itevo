@@ -54,7 +54,8 @@ class UserController extends Controller
                 ['name', '<>', User::ROLE_TENANT_ADMIN]
             ]);
         })->get();
-        return view('user.create', compact('branchOffices', 'roles'));
+        $user = new User;
+        return view('user.create', compact('branchOffices', 'roles', 'user'));
     }
 
     /**

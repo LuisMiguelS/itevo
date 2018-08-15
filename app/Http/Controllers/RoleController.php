@@ -41,7 +41,8 @@ class RoleController extends Controller
         $abilities = Ability::unless(auth()->user()->isAdmin(), function ($q){
             $q->where('name','<>','*');
         })->get();
-        return view('role.create', compact('abilities'));
+        $role = new Role;
+        return view('role.create', compact('abilities', 'role'));
     }
 
     /**
