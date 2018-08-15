@@ -15,7 +15,7 @@ class UpdateTeacherTest extends TestCase
         'name' => 'Cristian',
         'last_name' => 'Gomez',
         'id_card' => '999-9999999-9',
-        'phone' => '809-999-7643'
+        'phone' => '(809) 999-7643'
     ];
 
     private $admin;
@@ -100,11 +100,13 @@ class UpdateTeacherTest extends TestCase
     }
 
     /** @test */
-    function id_card_must_be_unique()
+    function a_teacher_id_card_must_be_unique()
     {
         $this->withExceptionHandling();
 
-        $teacher = factory(Teacher::class)->create();
+        $teacher = factory(Teacher::class)->create([
+            'branch_office_id' => $this->teacher->branchOffice->id
+        ]);
 
         $this->actingAs($this->admin)
             ->put($this->teacher->url->update, $this->withData([
@@ -119,11 +121,13 @@ class UpdateTeacherTest extends TestCase
     }
 
     /** @test */
-    function phone_must_be_unique()
+    function a_teacher_phone_must_be_unique()
     {
         $this->withExceptionHandling();
 
-        $teacher = factory(Teacher::class)->create();
+        $teacher = factory(Teacher::class)->create([
+            'branch_office_id' => $this->teacher->branchOffice->id
+        ]);
 
         $this->actingAs($this->admin)
             ->put($this->teacher->url->update, $this->withData([

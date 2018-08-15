@@ -43,8 +43,7 @@
            class="form-control"
            name="id_card"
            value="{{ old('id_card', $student->id_card) }}"
-           data-inputmask='"mask": "999-9999999-9"' data-mask
-           required>
+           data-inputmask='"mask": "999-9999999-9"' data-mask>
 
     @if ($errors->has('id_card'))
         <span class="help-block">

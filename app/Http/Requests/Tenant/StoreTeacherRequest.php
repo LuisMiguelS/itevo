@@ -30,7 +30,6 @@ class StoreTeacherRequest extends FormRequest
                 'required',
                 'min:13',
                 'max:13',
-                'unique:teachers',
                 Rule::unique('teachers')->where(function ($query) {
                     return $query->where([
                         ['branch_office_id', $this->branchOffice->id],
@@ -42,9 +41,8 @@ class StoreTeacherRequest extends FormRequest
             'last_name' => 'required|min:4',
             'phone' => [
                 'required',
-                'min:9',
-                'max:17',
-                'unique:teachers',
+                'min:14',
+                'max:14',
                 Rule::unique('teachers')->where(function ($query) {
                     return $query->where([
                         ['branch_office_id', $this->branchOffice->id],

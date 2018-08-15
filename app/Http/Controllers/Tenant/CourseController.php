@@ -54,7 +54,9 @@ class CourseController extends Controller
     public function store(StoreCourseRequest $request, BranchOffice $branchOffice)
     {
         $this->authorize('tenant-create', Course::class);
-        return redirect()->route('tenant.courses.index', $branchOffice)->with(['flash_success' => $request->createCourse($branchOffice)]);
+        return redirect()
+            ->route('tenant.courses.index', $branchOffice)
+            ->with(['flash_success' => $request->createCourse($branchOffice)]);
     }
 
     /**

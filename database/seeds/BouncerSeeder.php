@@ -3,7 +3,17 @@
 use Illuminate\Database\Seeder;
 use Silber\Bouncer\Database\Role;
 use Silber\Bouncer\Database\Ability;
-use App\{Period, Promotion, Resource, Student, Teacher, User, Course, TypeCourse, Classroom, BranchOffice};
+use App\{CoursePromotion,
+    Period,
+    Promotion,
+    Resource,
+    Student,
+    Teacher,
+    User,
+    Course,
+    TypeCourse,
+    Classroom,
+    BranchOffice};
 
 class BouncerSeeder extends Seeder
 {
@@ -361,22 +371,22 @@ class BouncerSeeder extends Seeder
        */
 
         Bouncer::ability()->createForModel(Student::class, [
-            'name' => 'view',
+            'name' => 'tenant-view',
             'title' => 'Ver Estudiantes'
         ]);
 
         Bouncer::ability()->createForModel(Student::class, [
-            'name' => 'create',
+            'name' => 'tenant-create',
             'title' => 'Crear Estudiante'
         ]);
 
         Bouncer::ability()->createForModel(Student::class, [
-            'name' => 'delete',
+            'name' => 'tenant-delete',
             'title' => 'Eliminar Estudiante'
         ]);
 
         Bouncer::ability()->createForModel(Student::class, [
-            'name' => 'update',
+            'name' => 'tenant-update',
             'title' => 'Actualizar Estudiante'
         ]);
     }
@@ -392,23 +402,54 @@ class BouncerSeeder extends Seeder
        */
 
         Bouncer::ability()->createForModel(Period::class, [
-            'name' => 'view',
+            'name' => 'tenant-view',
             'title' => 'Ver Periodos'
         ]);
 
         Bouncer::ability()->createForModel(Period::class, [
-            'name' => 'create',
+            'name' => 'tenant-create',
             'title' => 'Crear Periodo'
         ]);
 
         Bouncer::ability()->createForModel(Period::class, [
-            'name' => 'delete',
+            'name' => 'tenant-delete',
             'title' => 'Eliminar Periodo'
         ]);
 
         Bouncer::ability()->createForModel(Period::class, [
-            'name' => 'update',
+            'name' => 'tenant-update',
             'title' => 'Actualizar Periodo'
+        ]);
+    }
+
+    protected function coursePromotionAbilities(): void
+    {
+        /*
+       |--------------------------------------------------------------------------
+       | Period Habilidades
+       |--------------------------------------------------------------------------
+       |
+       | Todas la habilidades para la gestion del crud de asignacion de cursos
+       */
+
+        Bouncer::ability()->createForModel(CoursePromotion::class, [
+            'name' => 'tenant-view',
+            'title' => 'Ver cursos activos'
+        ]);
+
+        Bouncer::ability()->createForModel(CoursePromotion::class, [
+            'name' => 'tenant-create',
+            'title' => 'Asignar curso a promocion'
+        ]);
+
+        Bouncer::ability()->createForModel(CoursePromotion::class, [
+            'name' => 'tenant-delete',
+            'title' => 'Eliminar curso asignado a la promocion'
+        ]);
+
+        Bouncer::ability()->createForModel(CoursePromotion::class, [
+            'name' => 'tenant-update',
+            'title' => 'Actualizar curso asignado a la promocion'
         ]);
     }
 }

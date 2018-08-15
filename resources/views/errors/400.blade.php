@@ -70,7 +70,7 @@
     <div class="content">
         <div class="title m-b-md">
             400<br>
-            ACCESO DENEGADO
+            {{ $exception->getMessage() }}
         </div>
     </div>
 </div>

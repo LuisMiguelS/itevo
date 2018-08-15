@@ -12,6 +12,11 @@ trait TestHelpers
         ));
     }
 
+    protected function getSessionErrors()
+    {
+        return $this->app['session.store'];
+    }
+
     protected function withData($data = [])
     {
         return array_filter(array_merge($this->defaultData, $data));

@@ -73,7 +73,7 @@ $factory->define(App\Teacher::class, function (Faker $faker) {
         'id_card' => substr($faker->unique()->creditCardNumber, 0, 13),
         'name' => $faker->name,
         'last_name' => $faker->lastName,
-        'phone' => substr($faker->unique()->phoneNumber, 0, 13)
+        'phone' => substr($faker->unique()->phoneNumber, 0, 14),
     ];
 });
 
@@ -86,7 +86,7 @@ $factory->define(App\Student::class, function (Faker $faker) {
         'id_card' => substr($faker->unique()->creditCardNumber, 0, 13),
         'name' => $faker->name,
         'last_name' => $faker->lastName,
-        'phone' => substr($faker->unique()->phoneNumber, 0, 13),
+        'phone' => substr($faker->unique()->phoneNumber, 0, 14),
         'address' => $faker->paragraph(1),
         'birthdate' => $faker->dateTime(),
     ];

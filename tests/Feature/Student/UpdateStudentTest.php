@@ -125,23 +125,4 @@ class UpdateStudentTest extends TestCase
             'id_card' => $student->id_card
         ]));
     }
-
-    /** @test */
-    function a_student_phone_must_be_unique_in_form_update()
-    {
-        $this->withExceptionHandling();
-
-        $student = factory(Student::class)->create(['branch_office_id' => $this->student->promotion->branchOffice]);
-
-        $this->actingAs($this->admin)
-            ->put($this->student->url->update, $this->withData([
-                'phone' => $student->phone
-            ]))
-            ->assertStatus(Response::HTTP_FOUND)
-            ->assertSessionHasErrors(['phone']);
-
-        $this->assertDatabaseMissing('students', $this->withData([
-            'phone' => $student->phone
-        ]));
-    }
 }

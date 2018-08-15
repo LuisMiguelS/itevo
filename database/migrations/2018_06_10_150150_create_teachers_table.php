@@ -20,7 +20,8 @@ class CreateTeachersTable extends Migration
             $table->string('name', 70);
             $table->string('last_name', 70);
             $table->string('phone', 17);
-            $table->unique(['branch_office_id', 'id_card', 'phone']);
+            $table->unique(['branch_office_id', 'phone']);
+            $table->unique(['branch_office_id', 'id_card']);
             $table->timestamps();
             $table->softDeletes();
 

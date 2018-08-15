@@ -15,7 +15,7 @@ class CreateTeacherTest extends TestCase
         'name' => 'Cristian',
         'last_name' => 'Gomez',
         'id_card' => '999-9999999-9',
-        'phone' => '809-999-7643'
+        'phone' => '(809) 999-7643'
     ];
 
     private $admin;
@@ -35,6 +35,8 @@ class CreateTeacherTest extends TestCase
     /** @test */
     function an_admins_can_create_teachers()
     {
+        $this->withExceptionHandling();
+
         $this->actingAs($this->admin)
             ->post(route('tenant.teachers.store', $this->promotion->branchOffice), $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
@@ -81,14 +83,14 @@ class CreateTeacherTest extends TestCase
     }
 
     /** @test */
-    function id_card_must_be_unique()
+    function a_teacher_id_card_must_be_unique()
     {
-        $teacher = factory(Teacher::class)->create();
-
         $this->withExceptionHandling();
 
+        $teacher = factory(Teacher::class)->create();
+
         $this->actingAs($this->admin)
-            ->post(route('tenant.teachers.store', $this->promotion->branchOffice), $this->withData([
+            ->post(route('tenant.teachers.store', $teacher->branchOffice), $this->withData([
                 'id_card' => $teacher->id_card
             ]))
             ->assertStatus(Response::HTTP_FOUND)
@@ -100,14 +102,14 @@ class CreateTeacherTest extends TestCase
     }
 
     /** @test */
-    function phone_must_be_unique()
+    function a_teacher_phone_must_be_unique()
     {
         $teacher = factory(Teacher::class)->create();
 
         $this->withExceptionHandling();
 
         $this->actingAs($this->admin)
-            ->post(route('tenant.teachers.store', $this->promotion->branchOffice), $this->withData([
+            ->post(route('tenant.teachers.store', $teacher->branchOffice), $this->withData([
                 'phone' => $teacher->phone
             ]))
             ->assertStatus(Response::HTTP_FOUND)

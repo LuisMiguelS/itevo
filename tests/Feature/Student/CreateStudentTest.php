@@ -104,24 +104,6 @@ class CreateStudentTest extends TestCase
         ]));
     }
 
-    /** @test */
-    function a_student_phone_must_be_unique_in_from_store()
-    {
-        $this->withExceptionHandling();
-
-        $student = factory(Student::class)->create();
-
-        $this->actingAs($this->admin)
-            ->post(route('tenant.students.store', $student->promotion->branchOffice), $this->withData([
-                'phone' => $student->phone
-            ]))
-            ->assertStatus(Response::HTTP_FOUND)
-            ->assertSessionHasErrors(['phone']);
-
-        $this->assertDatabaseMissing('students', $this->withData([
-            'phone' => $student->phone,
-        ]));
-    }
 
     /** @test */
     function a_student_cannot_create_if_promotion_not_exists()

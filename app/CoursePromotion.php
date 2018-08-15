@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class CoursePromotion extends Model
 {
+    protected $guarded = [];
+
     protected $table = 'course_promotion';
 
     public function promotion()

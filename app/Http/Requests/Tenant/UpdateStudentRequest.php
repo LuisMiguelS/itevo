@@ -49,12 +49,6 @@ class UpdateStudentRequest extends FormRequest
                 'required',
                 'min:14',
                 'max:14',
-                Rule::unique('students')->ignore($this->student->id)->where(function ($query) {
-                    return $query->where([
-                        ['branch_office_id', $this->branchOffice->id],
-                        ['phone', $this->request->get('phone')],
-                    ]);
-                }),
             ],
             'birthdate' => 'required|date',
             'address' => 'required|min:15|max:255'
@@ -76,25 +70,30 @@ class UpdateStudentRequest extends FormRequest
 
     public function updateStudent(Student $student)
     {
-        $student->update($this->getFields($this->validated()));
+        $student->update($this->getFields());
         return "Estudiante {$student->full_name} actualizado con éxito.";
     }
 
-    public function getFields($data)
+    public function getFields()
     {
-        $data['birthdate'] = new Carbon($data['birthdate']);
+        $this->additionalValidationFields();
 
-        if ($this->isAdult($data['birthdate'])){
-            abort_if(isset($data['id_card']) && $data['id_card'] === null, 400, 'Debe especificar la cedula, si el estudiante es mayor de edad');
-
-            $data['tutor_id_card'] = null;
-
-            return $data;
-        }
-
-        abort_unless(isset($data['tutor_id_card']) && $data['tutor_id_card'] === null, 400, 'Debe especificar la cedula del tutor, si el estudiante no es mayor de edad');
+        $data = $this->validated();
+        $data['birthdate'] = (new Carbon($this->validated()['birthdate']))->toDateTimeString();
+        $data['tutor_id_card'] = $this->isAdult(new Carbon($this->validated()['birthdate'])) ? null : $this->validated()['tutor_id_card'];
 
         return $data;
+    }
+
+    protected function additionalValidationFields(): void
+    {
+        if ($this->isAdult(new Carbon($this->validated()['birthdate']))){
+            abort_if(isset($this->validated()['id_card'])
+                && $this->validated()['id_card'] == null, 400, 'Debe especificar la cedula, si el estudiante es mayor de edad');
+        }
+
+        abort_if(isset($this->validated()['tutor_id_card'])
+            && $this->validated()['tutor_id_card'] == null, 400, 'Debe especificar la cedula del tutor, si el estudiante no es mayor de edad');
     }
 
     protected function isAdult($birthday)

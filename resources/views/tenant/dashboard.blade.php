@@ -12,13 +12,13 @@
 		<div class="col-lg-3 col-xs-6">
 			<div class="small-box bg-aqua">
 				<div class="inner">
-					<h3>150</h3>
+					<h3>{{ $branchOffice->students()->where('signed_up', '<>', null)->count() }}</h3>
 					<p><strong>Cantidad de Estudiantes</strong></p>
 				</div>
 				<div class="icon">
 					<i class="fa fa-users"></i>
 				</div>
-				<a href="#" class="small-box-footer">Ver detalle <i class="fa fa-arrow-circle-right"></i></a>
+				<a href="{{ route('tenant.students.index', $branchOffice) }}" class="small-box-footer">Ver detalle <i class="fa fa-arrow-circle-right"></i></a>
 			</div>
 		</div>
 

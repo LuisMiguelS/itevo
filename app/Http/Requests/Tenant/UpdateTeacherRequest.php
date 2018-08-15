@@ -30,7 +30,6 @@ class UpdateTeacherRequest extends FormRequest
                 'required',
                 'min:13',
                 'max:13',
-                'unique:teachers,id_card,'. $this->teacher->id,
                 Rule::unique('teachers')->ignore($this->teacher->id)->where(function ($query) {
                     return $query->where([
                         ['branch_office_id', $this->branchOffice->id],
@@ -41,10 +40,9 @@ class UpdateTeacherRequest extends FormRequest
             'name' => 'required|min:4',
             'last_name' => 'required|min:4',
             'phone' => [
-                'min:9',
-                'max:17',
+                'min:14',
+                'max:14',
                 'required',
-                'unique:teachers,phone,'. $this->teacher->id,
                 Rule::unique('teachers')->ignore($this->teacher->id)->where(function ($query) {
                     return $query->where([
                         ['branch_office_id', $this->branchOffice->id],

@@ -19,12 +19,11 @@ class CreateStudentsTable extends Migration
             $table->unsignedInteger('promotion_id');
             $table->string('name', 70);
             $table->string('last_name', 70);
-            $table->string('id_card', 13);
-            $table->string('phone', 17);
+            $table->string('id_card', 13)->nullable();
+            $table->string('phone', 14);
             $table->string('address');
             $table->string('tutor_id_card', 13)->nullable();
-            $table->unique(['branch_office_id', 'promotion_id']);
-            $table->unique(['branch_office_id', 'id_card', 'phone']);
+            $table->unique(['branch_office_id', 'id_card']);
             $table->timestamp('birthdate');
             $table->timestamp('signed_up')->nullable();
             $table->timestamps();

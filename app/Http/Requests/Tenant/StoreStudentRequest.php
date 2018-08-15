@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Tenant;
 
+use App\Student;
 use Carbon\Carbon;
 use App\BranchOffice;
 use Illuminate\Validation\Rule;
@@ -43,18 +44,13 @@ class StoreStudentRequest extends FormRequest
             'tutor_id_card' => [
                 'nullable',
                 'min:13',
-                'max:13'
+                'max:13',
+                'required_if:id_card,==,null'
             ],
             'phone' => [
                 'required',
                 'min:14',
                 'max:14',
-                Rule::unique('students')->where(function ($query) {
-                    return $query->where([
-                        ['branch_office_id', $this->branchOffice->id],
-                        ['phone', $this->request->get('phone')],
-                    ]);
-                }),
             ],
             'birthdate' => 'required|date',
             'address' => 'required|min:15|max:255'
@@ -76,32 +72,40 @@ class StoreStudentRequest extends FormRequest
 
     public function createStudent(BranchOffice $branchOffice)
     {
-        $estudiante = $branchOffice->students()->create($this->getFields($branchOffice, $this->validated()));
+        $estudiante = $branchOffice->students()->create($this->getFields($branchOffice));
         return "Estudiante {$estudiante->full_name} creado correctamente.";
     }
 
-    public function getFields(BranchOffice $branchOffice, $data)
+    public function getFields(BranchOffice $branchOffice)
     {
-        abort_unless($branchOffice->currentPromotion(), 400, 'No hay una promocion actual');
+       $this->additionalValidationFields($branchOffice);
 
+        $data = $this->validated();
         $data['promotion_id'] = $branchOffice->currentPromotion()->id;
-        $data['birthdate'] = new Carbon($data['birthdate']);
-
-        if ($this->isAdult($data['birthdate'])){
-            abort_if(isset($data['id_card']) && $data['id_card'] === null, 400, 'Debe especificar la cedula, si el estudiante es mayor de edad');
-
-            $data['tutor_id_card'] = null;
-
-            return $data;
-        }
-
-        abort_unless(isset($data['tutor_id_card']) && $data['tutor_id_card'] === null, 400, 'Debe especificar la cedula del tutor, si el estudiante no es mayor de edad');
+        $data['birthdate'] = (new Carbon($this->validated()['birthdate']))->toDateTimeString();
+        $data['tutor_id_card'] = $this->isAdult(new Carbon($this->validated()['birthdate'])) ? null : $this->validated()['tutor_id_card'];
 
         return $data;
     }
 
-    protected function isAdult($birthday)
+
+    protected function additionalValidationFields(BranchOffice $branchOffice): void
+    {
+        abort_unless($branchOffice->currentPromotion(), 400, 'No hay una promocion actual');
+
+        if ($this->isAdult(new Carbon($this->validated()['birthdate']))){
+            abort_if(isset($this->validated()['id_card'])
+                && $this->validated()['id_card'] == null, 400, 'Debe especificar la cedula, si el estudiante es mayor de edad');
+        }
+
+        abort_if(isset($this->validated()['tutor_id_card'])
+            && $this->validated()['tutor_id_card'] == null, 400, 'Debe especificar la cedula del tutor, si el estudiante no es mayor de edad');
+    }
+
+    protected function isAdult(Carbon $birthday)
     {
         return $birthday->age >= config('itevo.adulthood');
     }
+
+
 }
