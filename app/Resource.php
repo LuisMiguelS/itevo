@@ -38,7 +38,7 @@ class Resource extends Model
 
     public function coursePromotions()
     {
-        return $this->hasMany(CoursePromotion::class);
+        return $this->hasMany(CoursePeriod::class);
     }
 
     public function branchOffice()

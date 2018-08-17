@@ -37,7 +37,7 @@ class StorePeriodRequest extends FormRequest
                     ]);
                 }),
             ],
-            'start_date_at' => 'required|date',
+            'start_at' => 'required|date',
             'ends_at' => 'required|date',
             'status' => [
                 'required',
@@ -50,7 +50,7 @@ class StorePeriodRequest extends FormRequest
     {
         return [
             'period_no' => 'perido',
-            'start_date_at' => 'inicio del periodo',
+            'start_at' => 'inicio del periodo',
             'ends_at' => 'fin del periodo',
             'status' => 'estado'
         ];
@@ -71,7 +71,7 @@ class StorePeriodRequest extends FormRequest
         $this->isStartDateAtGraterThanOrEqualToEndsAt();
 
         $data = $this->validated();
-        $data['start_date_at'] = new Carbon($this->validated()['start_date_at']);
+        $data['start_at'] = new Carbon($this->validated()['start_at']);
         $data['ends_at'] = new Carbon($this->validated()['ends_at']);
         return $data;
     }
@@ -82,10 +82,10 @@ class StorePeriodRequest extends FormRequest
     protected function isLastPeriodEndsAtGreater($previous_period): void
     {
         if ($previous_period) {
-            $previous_period_ends_at = new Carbon($previous_period->start_date_at);
-            $period_start_date_at = new Carbon($this->validated()['start_date_at']);
+            $previous_period_ends_at = new Carbon($previous_period->start_at);
+            $period_start_at = new Carbon($this->validated()['start_at']);
 
-            if ($previous_period_ends_at->greaterThan($period_start_date_at)) {
+            if ($previous_period_ends_at->greaterThan($period_start_at)) {
                 abort(400, 'Debes elegir una fecha de inicio mayor que la fecha de finalizacion del periodo anterior');
             }
         }
@@ -93,9 +93,9 @@ class StorePeriodRequest extends FormRequest
 
     protected function isStartDateAtGraterThanOrEqualToEndsAt(): void
     {
-        $start_date_at = new Carbon($this->validated()['start_date_at']);
+        $start_at = new Carbon($this->validated()['start_at']);
         $ends_at = new Carbon($this->validated()['ends_at']);
-        if ($start_date_at->greaterThanOrEqualTo($ends_at)) {
+        if ($start_at->greaterThanOrEqualTo($ends_at)) {
             abort(400, 'La fecha de inicio no puede ser mayor que la de finalizacion');
         }
     }

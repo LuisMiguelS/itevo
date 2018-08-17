@@ -15,11 +15,11 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('course_promotion_student_id');
+            $table->unsignedInteger('course_period_studen_idt');
             $table->unsignedInteger('amount');
             $table->timestamps();
 
-            $table->foreign('course_promotion_student_id')->references('id')->on('course_promotion_student');
+            $table->foreign('course_period_studen_idt')->references('id')->on('course_period_student');
         });
     }
 

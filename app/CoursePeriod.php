@@ -4,15 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CoursePromotion extends Model
+class CoursePeriod extends Model
 {
     protected $guarded = [];
 
-    protected $table = 'course_promotion';
+    protected $table = 'course_period';
 
-    public function promotion()
+    public function period()
     {
-        return $this->belongsTo(Promotion::class);
+        return $this->belongsTo(Period::class);
     }
 
     public function course()

@@ -45,7 +45,7 @@ class Course extends Model
 
     public function coursePromotion()
     {
-        return $this->hasMany(CoursePromotion::class);
+        return $this->hasMany(CoursePeriod::class);
     }
 
     public function branchOffice()

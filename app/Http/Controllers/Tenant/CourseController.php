@@ -24,7 +24,7 @@ class CourseController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index(TenantCourseDataTable $dataTable,BranchOffice $branchOffice)
+    public function index(TenantCourseDataTable $dataTable, BranchOffice $branchOffice)
     {
         $this->authorize('tenant-view', Course::class);
         $breadcrumbs = 'course';

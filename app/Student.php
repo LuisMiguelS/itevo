@@ -101,7 +101,7 @@ class Student extends Model
      */
     public function course_promotion()
     {
-        return $this->hasMany(CoursePromotion::class);
+        return $this->hasMany(CoursePeriod::class);
     }
 
     /**

@@ -15,7 +15,7 @@ class UpdatePeriodTest extends TestCase
     protected $defaultData = [
         'period_no' => Period::PERIOD_NO_2,
         'status' => Period::STATUS_FINISHED,
-        'start_date_at' => '3/7/2018',
+        'start_at' => '3/7/2018',
         'ends_at' => '3/8/2018',
     ];
 
@@ -46,7 +46,8 @@ class UpdatePeriodTest extends TestCase
         $this->user = factory(User::class)->create();
         $this->promotion = factory(Promotion::class)->create();
         $this->period = factory(Period::class)->create([
-            'period_no' => Period::PERIOD_NO_1
+            'period_no' => Period::PERIOD_NO_1,
+            'status' => Period::STATUS_WITHOUT_STARTING,
         ]);
     }
 
@@ -64,7 +65,7 @@ class UpdatePeriodTest extends TestCase
 
         $this->assertDatabaseHas('periods', $this->withData([
             'id' => $this->period->id,
-            'start_date_at' => (new Carbon($this->defaultData['start_date_at']))->toDateTimeString(),
+            'start_at' => (new Carbon($this->defaultData['start_at']))->toDateTimeString(),
             'ends_at' => (new Carbon($this->defaultData['ends_at']))->toDateTimeString(),
         ]));
     }
@@ -83,7 +84,7 @@ class UpdatePeriodTest extends TestCase
             ->assertStatus(Response::HTTP_NOT_FOUND);
 
         $this->assertDatabaseMissing('periods', $this->withData([
-            'start_date_at' => (new Carbon($this->defaultData['start_date_at']))->toDateTimeString(),
+            'start_at' => (new Carbon($this->defaultData['start_at']))->toDateTimeString(),
             'ends_at' => (new Carbon($this->defaultData['ends_at']))->toDateTimeString(),
         ]));
     }
@@ -101,7 +102,7 @@ class UpdatePeriodTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND);
 
         $this->assertDatabaseMissing('periods', $this->withData([
-            'start_date_at' => (new Carbon($this->defaultData['start_date_at']))->toDateTimeString(),
+            'start_at' => (new Carbon($this->defaultData['start_at']))->toDateTimeString(),
             'ends_at' => (new Carbon($this->defaultData['ends_at']))->toDateTimeString(),
         ]));
     }
@@ -120,7 +121,7 @@ class UpdatePeriodTest extends TestCase
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
         $this->assertDatabaseMissing('periods', $this->withData([
-            'start_date_at' => (new Carbon($this->defaultData['start_date_at']))->toDateTimeString(),
+            'start_at' => (new Carbon($this->defaultData['start_at']))->toDateTimeString(),
             'ends_at' => (new Carbon($this->defaultData['ends_at']))->toDateTimeString(),
         ]));
     }
@@ -144,7 +145,7 @@ class UpdatePeriodTest extends TestCase
 
         $this->assertDatabaseMissing('periods', $this->withData([
             'id' => $this->period->id,
-            'start_date_at' => (new Carbon($this->defaultData['start_date_at']))->toDateTimeString(),
+            'start_at' => (new Carbon($this->defaultData['start_at']))->toDateTimeString(),
             'ends_at' => (new Carbon($this->defaultData['ends_at']))->toDateTimeString(),
         ]));
     }
@@ -196,7 +197,7 @@ class UpdatePeriodTest extends TestCase
         $this->assertDatabaseHas('periods', $this->withData([
             'id' => $period->id,
             'status' => Period::STATUS_CURRENT,
-            'start_date_at' => $period->start_date_at->toDateTimeString(),
+            'start_at' => $period->start_at->toDateTimeString(),
             'ends_at' => $period->ends_at->toDateTimeString(),
         ]));
     }
@@ -213,10 +214,10 @@ class UpdatePeriodTest extends TestCase
                 'period' => $this->period
             ]), [])
             ->assertStatus(Response::HTTP_FOUND)
-            ->assertSessionHasErrors(['period_no', 'start_date_at', 'ends_at']);
+            ->assertSessionHasErrors(['period_no', 'start_at', 'ends_at']);
 
         $this->assertDatabaseMissing('periods', $this->withData([
-            'start_date_at' => (new Carbon($this->defaultData['start_date_at']))->toDateTimeString(),
+            'start_at' => (new Carbon($this->defaultData['start_at']))->toDateTimeString(),
             'ends_at' => (new Carbon($this->defaultData['ends_at']))->toDateTimeString(),
         ]));
     }

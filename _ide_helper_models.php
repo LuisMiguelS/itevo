@@ -12,7 +12,7 @@ namespace App{
 /**
  * App\Student
  *
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\CoursePromotion[] $course_promotion
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\CoursePeriod[] $course_promotion
  * @property-read \App\Payment $payment
  * @property-read \App\Promotion $promotion
  */
@@ -60,7 +60,7 @@ namespace App{
 /**
  * App\Resource
  *
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\CoursePromotion[] $course_promotion
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\CoursePeriod[] $course_promotion
  */
 	class Resource extends \Eloquent {}
 }
@@ -100,7 +100,7 @@ namespace App{
 /**
  * App\Teacher
  *
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\CoursePromotion[] $course_promotion
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\CoursePeriod[] $course_promotion
  */
 	class Teacher extends \Eloquent {}
 }

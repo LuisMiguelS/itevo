@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Silber\Bouncer\Database\Role;
 use Silber\Bouncer\Database\Ability;
-use App\{CoursePromotion,
+use App\{CoursePeriod,
     Period,
     Promotion,
     Resource,
@@ -432,22 +432,22 @@ class BouncerSeeder extends Seeder
        | Todas la habilidades para la gestion del crud de asignacion de cursos
        */
 
-        Bouncer::ability()->createForModel(CoursePromotion::class, [
+        Bouncer::ability()->createForModel(CoursePeriod::class, [
             'name' => 'tenant-view',
             'title' => 'Ver cursos activos'
         ]);
 
-        Bouncer::ability()->createForModel(CoursePromotion::class, [
+        Bouncer::ability()->createForModel(CoursePeriod::class, [
             'name' => 'tenant-create',
             'title' => 'Asignar curso a promocion'
         ]);
 
-        Bouncer::ability()->createForModel(CoursePromotion::class, [
+        Bouncer::ability()->createForModel(CoursePeriod::class, [
             'name' => 'tenant-delete',
             'title' => 'Eliminar curso asignado a la promocion'
         ]);
 
-        Bouncer::ability()->createForModel(CoursePromotion::class, [
+        Bouncer::ability()->createForModel(CoursePeriod::class, [
             'name' => 'tenant-update',
             'title' => 'Actualizar curso asignado a la promocion'
         ]);

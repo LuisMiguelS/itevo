@@ -38,7 +38,7 @@ class UpdatePeriodRequest extends FormRequest
                     ]);
                 }),
             ],
-            'start_date_at' => 'required|date',
+            'start_at' => 'required|date',
             'ends_at' => 'required|date',
             'status' => [
                 'required',
@@ -51,7 +51,7 @@ class UpdatePeriodRequest extends FormRequest
     {
         return [
             'period_no' => 'periodo',
-            'start_date_at' => 'inicio del periodo',
+            'start_at' => 'inicio del periodo',
             'ends_at' => 'fin del periodo',
             'status' => 'estado'
         ];
@@ -88,10 +88,10 @@ class UpdatePeriodRequest extends FormRequest
     protected function isLastPeriodEndsAtGreater($previous_period): void
     {
         if ($previous_period) {
-            $previous_period_ends_at = new Carbon($previous_period->start_date_at);
-            $period_start_date_at = new Carbon($this->validated()['start_date_at']);
+            $previous_period_ends_at = new Carbon($previous_period->start_at);
+            $period_start_at = new Carbon($this->validated()['start_at']);
 
-            if ($previous_period_ends_at->greaterThan($period_start_date_at)) {
+            if ($previous_period_ends_at->greaterThan($period_start_at)) {
                 abort(400, 'Debes elegir una fecha de inicio mayor que la fecha de finalizacion del periodo anterior');
             }
         }
@@ -99,9 +99,9 @@ class UpdatePeriodRequest extends FormRequest
 
     protected function isStartDateAtGraterThanOrEqualToEndsAt(): void
     {
-        $start_date_at = new Carbon($this->validated()['start_date_at']);
+        $start_at = new Carbon($this->validated()['start_at']);
         $ends_at = new Carbon($this->validated()['ends_at']);
-        if ($start_date_at->greaterThanOrEqualTo($ends_at)) {
+        if ($start_at->greaterThanOrEqualTo($ends_at)) {
             abort(400, 'La fecha de inicio no puede ser mayor que la de finalizacion');
         }
     }
@@ -111,10 +111,10 @@ class UpdatePeriodRequest extends FormRequest
         $data = $this->validated();
 
         if ($this->period->status == Period::STATUS_CURRENT) {
-            $data['start_date_at'] = $this->period->start_date_at;
+            $data['start_at'] = $this->period->start_at;
             $data['ends_at'] = $this->period->ends_at;
         }else{
-            $data['start_date_at'] = new Carbon($this->validated()['start_date_at']);
+            $data['start_at'] = new Carbon($this->validated()['start_at']);
             $data['ends_at'] = new Carbon($this->validated()['ends_at']);
         }
 

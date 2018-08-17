@@ -15,7 +15,7 @@ class CreatePeriodTest extends TestCase
     protected $defaultData = [
         'period_no' => Period::PERIOD_NO_1,
         'status' => Period::STATUS_WITHOUT_STARTING,
-        'start_date_at' => '3/7/2018',
+        'start_at' => '3/7/2018',
         'ends_at' => '3/8/2018',
     ];
 
@@ -45,7 +45,7 @@ class CreatePeriodTest extends TestCase
             ->assertSessionHas(['flash_success' => "Periodo creado correctamente."]);
 
         $this->assertDatabaseHas('periods', $this->withData([
-            'start_date_at' => (new Carbon($this->defaultData['start_date_at']))->toDateTimeString(),
+            'start_at' => (new Carbon($this->defaultData['start_at']))->toDateTimeString(),
             'ends_at' => (new Carbon($this->defaultData['ends_at']))->toDateTimeString(),
         ]));
     }
@@ -77,7 +77,7 @@ class CreatePeriodTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND);
 
         $this->assertDatabaseMissing('periods', $this->withData([
-            'start_date_at' => (new Carbon($this->defaultData['start_date_at']))->toDateTimeString(),
+            'start_at' => (new Carbon($this->defaultData['start_at']))->toDateTimeString(),
             'ends_at' => (new Carbon($this->defaultData['ends_at']))->toDateTimeString(),
         ]));
     }
@@ -108,7 +108,7 @@ class CreatePeriodTest extends TestCase
                 'promotion' => $this->promotion
             ]), [])
             ->assertStatus(Response::HTTP_FOUND)
-            ->assertSessionHasErrors(['period_no', 'start_date_at', 'ends_at']);
+            ->assertSessionHasErrors(['period_no', 'start_at', 'ends_at']);
 
         $this->assertDatabaseEmpty('periods');
     }

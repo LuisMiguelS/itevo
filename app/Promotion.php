@@ -36,7 +36,7 @@ class Promotion extends Model
 
     public function coursePromotions()
     {
-        return $this->hasMany(CoursePromotion::class);
+        return $this->hasMany(CoursePeriod::class);
     }
 
     public function students()
@@ -52,5 +52,10 @@ class Promotion extends Model
     public function isRegisteredIn(BranchOffice $branchOffice)
     {
         return $this->branchOffice()->where('id', $branchOffice->id)->count() > 0;
+    }
+
+    public function currentPeriod()
+    {
+        return $this->periods()->where('status', Period::STATUS_CURRENT)->first();
     }
 }

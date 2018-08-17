@@ -97,7 +97,21 @@ $factory->define(App\Period::class, function (Faker $faker) {
     return [
         'promotion_id' => factory(App\Promotion::class)->create(),
         'period_no' => $faker->unique()->randomElement([\App\Period::PERIOD_NO_1, \App\Period::PERIOD_NO_2, \App\Period::PERIOD_NO_3]),
-        'start_date_at' => \Carbon\Carbon::now(),
+        'start_at' => \Carbon\Carbon::now(),
         'ends_at' =>\Carbon\Carbon::now()->addMonth(4),
+        'status' => \App\Period::STATUS_CURRENT
+    ];
+});
+
+$factory->define(App\CoursePeriod::class, function (Faker $faker) {
+
+    return [
+        'period_id' => factory(App\Period::class),
+        'teacher_id' => factory(App\Teacher::class),
+        'classroom_id' => factory(App\Classroom::class),
+        'course_id' => factory(App\Course::class),
+        'price' => $faker->numberBetween(100, 4000),
+        'start_at' => \Carbon\Carbon::now()->addDay(2),
+        'ends_at' =>\Carbon\Carbon::now()->addMonth(2),
     ];
 });

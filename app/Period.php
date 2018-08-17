@@ -9,9 +9,7 @@ class Period extends Model
 {
     use DatesTranslator;
 
-    protected $fillable = [
-       'promotion_id', 'period_no', 'status', 'start_date_at', 'ends_at'
-    ];
+    protected $guarded = [];
 
     const STATUS_WITHOUT_STARTING = 'sin comenzar';
     const STATUS_CURRENT = 'actual';
@@ -24,5 +22,10 @@ class Period extends Model
     public function promotion()
     {
         return $this->belongsTo(Promotion::class);
+    }
+
+    public function coursePeriods()
+    {
+        return $this->hasMany(CoursePeriod::class);
     }
 }

@@ -53,7 +53,7 @@ class Teacher extends Model
 
     public function course_promotion()
     {
-        return $this->hasMany(CoursePromotion::class);
+        return $this->hasMany(CoursePeriod::class);
     }
 
     public function branchOffice()

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCoursePromotionResourceTable extends Migration
+class CreateCoursePeriodResourceTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateCoursePromotionResourceTable extends Migration
      */
     public function up()
     {
-        Schema::create('course_promotion_resource', function (Blueprint $table) {
+        Schema::create('course_period_resource', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('course_promotion_id');
+            $table->unsignedInteger('course_period_id');
             $table->unsignedInteger('resource_id');
             $table->unsignedInteger('price');
             $table->timestamps();
 
-            $table->foreign('course_promotion_id')->references('id')->on('course_promotion');
+            $table->foreign('course_period_id')->references('id')->on('course_period');
             $table->foreign('resource_id')->references('id')->on('resources');
         });
     }
@@ -32,6 +32,6 @@ class CreateCoursePromotionResourceTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('course_promotion_resource');
+        Schema::dropIfExists('course_period_resource');
     }
 }
