@@ -34,7 +34,7 @@ class Promotion extends Model
         return $this->belongsTo(BranchOffice::class);
     }
 
-    public function coursePromotions()
+    public function coursePeriod()
     {
         return $this->hasMany(CoursePeriod::class);
     }

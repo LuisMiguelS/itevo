@@ -42,7 +42,10 @@ class StoreCoursePeriodRequest extends FormRequest
     public function createCoursePromotion(Period $period)
     {
         $this->additionalValidation();
-        $period->coursePeriods()->create($this->validated());
+        $data = $this->validated();
+        $data['start_at'] =new Carbon($data['start_at']);
+        $data['ends_at'] = new Carbon($data['ends_at']);
+        $period->coursePeriods()->create($data);
         return "Curso activado correctamente.";
     }
 

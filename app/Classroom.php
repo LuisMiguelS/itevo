@@ -51,6 +51,11 @@ class Classroom extends Model
         return $this->belongsTo(BranchOffice::class);
     }
 
+    public function coursePeriod()
+    {
+        return $this->hasMany(CoursePeriod::class);
+    }
+
     public function isRegisteredIn(BranchOffice $branchOffice)
     {
         return $this->branchOffice()->where('id', $branchOffice->id)->count() > 0;

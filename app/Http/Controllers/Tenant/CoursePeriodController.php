@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Tenant;
 use App\Http\Controllers\Controller;
 use App\{BranchOffice, CoursePeriod, DataTables\TenantCoursePeriodDataTable, Period};
 use App\Http\Requests\Tenant\{StoreCoursePeriodRequest, UpdateCoursePeriodRequest};
+use Beta\B;
 
 class CoursePeriodController extends Controller
 {
@@ -32,11 +33,19 @@ class CoursePeriodController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param \App\BranchOffice $branchOffice
+     * @param \App\Period $period
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create()
+    public function create(BranchOffice $branchOffice, Period $period)
     {
-        //
+        $this->authorize('tenant-create', CoursePeriod::class);
+        $courses = $this->getCourseArray($branchOffice);
+        $classrooms = $this->getClassroomArray($branchOffice);
+        $teachers = $this->getTeacherArray($branchOffice);
+        $coursePeriod = new CoursePeriod;
+        return view('tenant.course_period.create', compact('branchOffice', 'period', 'courses', 'classrooms', 'teachers', 'coursePeriod'));
     }
 
     /**
@@ -73,12 +82,20 @@ class CoursePeriodController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\CoursePeriod  $coursePromotion
+     * @param \App\BranchOffice $branchOffice
+     * @param \App\Period $period
+     * @param \App\CoursePeriod $coursePeriod
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function edit(CoursePeriod $coursePromotion)
+    public function edit(BranchOffice $branchOffice, Period $period, CoursePeriod $coursePeriod)
     {
-        //
+        $this->authorize('tenant-update', $coursePeriod);
+        $courses = $this->getCourseArray($branchOffice);
+        $classrooms = $this->getClassroomArray($branchOffice);
+        $teachers = $this->getTeacherArray($branchOffice);
+        $coursePeriod->load('course', 'teacher', 'classroom');
+        return view('tenant.course_period.edit', compact('branchOffice', 'period', 'courses', 'classrooms', 'teachers', 'coursePeriod'));
     }
 
     /**
@@ -109,5 +126,35 @@ class CoursePeriodController extends Controller
     public function destroy(CoursePeriod $coursePromotion)
     {
         //
+    }
+
+    protected function getCourseArray(BranchOffice $branchOffice)
+    {
+        return $branchOffice->courses()->get()->map(function ($values) {
+            return [
+                'id' => $values->id,
+                'label' => "{$values->name} ({$values->typeCourse->name})"
+            ];
+        });
+    }
+
+    protected function getClassroomArray(BranchOffice $branchOffice)
+    {
+        return $branchOffice->classrooms()->get()->map(function ($values) {
+            return [
+                'id' => $values->id,
+                'label' => "{$values->name} ({$values->building})"
+            ];
+        });
+    }
+
+    protected function getTeacherArray(BranchOffice $branchOffice)
+    {
+        return $branchOffice->teachers()->get()->map(function ($values) {
+            return [
+                'id' => $values->id,
+                'label' => "{$values->name} {$values->last_name}"
+            ];
+        });
     }
 }

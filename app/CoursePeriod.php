@@ -2,10 +2,13 @@
 
 namespace App;
 
+use App\Traits\DatesTranslator;
 use Illuminate\Database\Eloquent\Model;
 
 class CoursePeriod extends Model
 {
+    use DatesTranslator;
+
     protected $guarded = [];
 
     protected $table = 'course_period';
@@ -28,6 +31,11 @@ class CoursePeriod extends Model
     public function teacher()
     {
         return $this->belongsTo(Teacher::class);
+    }
+
+    public function classroom()
+    {
+        return $this->belongsTo(Classroom::class);
     }
 
     public function resource()

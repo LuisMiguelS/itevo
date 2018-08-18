@@ -34,6 +34,11 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
+
+import Form from './utilities/Form';
+
+window.Form = Form;
+
 require('./libs/jquery.slimscroll');
 require('./libs/fastclick');
 require('./libs/adminlte/adminlte');

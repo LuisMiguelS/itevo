@@ -1,26 +1,26 @@
 @csrf
 
 @if($period->status === \App\Period::STATUS_WITHOUT_STARTING)
-    <div class="form-group {{ $errors->has('period') ? 'has-error' : '' }}">
+    <div class="form-group {{ $errors->has('period_no') ? 'has-error' : '' }}">
         <label>Periodo <span class="text-danger">*</span></label>
-        <select class="form-control" name="period">
+        <select class="form-control" name="period_no">
             <option value="{{ App\Period::PERIOD_NO_1 }}"
-                    {{ $period->period ===  old('period', App\Period::PERIOD_NO_1) ? 'selected' : '' }}>
+                    {{ $period->period_no ===  old('period_no', App\Period::PERIOD_NO_1) ? 'selected' : '' }}>
                 {{ strtoupper(App\Period::PERIOD_NO_1) }}
             </option>
             <option value="{{ App\Period::PERIOD_NO_2 }}"
-                    {{ $period->period ===  old('period', App\Period::PERIOD_NO_2) ? 'selected' : '' }}>
+                    {{ $period->period_no ===  old('period_no', App\Period::PERIOD_NO_2) ? 'selected' : '' }}>
                 {{ strtoupper(App\Period::PERIOD_NO_2) }}
             </option>
             <option value="{{ App\Period::PERIOD_NO_3 }}"
-                    {{ $period->period ===  old('period', App\Period::PERIOD_NO_3) ? 'selected' : '' }}>
+                    {{ $period->period_no ===  old('period_no', App\Period::PERIOD_NO_3) ? 'selected' : '' }}>
                 {{ strtoupper(App\Period::PERIOD_NO_3) }}
             </option>
         </select>
 
-        @if ($errors->has('period'))
+        @if ($errors->has('period_no'))
             <span class="help-block">
-            <strong>{{ $errors->first('period') }}</strong>
+            <strong>{{ $errors->first('period_no') }}</strong>
         </span>
         @endif
     </div>
@@ -39,6 +39,7 @@
             {{ strtoupper(App\Period::STATUS_CURRENT) }}
         </option>
         <option value="{{ App\Period::STATUS_FINISHED }}"
+                @if($period->status === \App\Period::STATUS_WITHOUT_STARTING) disabled @endif
                 {{ $period->period ===  old('status', App\Period::STATUS_FINISHED) ? 'selected' : '' }}>
             {{ strtoupper(App\Period::STATUS_FINISHED) }}
         </option>
@@ -51,19 +52,19 @@
     @endif
 </div>
 
-<div class="form-group {{ $errors->has('start_date_at') ? 'has-error' : '' }}" >
+<div class="form-group {{ $errors->has('start_at') ? 'has-error' : '' }}" >
     <label  class="control-label">Inicio de periodo <span class="text-danger">*</span></label>
 
-    <input id="start_date_at"
+    <input id="start_at"
            type="date"
            class="form-control"
-           name="start_date_at"
-           @if($period->getOriginal('ends_at') !== null) disabled @endif
-           value="{{ old('start_date_at', $period->start_date_at->format('Y-m-d')) }}">
+           name="start_at"
+           @if($period->getOriginal('ends_at') !== null) readonly @endif
+           value="{{ old('start_at', $period->start_at->format('Y-m-d')) }}">
 
-    @if ($errors->has('start_date_at'))
+    @if ($errors->has('start_at'))
         <span class="help-block">
-            <strong>{{ $errors->first('start_date_at') }}</strong>
+            <strong>{{ $errors->first('start_at') }}</strong>
         </span>
     @endif
 </div>
@@ -75,7 +76,7 @@
            type="date"
            class="form-control"
            name="ends_at"
-           @if($period->getOriginal('ends_at') !== null) disabled @endif
+           @if($period->getOriginal('ends_at') !== null) readonly @endif
            value="{{ old('ends_at', $period->ends_at->format('Y-m-d')) }}">
 
     @if ($errors->has('ends_at'))

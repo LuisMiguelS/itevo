@@ -194,7 +194,13 @@
             </li>
 
             <li class="header">LABELS</li>
-            <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
+            @if($branchOffice->currentPromotion()->currentPeriod())
+            <li>
+                <a href="{{ route('tenant.periods.course-period.index', ['branchOffice' => $branchOffice, 'period' => $branchOffice->currentPromotion()->currentPeriod()]) }}">
+                    <i class="fa fa-circle-o text-red"></i> <span>Cursos activos</span>
+                </a>
+            </li>
+            @endif
             <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
             <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
         </ul>

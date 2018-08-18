@@ -42,7 +42,10 @@ class UpdateCoursePeriodRequest extends FormRequest
     public function updateCoursePeriod(CoursePeriod $coursePeriod)
     {
         $this->additionalValidation();
-        $coursePeriod->update($this->validated());
+        $data = $this->validated();
+        $data['start_at'] =new Carbon($data['start_at']);
+        $data['ends_at'] = new Carbon($data['ends_at']);
+        $coursePeriod->update($data);
         return "Curso activado actualizado correctamente.";
     }
 

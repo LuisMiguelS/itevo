@@ -46,9 +46,9 @@ trait DatesTranslator
      * @param $start_date_at
      * @return \Jenssegers\Date\Date
      */
-    public function getStartDateAtAttribute($start_date_at)
+    public function getStartAtAttribute($start_at)
     {
-        return new Date($start_date_at);
+        return new Date($start_at);
     }
 
     /**

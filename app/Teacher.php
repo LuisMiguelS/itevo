@@ -19,7 +19,7 @@ class Teacher extends Model
         'url'
     ];
 
-    protected $appends = ['url'];
+    protected $appends = ['url', 'full_name'];
 
     public function setNameAttribute($name)
     {

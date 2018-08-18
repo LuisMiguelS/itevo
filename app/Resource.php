@@ -36,7 +36,7 @@ class Resource extends Model
         return new UrlPresenter($this->branchOffice, $this);
     }
 
-    public function coursePromotions()
+    public function coursePeriod()
     {
         return $this->hasMany(CoursePeriod::class);
     }

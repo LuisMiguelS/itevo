@@ -8,7 +8,7 @@ use Yajra\DataTables\Services\DataTable;
 class TenantPeriodDataTable extends DataTable
 {
     private $label_status = [
-        Period::STATUS_WITHOUT_STARTING => 'secundary',
+        Period::STATUS_WITHOUT_STARTING => 'warning',
         Period::STATUS_CURRENT => 'primary',
         Period::STATUS_FINISHED => 'success',
     ];
@@ -26,10 +26,10 @@ class TenantPeriodDataTable extends DataTable
                 return $this->status($period);
 
             })
-            ->editColumn('start_date_at', function(Period $period) {
-                if ($period->getOriginal('start_date_at') === null)
+            ->editColumn('start_at', function(Period $period) {
+                if ($period->getOriginal('start_at') === null)
                     return 'Sin definir';
-                return $period->start_date_at->format('l j F Y');
+                return $period->start_at->format('l j F Y');
             })
             ->editColumn('ends_at', function(Period $period) {
                 if ($period->getOriginal('ends_at') === null)
@@ -81,9 +81,9 @@ class TenantPeriodDataTable extends DataTable
     {
         return [
             'id' => ['title' => 'Identificador', 'visible' => false, 'exportable' => false, 'printable' => false,],
-            'period' =>  ['title' => 'Período'],
+            'period_no' =>  ['title' => 'Período'],
             'status' => ['title' => 'Estado'],
-            'start_date_at' => ['title' => 'Inicio del período'],
+            'start_at' => ['title' => 'Inicio del período'],
             'ends_at' => ['title' => 'Fin del período'],
             'created_at' => ['title' => 'Fecha de creación'],
             'updated_at' => ['title' => 'Fecha de actualización']

@@ -39,14 +39,26 @@
 		<div class="col-lg-3 col-xs-6">
 			<div class="small-box bg-yellow">
 				<div class="inner">
-					<h3>10</h3>
+					<h3>
+						@if($branchOffice->currentPromotion()->currentPeriod())
+							{{ $branchOffice->currentPromotion()->currentPeriod()->coursePeriods()->count() }}
+						@else
+							0
+						@endif
+					</h3>
 
 					<p><strong>Cursos activos</strong></p>
 				</div>
 				<div class="icon">
 					<i class="fa fa-list"></i>
 				</div>
-				<a href="#" class="small-box-footer">Ver detalle <i class="fa fa-arrow-circle-right"></i></a>
+                @if($branchOffice->currentPromotion()->currentPeriod())
+                    <a href="{{ route('tenant.periods.course-period.index', ['branchOffice' => $branchOffice, 'period' => $branchOffice->currentPromotion()->currentPeriod()]) }}" class="small-box-footer">
+                        Ver detalle
+                        <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                @endif
+
 			</div>
 		</div>
 

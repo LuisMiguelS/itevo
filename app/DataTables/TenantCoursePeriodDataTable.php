@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\User;
+use App\CoursePeriod;
 use Yajra\DataTables\Services\DataTable;
 
 class TenantCoursePeriodDataTable extends DataTable
@@ -16,7 +16,19 @@ class TenantCoursePeriodDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->addColumn('action', 'tenantcourseperiod.action');
+            ->editColumn('classroom.name', function (CoursePeriod $coursePeriod) {
+                return "{$coursePeriod->classroom->name} ({$coursePeriod->classroom->building})";
+            })
+            ->addColumn('Fechas', function (CoursePeriod $coursePeriod) {
+                return "<p><b>Fecha de inicio del curso:</b> {$coursePeriod->start_at->format('l j F Y')}</p>
+                        <p><b>Fecha de finalizacion del curso:</b> {$coursePeriod->ends_at->format('l j F Y')}</p>
+                        <p><b>Fecha de creación:</b> {$coursePeriod->created_at->format('l j F Y')}</p>
+                        <p><b>Fecha de actualización:</b> {$coursePeriod->updated_at->format('l j F Y')}</p>";
+            })
+            ->addColumn('action', function (CoursePeriod $coursePeriod) {
+                return view('tenant.course_period._actions', compact('coursePeriod'));
+            })
+            ->rawColumns(['action', 'Fechas']);
     }
 
     /**
@@ -30,7 +42,12 @@ class TenantCoursePeriodDataTable extends DataTable
             || request()->branchOffice->currentPromotion()->currentPeriod() == null) {
             return [];
         }
-        return request()->branchOffice->currentPromotion()->currentPeriod()->coursePeriods;
+        return request()->branchOffice
+            ->currentPromotion()
+            ->currentPeriod()
+            ->coursePeriods()
+            ->with('teacher', 'course', 'classroom')
+            ->get();
     }
 
     /**
@@ -55,10 +72,12 @@ class TenantCoursePeriodDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id',
-            'price',
-            'created_at',
-            'updated_at'
+            'id' => ['title' => 'Identificador', 'visible' => false, 'exportable' => false, 'printable' => false,],
+            'course.name' => ['title' => 'Curso'],
+            'classroom.name' => ['title' => 'Aula'],
+            'teacher.full_name' => ['title' => 'Profesor asignado'],
+            'price'=> ['title' => 'Precio'],
+            'Fechas',
         ];
     }
 

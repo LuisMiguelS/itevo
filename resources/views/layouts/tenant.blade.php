@@ -19,7 +19,7 @@
 
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper">
+<div class="wrapper" id="app">
 
     @include('partials._navbar_tenant')
 
