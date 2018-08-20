@@ -40,11 +40,7 @@
 			<div class="small-box bg-yellow">
 				<div class="inner">
 					<h3>
-						@if($branchOffice->currentPromotion()->currentPeriod())
-							{{ $branchOffice->currentPromotion()->currentPeriod()->coursePeriods()->count() }}
-						@else
-							0
-						@endif
+						{{ $period->coursePeriods()->count() }}
 					</h3>
 
 					<p><strong>Cursos activos</strong></p>
@@ -52,28 +48,26 @@
 				<div class="icon">
 					<i class="fa fa-list"></i>
 				</div>
-                @if($branchOffice->currentPromotion()->currentPeriod())
-                    <a href="{{ route('tenant.periods.course-period.index', ['branchOffice' => $branchOffice, 'period' => $branchOffice->currentPromotion()->currentPeriod()]) }}" class="small-box-footer">
-                        Ver detalle
-                        <i class="fa fa-arrow-circle-right"></i>
-                    </a>
-                @endif
-
+				<a href="{{ route('tenant.periods.course-period.index', ['branchOffice' => $branchOffice, 'period' => $period]) }}" class="small-box-footer">
+					Ver detalle
+					<i class="fa fa-arrow-circle-right"></i>
+				</a>
 			</div>
 		</div>
+
 
 		<div class="col-lg-3 col-xs-6">
 
 			<div class="small-box bg-red">
 				<div class="inner">
-					<h3>{{ $branchOffice->currentPromotion()->promotion_no ?? 0 }}</h3>
+					<h3>{{ $promotion->promotion_no ?? 0 }}</h3>
 
-					<p><strong>{{ $branchOffice->currentPromotion() ? 'Promoción en curso' : 'No hay promoción en curso' }}</strong></p>
+					<p><strong>{{ $promotion ? 'Promoción en curso' : 'No hay promoción en curso' }}</strong></p>
 				</div>
 				<div class="icon">
 					<i class="fa fa-spinner"></i>
 				</div>
-				<a href="{{ $branchOffice->currentPromotion()->url->show ?? '#' }}" class="small-box-footer">Más informacion <i class="fa fa-arrow-circle-right"></i></a>
+				<a href="{{ $promotion->url->show ?? '#' }}" class="small-box-footer">Más informacion <i class="fa fa-arrow-circle-right"></i></a>
 			</div>
 		</div>
 	</div>

@@ -25,15 +25,6 @@ trait DatesTranslator
     }
 
     /**
-     * @param $deleted_at
-     * @return \Jenssegers\Date\Date
-     */
-    public function getDeletedAtAttribute($deleted_at)
-    {
-        return new Date($deleted_at);
-    }
-
-    /**
      * @param $birthdate
      * @return \Jenssegers\Date\Date
      */

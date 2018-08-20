@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\BranchOffice;
-use App\Http\Requests\UpdateBranchOfficeRequest;
-use App\Http\Requests\CreateBranchOfficeRequest;
+use App\Http\ViewComponents\TenantDashboard;
+use App\Http\Requests\{CreateBranchOfficeRequest, UpdateBranchOfficeRequest};
 
 class BranchOfficeController extends Controller
 {
@@ -98,13 +98,13 @@ class BranchOfficeController extends Controller
 
     /**
      * @param \App\BranchOffice $branchOffice
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \App\Http\ViewComponents\TenantDashboard
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function dashboard(BranchOffice $branchOffice)
     {
-        $this->authorize('tenant-view', BranchOffice::class);
-        return view('tenant.dashboard', compact('branchOffice'));
+        $this->authorize('tenant-view', $branchOffice);
+        return new TenantDashboard($branchOffice);
     }
 
     public function userIsAuthorized()

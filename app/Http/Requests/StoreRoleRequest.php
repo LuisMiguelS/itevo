@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Silber\Bouncer\Database\Role;
+use Illuminate\Foundation\Http\FormRequest;
+use Silber\Bouncer\BouncerFacade as Bouncer;
 
 class StoreRoleRequest extends FormRequest
 {
@@ -36,6 +37,7 @@ class StoreRoleRequest extends FormRequest
         if (isset($this->validated()['abilities'])) {
             $role->allow($this->validated()['abilities']);
         }
+        Bouncer::refresh();
         return "Rol {$role->title} creado con éxito";
     }
 }

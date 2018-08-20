@@ -6,13 +6,9 @@ use App\Classroom;
 use App\Traits\DatatableRemoveButton;
 use Yajra\DataTables\Services\DataTable;
 
-class TenantClassroomDataTable extends DataTable
+class TenantClassroomTrashedDataTable extends DataTable
 {
     use DatatableRemoveButton;
-
-    protected $btn_ability = [
-      'tenant-create' => \App\Classroom::class
-    ];
 
     /**
      * Build DataTable class.
@@ -40,7 +36,10 @@ class TenantClassroomDataTable extends DataTable
      */
     public function query()
     {
-        return request()->branchOffice->classrooms()->get();
+        return request()->branchOffice
+            ->classrooms()
+            ->onlyTrashed()
+            ->get();
     }
 
     /**

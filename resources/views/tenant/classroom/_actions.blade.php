@@ -1,29 +1,54 @@
-<div class="dropdown">
-    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        Acciones
-        <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-        @can('tenant-update', $classroom)
-        <li><a href="{{ $classroom->url->edit }}"> Editar</a></li>
-        @endcan
+@if($classroom->trashed())
+    @can('tenant-restore', $classroom)
+    <a href="{{ $classroom->url->restore }}" class="btn btn-default btn-xs"
+        onclick="event.preventDefault();
+        document.getElementById('{{ 'classroom-restore-'. $classroom->id  }}').submit();">
+        <i class="fa fa-repeat" aria-hidden="true"></i>
+    </a>
 
-        @can('tenant-delete', $classroom)
-        <li>
-            <a href="{{ $classroom->url->delete }}"
-               onclick="event.preventDefault();
-               document.getElementById('{{ 'classroom-delete-'. $classroom->id  }}').submit();">
-                Eliminar
-            </a>
-        </li>
-        <form id="classroom-delete-{{ $classroom->id }}"
-              action="{{ $classroom->url->delete }}"
+    <form id="classroom-restore-{{ $classroom->id }}"
+          action="{{ $classroom->url->restore }}"
+          method="POST" style="display: none;">
+    @csrf
+    @method('DELETE')
+    </form>
+    @endcan
+
+    @can('tenant-delete', $classroom)
+    <a href="{{ $classroom->url->delete }}"
+        class="btn btn-danger btn-xs"
+        onclick="event.preventDefault();
+        document.getElementById('{{ 'classroom-delete-'. $classroom->id  }}').submit();">
+        <i class="fa fa-times" aria-hidden="true"></i>
+    </a>
+
+    <form id="classroom-delete-{{ $classroom->id }}"
+        action="{{ $classroom->url->delete }}"
+        method="POST" style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
+    @endcan
+@else
+    @can('tenant-update', $classroom)
+        <a href="{{ $classroom->url->edit }}" class="btn btn-default btn-xs">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+        </a>
+    @endcan
+
+    @can('tenant-trash', $classroom)
+        <a href="{{ $classroom->url->trash }}"
+           class="btn btn-danger btn-xs"
+           onclick="event.preventDefault();
+                   document.getElementById('{{ 'classroom-trash-'. $classroom->id  }}').submit();">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+        </a>
+
+        <form id="classroom-trash-{{ $classroom->id }}"
+              action="{{ $classroom->url->trash }}"
               method="POST" style="display: none;">
             @csrf
             @method('DELETE')
         </form>
-        @endcan
-        <li role="separator" class="divider"></li>
-        <li><a href="#">Something else here</a></li>
-    </ul>
-</div>
+    @endcan
+@endif

@@ -1,6 +1,6 @@
 @extends('layouts.tenant')
 
-@section('title', $title ?? 'Datatables')
+@section('title', e(strip_tags($title)) ?? 'Datatables')
 
 @section('breadcrumb')
    @isset($breadcrumbs)

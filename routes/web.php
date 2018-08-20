@@ -38,7 +38,13 @@ Route::resource('roles', 'RoleController');
 
 Route::prefix('{branchOffice}')->middleware('tenantAccess')->name('tenant.')->group(function () {
     Route::get('dashboard', 'BranchOfficeController@dashboard')->name('dashboard');
-    Route::resource('classrooms', 'Tenant\ClassRoomController');
+
+    Route::get('classrooms/trash', 'Tenant\ClassRoomController@trashed')->name('classrooms.trash');
+    Route::delete('classrooms/{id}', 'Tenant\ClassRoomController@destroy')->name('classrooms.destroy');
+    Route::delete('classrooms/{classroom}/trash', 'Tenant\ClassRoomController@trash')->name('classrooms.trash.destroy');
+    Route::delete('classrooms/{id}/restore', 'Tenant\ClassRoomController@restore')->name('classrooms.trash.restore');
+    Route::resource('classrooms', 'Tenant\ClassRoomController')->except('destroy');
+
     Route::resource('types/courses', 'Tenant\TypeCourseController')->names([
         'index' => 'typeCourses.index',
         'show' => 'typeCourses.show',

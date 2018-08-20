@@ -129,12 +129,22 @@ class BouncerSeeder extends Seeder
 
         Bouncer::ability()->createForModel(Classroom::class, [
             'name' => 'tenant-delete',
-            'title' => 'Eliminar aula'
+            'title' => 'Eliminar permanentemente una aula'
         ]);
 
         Bouncer::ability()->createForModel(Classroom::class, [
             'name' => 'tenant-update',
             'title' => 'Actualizar aula'
+        ]);
+
+        Bouncer::ability()->createForModel(Classroom::class, [
+            'name' => 'tenant-trash',
+            'title' => 'Eliminar temporal una aula'
+        ]);
+
+        Bouncer::ability()->createForModel(Classroom::class, [
+            'name' => 'tenant-restore',
+            'title' => 'Restaurar aula'
         ]);
     }
 

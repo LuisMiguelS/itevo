@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers\Tenant;
 
+use App\{BranchOffice, Classroom};
+use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use App\Http\Requests\Tenant\StoreClassRoomRequest;
-use App\Http\Requests\Tenant\UpdateClassRoomRequest;
-use App\{
-    DataTables\Tenant_Classroom_DataTable,
-    DataTables\TenantClassroomDataTable,
-    Http\Controllers\Controller,
-    BranchOffice,
-    Classroom
-};
+use App\Http\Requests\Tenant\{StoreClassRoomRequest, UpdateClassRoomRequest};
+use App\DataTables\{TenantClassroomDataTable, TenantClassroomTrashedDataTable};
 
 class ClassRoomController extends Controller
 {
@@ -33,7 +28,25 @@ class ClassRoomController extends Controller
     {
         $this->authorize('tenant-view', Classroom::class);
         $breadcrumbs = 'classroom';
-        $title = 'Todas las aulas';
+        $title = 'Todas las aulas <a href="'. route('tenant.classrooms.trash', $branchOffice) .'"class="btn btn-default">Papelera</a>';
+        if (! auth()->user()->can('tenant-trash', Classroom::class)) {
+            $title = 'Todas las aulas';
+        }
+
+        return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
+    }
+
+    /**
+     * @param \App\DataTables\TenantClassroomTrashedDataTable $dataTable
+     * @param \App\BranchOffice $branchOffice
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function trashed(TenantClassroomTrashedDataTable $dataTable, BranchOffice $branchOffice)
+    {
+        $this->authorize('tenant-trash', Classroom::class);
+        $breadcrumbs = 'classroom-trash';
+        $title = 'Todas las aulas en la papelera';
         return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
     }
 
@@ -88,18 +101,42 @@ class ClassRoomController extends Controller
         return redirect()->route('tenant.classrooms.index', $branchOffice)->with(['flash_success' => $request->updateClassRoom($classroom)]);
     }
 
+    public function restore(BranchOffice $branchOffice, $id)
+    {
+        $classroom = Classroom::onlyTrashed()->where('id', $id)->firstOrFail();
+        $this->authorize('tenant-delete', $classroom);
+        abort_unless($classroom->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
+        $classroom->restore();
+        return redirect()->route('tenant.classrooms.trash', $branchOffice)->with(['flash_success' => "Aula {$classroom->name} restaurada con éxito."]);
+    }
+
     /**
      * @param \App\BranchOffice $branchOffice
      * @param \App\Classroom $classroom
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Exception
      */
-    public function destroy(BranchOffice $branchOffice, Classroom $classroom)
+    public function trash(BranchOffice $branchOffice, Classroom $classroom)
     {
-        $this->authorize('tenant-delete', $classroom);
+        $this->authorize('tenant-trash', $classroom);
+        abort_if($classroom->coursePeriod()->exists(), Response::HTTP_BAD_REQUEST, "No puedes eliminar el aula, hay informacion que depende de esta");
         abort_unless($classroom->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
         $classroom->delete();
-        return redirect()->route('tenant.classrooms.index', $branchOffice)->with(['flash_success' => "Aula {$classroom->name} eliminada con éxito."]);
+        return redirect()->route('tenant.classrooms.index', $branchOffice)->with(['flash_success' => "Aula {$classroom->name} enviado a la papelera con éxito."]);
+    }
+
+    /**
+     * @param \App\BranchOffice $branchOffice
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function destroy(BranchOffice $branchOffice, $id)
+    {
+        $classroom = Classroom::onlyTrashed()->where('id', $id)->firstOrFail();
+        $this->authorize('tenant-delete', $classroom);
+        abort_unless($classroom->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
+        $classroom->forceDelete();
+        return redirect()->route('tenant.classrooms.trash', $branchOffice)->with(['flash_success' => "Aula {$classroom->name} eliminada con éxito."]);
     }
 }

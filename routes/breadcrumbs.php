@@ -11,10 +11,20 @@ Breadcrumbs::for('dashboard', function ($breadcrumbs, BranchOffice $branchOffice
     $breadcrumbs->push('Dashboard', route('tenant.dashboard', $branchOffice));
 });
 
-// Classroom
+/*
+|--------------------------------------------------------------------------
+| Classroom
+|--------------------------------------------------------------------------
+*/
+
 Breadcrumbs::for('classroom', function ($breadcrumbs, BranchOffice $branchOffice) {
     $breadcrumbs->parent('dashboard', $branchOffice);
     $breadcrumbs->push('Aulas', route('tenant.classrooms.index', $branchOffice));
+});
+
+Breadcrumbs::for('classroom-trash', function ($breadcrumbs, BranchOffice $branchOffice) {
+    $breadcrumbs->parent('classroom', $branchOffice);
+    $breadcrumbs->push('Papelera', route('tenant.classrooms.trash', $branchOffice));
 });
 
 Breadcrumbs::for('classroom-create', function ($breadcrumbs, BranchOffice $branchOffice) {
@@ -27,7 +37,11 @@ Breadcrumbs::for('classroom-edit', function ($breadcrumbs, BranchOffice $branchO
     $breadcrumbs->push($classroom->name, $classroom->url->edit);
 });
 
-// Courses
+/*
+|--------------------------------------------------------------------------
+| Courses
+|--------------------------------------------------------------------------
+*/
 Breadcrumbs::for('course', function ($breadcrumbs, BranchOffice $branchOffice) {
     $breadcrumbs->parent('dashboard', $branchOffice);
     $breadcrumbs->push('Cursos', route('tenant.courses.index', $branchOffice));

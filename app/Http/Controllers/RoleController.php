@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Http\Requests\StoreRoleRequest;
-use App\Http\Requests\UpdateRoleRequest;
 use Silber\Bouncer\Database\{Ability, Role};
+use App\Http\Requests\{StoreRoleRequest, UpdateRoleRequest};
 
 class RoleController extends Controller
 {

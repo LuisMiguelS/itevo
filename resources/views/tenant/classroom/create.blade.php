@@ -11,6 +11,9 @@
         <div class="col-md-8 col-md-offset-2">
 
             @box
+
+            @slot('title', 'Crear aula')
+
             <form action="{{ route('tenant.classrooms.store', $branchOffice) }}" method="POST">
 
                 @include('tenant.classroom._fields')

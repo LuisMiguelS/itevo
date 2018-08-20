@@ -34,14 +34,9 @@ class UrlPresenter
         return $this->$key;
     }
 
-    public function delete()
-    {
-        return route('tenant.classrooms.destroy', [
-            'branchOffice' => $this->branchOffice,
-            'classroom' => $this->classroom
-        ]);
-    }
-
+    /**
+     * @return string
+     */
     public function edit()
     {
         return route('tenant.classrooms.edit', [
@@ -50,11 +45,47 @@ class UrlPresenter
         ]);
     }
 
+    /**
+     * @return string
+     */
     public function update()
     {
         return route('tenant.classrooms.update',[
             'branchOffice' => $this->branchOffice,
             'classroom' => $this->classroom
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function trash()
+    {
+        return route('tenant.classrooms.trash.destroy', [
+            'branchOffice' => $this->branchOffice,
+            'classroom' => $this->classroom
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function restore()
+    {
+        return route('tenant.classrooms.trash.restore', [
+            'branchOffice' => $this->branchOffice,
+            'id' => $this->classroom->id
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function delete()
+    {
+        return route('tenant.classrooms.destroy', [
+            'branchOffice' => $this->branchOffice,
+            'id' => $this->classroom->id
         ]);
     }
 }

@@ -84,11 +84,26 @@ return [
             ]
         ],
         'buttons' => [
-            'create',
-            'export',
-            'print',
-            'reset',
-            'reload',
+            [
+                "extend" => 'create',
+                "text" => '<i class="fa fa-plus"></i>  Crear',
+                "className" => 'btn-outline-primary'
+            ],
+            [
+                "extend" => 'excel',
+                "text" => '<i class="fa fa-file-excel-o"></i>  Excel',
+                "className" => 'btn-outline-primary'
+            ],
+            [
+                "extend" => 'print',
+                "text" => '<i class="fa fa-print"></i>  Imprimir',
+                "className" => 'btn-outline-primary'
+            ],
+            [
+                "extend" => 'reload',
+                "text" => '<i class="fa fa-refresh"></i>  Refrescar',
+                "className" => 'btn-outline-primary'
+            ],
         ],
     ],
 ];

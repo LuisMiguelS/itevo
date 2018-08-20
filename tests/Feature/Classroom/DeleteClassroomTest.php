@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Classroom;
 
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\{
     BranchOffice, User, Classroom
@@ -28,12 +29,12 @@ class DeleteClassroomTest extends TestCase
     }
 
     /** @test */
-    function an_admin_can_delete_classroom()
+    function an_admin_can_soft_delete_classroom()
     {
         $this->actingAs($this->admin)
-            ->delete($this->classroom->url->delete)
+            ->delete($this->classroom->url->trash)
             ->assertStatus(Response::HTTP_FOUND)
-            ->assertSessionHas(['flash_success' => "Aula {$this->classroom->name} eliminada con éxito."]);
+            ->assertSessionHas(['flash_success' => "Aula {$this->classroom->name} enviado a la papelera con éxito."]);
 
         $this->assertSoftDeleted('classrooms', [
             'id' => $this->classroom->id,
@@ -42,12 +43,12 @@ class DeleteClassroomTest extends TestCase
     }
 
     /** @test */
-    function an_admin_cannot_delete_classroom_from_another_brach_office()
+    function an_admin_cannot_soft_delete_classroom_from_another_brach_office()
     {
         $this->withExceptionHandling();
 
         $this->actingAs($this->admin)
-            ->delete(route('tenant.classrooms.destroy', [
+            ->delete(route('tenant.classrooms.trash.destroy', [
                 'institute' => factory(BranchOffice::class)->create(),
                 'classrooms' => $this->classroom
             ]))
@@ -60,11 +61,11 @@ class DeleteClassroomTest extends TestCase
     }
 
     /** @test */
-    function an_guest_cannot_delete_classroom()
+    function an_guest_cannot_soft_delete_classroom()
     {
         $this->withExceptionHandling();
 
-        $this->delete($this->classroom->url->delete)
+        $this->delete($this->classroom->url->trash)
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
@@ -75,12 +76,12 @@ class DeleteClassroomTest extends TestCase
     }
 
     /** @test */
-    function an_unauthorized_user_cannot_delete_classroom()
+    function an_unauthorized_user_cannot_soft_delete_classroom()
     {
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
-            ->delete($this->classroom->url->delete)
+            ->delete($this->classroom->url->trash)
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
         $this->assertDatabaseHas('classrooms', [
@@ -88,4 +89,38 @@ class DeleteClassroomTest extends TestCase
             'name' => $this->classroom->name,
         ]);
     }
+
+    /** @test */
+    function an_admin_can_delete_classroom()
+    {
+        $classroom = factory(Classroom::class)->create([
+            'deleted_at' => Carbon::now()
+        ]);
+
+        $this->actingAs($this->admin)
+            ->delete($classroom->url->delete)
+            ->assertStatus(Response::HTTP_FOUND)
+            ->assertSessionHas(['flash_success' => "Aula {$classroom->name} eliminada con éxito."]);
+
+        $this->assertDatabaseMissing('classrooms', [
+            'id' => $classroom->id,
+            'name' => $classroom->name,
+        ]);
+    }
+
+    /** @test */
+    function an_admin_can_delete_classroom_if_it_is_in_trash()
+    {
+        $this->withExceptionHandling();
+
+        $this->actingAs($this->admin)
+            ->delete($this->classroom->url->delete)
+            ->assertStatus(Response::HTTP_NOT_FOUND);
+
+        $this->assertDatabaseHas('classrooms', [
+            'id' => $this->classroom->id,
+            'name' => $this->classroom->name,
+        ]);
+    }
+
 }
