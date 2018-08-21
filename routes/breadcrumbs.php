@@ -42,9 +42,15 @@ Breadcrumbs::for('classroom-edit', function ($breadcrumbs, BranchOffice $branchO
 | Courses
 |--------------------------------------------------------------------------
 */
+
 Breadcrumbs::for('course', function ($breadcrumbs, BranchOffice $branchOffice) {
     $breadcrumbs->parent('dashboard', $branchOffice);
     $breadcrumbs->push('Cursos', route('tenant.courses.index', $branchOffice));
+});
+
+Breadcrumbs::for('course-trash', function ($breadcrumbs, BranchOffice $branchOffice) {
+    $breadcrumbs->parent('course', $branchOffice);
+    $breadcrumbs->push('Papelera', route('tenant.courses.trash', $branchOffice));
 });
 
 Breadcrumbs::for('course-create', function ($breadcrumbs, BranchOffice $branchOffice) {
@@ -57,10 +63,20 @@ Breadcrumbs::for('course-edit', function ($breadcrumbs, BranchOffice $branchOffi
     $breadcrumbs->push($course->name, $course->url->edit);
 });
 
-// Type Courses
+/*
+|--------------------------------------------------------------------------
+| Type Courses
+|--------------------------------------------------------------------------
+*/
+
 Breadcrumbs::for('typeCourse', function ($breadcrumbs, BranchOffice $branchOffice) {
     $breadcrumbs->parent('dashboard', $branchOffice);
     $breadcrumbs->push('Tipos de cursos', route('tenant.typeCourses.index', $branchOffice));
+});
+
+Breadcrumbs::for('typeCourse-trash', function ($breadcrumbs, BranchOffice $branchOffice) {
+    $breadcrumbs->parent('typeCourse', $branchOffice);
+    $breadcrumbs->push('Papelera', route('tenant.typeCourses.trash', $branchOffice));
 });
 
 Breadcrumbs::for('typeCourse-create', function ($breadcrumbs, BranchOffice $branchOffice) {

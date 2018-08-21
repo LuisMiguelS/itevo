@@ -2,17 +2,13 @@
 
 namespace App\DataTables;
 
-use App\Course;
+use App\TypeCourse;
 use App\Traits\DatatableRemoveButton;
 use Yajra\DataTables\Services\DataTable;
 
-class TenantCourseDataTable extends DataTable
+class TenantTypeCourseTrashedDataTable extends DataTable
 {
     use DatatableRemoveButton;
-
-    protected $btn_ability = [
-        'tenant-create' => \App\Course::class
-    ];
 
     /**
      * Build DataTable class.
@@ -23,12 +19,12 @@ class TenantCourseDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->addColumn('Fechas', function (Course $course) {
-                return "<p><b>Fecha de creación:</b> {$course->created_at->format('l j F Y')}</p>
-                        <p><b>Fecha de actualización:</b> {$course->updated_at->format('l j F Y')}</p>";
+            ->addColumn('Fechas', function (TypeCourse $typeCourse) {
+                return "<p><b>Fecha de creación:</b> {$typeCourse->created_at->format('l j F Y')}</p>
+                        <p><b>Fecha de actualización:</b> {$typeCourse->updated_at->format('l j F Y')}</p>";
             })
-            ->addColumn('action', function (Course $course) {
-                return view('tenant.course._actions', compact('course'));
+            ->addColumn('action', function (TypeCourse $typeCourse) {
+                return view('tenant.type_course._actions', compact('typeCourse'));
             })
             ->rawColumns(['action', 'Fechas']);
     }
@@ -40,7 +36,10 @@ class TenantCourseDataTable extends DataTable
      */
     public function query()
     {
-        return request()->branchOffice->courses()->with('typeCourse')->get();
+        return request()->branchOffice
+            ->typecourses()
+            ->onlyTrashed()
+            ->get();
     }
 
     /**
@@ -53,7 +52,7 @@ class TenantCourseDataTable extends DataTable
         return $this->builder()
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->addAction(['width' => '80px', 'title' => 'Acciones', 'printable' => false, 'exportable' => false])
+                    ->addAction(['width' => '80px'])
                     ->parameters($this->getBuilderParameters());
     }
 
@@ -66,8 +65,7 @@ class TenantCourseDataTable extends DataTable
     {
         return [
             'id' => ['title' => 'Identificador', 'visible' => false, 'exportable' => false, 'printable' => false,],
-            'name' => ['title' => 'Curso'],
-            'type_course.name' => ['title' => 'Tipo de curso'],
+            'name' => ['title' => 'Tipo de recurso'],
             'Fechas'
         ];
     }
@@ -79,6 +77,6 @@ class TenantCourseDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'TenantCourse_' . date('YmdHis');
+        return 'TenantTypeCourseTrashed_' . date('YmdHis');
     }
 }

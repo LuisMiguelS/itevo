@@ -3,10 +3,16 @@
 namespace App\DataTables;
 
 use App\TypeCourse;
+use App\Traits\DatatableRemoveButton;
 use Yajra\DataTables\Services\DataTable;
 
 class TenantTypeCourseDataTable extends DataTable
 {
+    use DatatableRemoveButton;
+
+    protected $btn_ability = [
+        'tenant-create' => \App\TypeCourse::class
+    ];
     /**
      * Build DataTable class.
      *
@@ -16,16 +22,14 @@ class TenantTypeCourseDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->editColumn('created_at', function(TypeCourse $typeCourse) {
-                return $typeCourse->created_at->format('l j F Y');
-            })
-            ->editColumn('updated_at', function(TypeCourse $typeCourse) {
-                return $typeCourse->updated_at->format('l j F Y');
+            ->addColumn('Fechas', function (TypeCourse $typeCourse) {
+                return "<p><b>Fecha de creación:</b> {$typeCourse->created_at->format('l j F Y')}</p>
+                        <p><b>Fecha de actualización:</b> {$typeCourse->updated_at->format('l j F Y')}</p>";
             })
             ->addColumn('action', function (TypeCourse $typeCourse) {
                 return view('tenant.type_course._actions', compact('typeCourse'));
             })
-            ->rawColumns(['action']);
+            ->rawColumns(['action', 'Fechas']);
     }
 
     /**
@@ -62,8 +66,7 @@ class TenantTypeCourseDataTable extends DataTable
         return [
             'id' => ['title' => 'Identificador', 'visible' => false, 'exportable' => false, 'printable' => false,],
             'name' => ['title' => 'Tipo de recurso'],
-            'created_at' => ['title' => 'Fecha de creación'],
-            'updated_at' => ['title' => 'Fecha de actualización']
+            'Fechas'
         ];
     }
 

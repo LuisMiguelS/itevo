@@ -2,8 +2,7 @@
 
 namespace App\Presenters\Classroom;
 
-use App\BranchOffice;
-use App\Classroom;
+use App\{BranchOffice, Classroom};
 
 class UrlPresenter
 {
@@ -17,6 +16,12 @@ class UrlPresenter
      */
     private $classroom;
 
+    /**
+     * UrlPresenter constructor.
+     *
+     * @param \App\BranchOffice $branchOffice
+     * @param \App\Classroom $classroom
+     */
     public function __construct(BranchOffice $branchOffice, Classroom $classroom)
     {
 
@@ -24,6 +29,10 @@ class UrlPresenter
         $this->classroom = $classroom;
     }
 
+    /**
+     * @param $key
+     * @return mixed
+     */
     public function __get($key)
     {
         if(method_exists($this, $key))

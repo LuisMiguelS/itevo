@@ -13,31 +13,49 @@ class CoursePeriod extends Model
 
     protected $table = 'course_period';
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function period()
     {
         return $this->belongsTo(Period::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function course()
     {
         return $this->belongsTo(Course::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function students()
     {
         return $this->hasMany(Student::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function teacher()
     {
         return $this->belongsTo(Teacher::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function classroom()
     {
         return $this->belongsTo(Classroom::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function resource()
     {
         return $this->hasMany(Resource::class);

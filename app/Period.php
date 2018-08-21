@@ -19,11 +19,17 @@ class Period extends Model
     const  PERIOD_NO_2 = "Segundo Cuatrimestre";
     const  PERIOD_NO_3 = "Tercer Cuatrimestre";
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function promotion()
     {
         return $this->belongsTo(Promotion::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function coursePeriods()
     {
         return $this->hasMany(CoursePeriod::class);

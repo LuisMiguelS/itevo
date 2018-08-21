@@ -128,13 +128,13 @@ class BouncerSeeder extends Seeder
         ]);
 
         Bouncer::ability()->createForModel(Classroom::class, [
-            'name' => 'tenant-delete',
-            'title' => 'Eliminar permanentemente una aula'
+            'name' => 'tenant-update',
+            'title' => 'Actualizar aula'
         ]);
 
         Bouncer::ability()->createForModel(Classroom::class, [
-            'name' => 'tenant-update',
-            'title' => 'Actualizar aula'
+            'name' => 'tenant-delete',
+            'title' => 'Eliminar permanentemente una aula'
         ]);
 
         Bouncer::ability()->createForModel(Classroom::class, [
@@ -169,13 +169,23 @@ class BouncerSeeder extends Seeder
         ]);
 
         Bouncer::ability()->createForModel(Course::class, [
-            'name' => 'tenant-delete',
-            'title' => 'Eliminar curso'
+            'name' => 'tenant-update',
+            'title' => 'Actualizar curso'
         ]);
 
         Bouncer::ability()->createForModel(Course::class, [
-            'name' => 'tenant-update',
-            'title' => 'Actualizar curso'
+            'name' => 'tenant-delete',
+            'title' => 'Eliminar permanentemente un curso'
+        ]);
+
+        Bouncer::ability()->createForModel(Course::class, [
+            'name' => 'tenant-trash',
+            'title' => 'Eliminar temporal un curso'
+        ]);
+
+        Bouncer::ability()->createForModel(Course::class, [
+            'name' => 'tenant-restore',
+            'title' => 'Restaurar curso'
         ]);
     }
 
@@ -200,13 +210,23 @@ class BouncerSeeder extends Seeder
         ]);
 
         Bouncer::ability()->createForModel(TypeCourse::class, [
-            'name' => 'tenant-delete',
-            'title' => 'Eliminar tipo curso'
+            'name' => 'tenant-update',
+            'title' => 'Actualizar tipo curso'
         ]);
 
         Bouncer::ability()->createForModel(TypeCourse::class, [
-            'name' => 'tenant-update',
-            'title' => 'Actualizar tipo curso'
+            'name' => 'tenant-delete',
+            'title' => 'Eliminar permanentemente un tipo de curso'
+        ]);
+
+        Bouncer::ability()->createForModel(TypeCourse::class, [
+            'name' => 'tenant-trash',
+            'title' => 'Eliminar temporal un tipo de curso'
+        ]);
+
+        Bouncer::ability()->createForModel(TypeCourse::class, [
+            'name' => 'tenant-restore',
+            'title' => 'Restaurar tipo de curso'
         ]);
     }
 
@@ -262,13 +282,23 @@ class BouncerSeeder extends Seeder
         ]);
 
         Bouncer::ability()->createForModel(Teacher::class, [
-            'name' => 'tenant-delete',
-            'title' => 'Eliminar profesor'
+            'name' => 'tenant-update',
+            'title' => 'Actualizar profesor'
         ]);
 
         Bouncer::ability()->createForModel(Teacher::class, [
-            'name' => 'tenant-update',
-            'title' => 'Actualizar profesor'
+            'name' => 'tenant-delete',
+            'title' => 'Eliminar permanentemente un profesor'
+        ]);
+
+        Bouncer::ability()->createForModel(Teacher::class, [
+            'name' => 'tenant-trash',
+            'title' => 'Eliminar temporal un profesor'
+        ]);
+
+        Bouncer::ability()->createForModel(Teacher::class, [
+            'name' => 'tenant-restore',
+            'title' => 'Restaurar profesor'
         ]);
     }
 

@@ -3,10 +3,17 @@
 namespace App\DataTables;
 
 use App\Teacher;
+use App\Traits\DatatableRemoveButton;
 use Yajra\DataTables\Services\DataTable;
 
 class TenantTeacherDataTable extends DataTable
 {
+    use DatatableRemoveButton;
+
+    protected $btn_ability = [
+        'tenant-create' => \App\Teacher::class
+    ];
+
     /**
      * Build DataTable class.
      *
@@ -16,16 +23,14 @@ class TenantTeacherDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->editColumn('created_at', function(Teacher $teacher) {
-                return $teacher->created_at->format('l j F Y');
-            })
-            ->editColumn('updated_at', function(Teacher $teacher) {
-                return $teacher->updated_at->format('l j F Y');
+            ->addColumn('Fechas', function (Teacher $teacher) {
+                return "<p><b>Fecha de creación:</b> {$teacher->created_at->format('l j F Y')}</p>
+                        <p><b>Fecha de actualización:</b> {$teacher->updated_at->format('l j F Y')}</p>";
             })
             ->addColumn('action', function (Teacher $teacher) {
                 return view('tenant.teacher._actions', compact('teacher'));
             })
-            ->rawColumns(['action']);
+            ->rawColumns(['action', 'Fechas']);
     }
 
     /**
@@ -65,8 +70,7 @@ class TenantTeacherDataTable extends DataTable
             'last_name' => ['title' => 'Apellido(s)'],
             'id_card' => ['title' => 'Cedula'],
             'phone' => ['title' => 'Teléfono'],
-            'created_at' => ['title' => 'Fecha de creación'],
-            'updated_at' => ['title' => 'Fecha de actualización']
+            'Fechas'
         ];
     }
 

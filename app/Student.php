@@ -99,7 +99,7 @@ class Student extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function course_promotion()
+    public function coursePeriod()
     {
         return $this->hasMany(CoursePeriod::class);
     }

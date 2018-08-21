@@ -29,12 +29,12 @@ class DeleteCourseTest extends TestCase
     }
 
     /** @test */
-    function an_admin_can_delete_course()
+    function an_admin_can_soft_delete_course()
     {
         $this->actingAs($this->admin)
-            ->delete($this->course->url->delete)
+            ->delete($this->course->url->trash)
             ->assertStatus(Response::HTTP_FOUND)
-            ->assertSessionHas(['flash_success' => "Curso {$this->course->name} eliminado con éxito."]);
+            ->assertSessionHas(['flash_success' => "Curso {$this->course->name} enviado a la papelera con éxito."]);
 
         $this->assertSoftDeleted('courses', [
             'id' => $this->course->id,
@@ -43,12 +43,12 @@ class DeleteCourseTest extends TestCase
     }
 
     /** @test */
-    function an_admin_cannot_delete_course_from_another_branch_office()
+    function an_admin_cannot_soft_delete_course_from_another_branch_office()
     {
         $this->withExceptionHandling();
 
         $this->actingAs($this->admin)
-            ->delete(route('tenant.courses.destroy', [
+            ->delete(route('tenant.courses.trash.destroy', [
                 'branchOffice' => $this->branchOffice,
                 'courses' => $this->course
             ]))
@@ -61,11 +61,11 @@ class DeleteCourseTest extends TestCase
     }
 
     /** @test */
-    function an_guest_cannot_delete_course()
+    function an_guest_cannot_soft_delete_course()
     {
         $this->withExceptionHandling();
 
-        $this->delete($this->course->url->delete)
+        $this->delete($this->course->url->trash)
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
@@ -76,12 +76,12 @@ class DeleteCourseTest extends TestCase
     }
 
     /** @test */
-    function an_unauthorized_user_cannot_delete_course()
+    function an_unauthorized_user_cannot_soft_delete_course()
     {
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
-            ->put($this->course->url->delete)
+            ->delete($this->course->url->trash)
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
         $this->assertDatabaseHas('courses', [
