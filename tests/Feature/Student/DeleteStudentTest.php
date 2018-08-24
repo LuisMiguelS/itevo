@@ -26,12 +26,12 @@ class DeleteStudentTest extends TestCase
     }
 
     /** @test */
-    function an_admin_can_delete_student()
+    function an_admin_can_soft_delete_student()
     {
         $this->actingAs($this->admin)
-            ->delete($this->student->url->delete)
+            ->delete($this->student->url->trash)
             ->assertStatus(Response::HTTP_FOUND)
-            ->assertSessionHas(['flash_success' => "Estudiante {$this->student->full_name} eliminado con exito."]);
+            ->assertSessionHas(['flash_success' => "Estudiante {$this->student->full_name} enviado a la papelera con éxito."]);
 
         $this->assertSoftDeleted('students', [
             'id' => $this->student->id,
@@ -40,12 +40,12 @@ class DeleteStudentTest extends TestCase
     }
 
     /** @test */
-    function an_admin_cannot_delete_student_from_another_branch_office()
+    function an_admin_cannot_soft_delete_student_from_another_branch_office()
     {
         $this->withExceptionHandling();
 
         $this->actingAs($this->admin)
-            ->delete(route('tenant.students.destroy', [
+            ->delete(route('tenant.students.trash.destroy', [
                 'branchOffice' => factory(BranchOffice::class)->create(),
                 'teacher' => $this->student
             ]))
@@ -58,11 +58,11 @@ class DeleteStudentTest extends TestCase
     }
 
     /** @test */
-    function an_guest_cannot_delete_student()
+    function an_guest_cannot_soft_delete_student()
     {
         $this->withExceptionHandling();
 
-        $this->delete($this->student->url->delete)
+        $this->delete($this->student->url->trash)
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
@@ -73,12 +73,12 @@ class DeleteStudentTest extends TestCase
     }
 
     /** @test */
-    function an_unauthorized_user_cannot_delete_student()
+    function an_unauthorized_user_cannot_soft_delete_student()
     {
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
-            ->delete($this->student->url->delete)
+            ->delete($this->student->url->trash)
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
         $this->assertDatabaseHas('students', [

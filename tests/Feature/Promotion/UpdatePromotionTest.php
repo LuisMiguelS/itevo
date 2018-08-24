@@ -75,4 +75,21 @@ class UpdatePromotionTest extends TestCase
 
         $this->assertDatabaseMissing('promotions', $this->withData());
     }
+
+    /** @test */
+    function promotion_no_cannot_be_negative_or_cero()
+    {
+        $this->handleValidationExceptions();
+
+        $this->actingAs($this->admin)
+            ->put($this->promotion->url->update, [
+                'promotion_no' => 0
+            ])
+            ->assertStatus(Response::HTTP_FOUND)
+            ->assertSessionHasErrors(['promotion_no']);
+
+        $this->assertDatabaseMissing('promotions', [
+            'promotion_no' => 0
+        ]);
+    }
 }

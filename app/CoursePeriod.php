@@ -56,7 +56,7 @@ class CoursePeriod extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function resource()
+    public function resources()
     {
         return $this->hasMany(Resource::class);
     }

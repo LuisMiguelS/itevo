@@ -29,12 +29,12 @@ class DeleteResourceTest extends TestCase
     }
 
     /** @test */
-        function an_admin_can_delete_resource()
+        function an_admin_can_soft_delete_resource()
     {
         $this->actingAs($this->admin)
-            ->delete( $this->resource->url->delete)
+            ->delete( $this->resource->url->trash)
             ->assertStatus(Response::HTTP_FOUND)
-            ->assertSessionHas(['flash_success' => "Recurso {$this->resource->name} eliminado con éxito."]);
+            ->assertSessionHas(['flash_success' => "Recurso {$this->resource->name} enviado a la papelera con éxito."]);
 
         $this->assertSoftDeleted('resources', [
             'id' => $this->resource->id,
@@ -43,12 +43,12 @@ class DeleteResourceTest extends TestCase
     }
 
     /** @test */
-    function an_admin_cannot_delete_resource_from_another_branch_office()
+    function an_admin_cannot_soft_delete_resource_from_another_branch_office()
     {
         $this->withExceptionHandling();
 
         $this->actingAs($this->admin)
-            ->delete(route('tenant.resources.destroy', [
+            ->delete(route('tenant.resources.trash.destroy', [
                 'branchOffice' => $this->branchOffice,
                 'resource' => $this->resource
             ]))
@@ -61,11 +61,11 @@ class DeleteResourceTest extends TestCase
     }
 
     /** @test */
-    function an_guest_cannot_delete_resource()
+    function an_guest_cannot_soft_delete_resource()
     {
         $this->withExceptionHandling();
 
-        $this->delete( $this->resource->url->delete)
+        $this->delete( $this->resource->url->trash)
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
@@ -76,12 +76,12 @@ class DeleteResourceTest extends TestCase
     }
 
     /** @test */
-    function an_unauthorized_user_cannot_delete_resource()
+    function an_unauthorized_user_cannot_soft_delete_resource()
     {
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
-            ->delete( $this->resource->url->delete)
+            ->delete( $this->resource->url->trash)
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
         $this->assertDatabaseHas('resources', [

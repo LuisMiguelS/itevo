@@ -89,10 +89,20 @@ Breadcrumbs::for('typeCourse-edit', function ($breadcrumbs, BranchOffice $branch
     $breadcrumbs->push($typeCourse->name, $typeCourse->url->edit);
 });
 
-// Resoruce
+/*
+|--------------------------------------------------------------------------
+| Resoruce
+|--------------------------------------------------------------------------
+*/
+
 Breadcrumbs::for('resource', function ($breadcrumbs, BranchOffice $branchOffice) {
     $breadcrumbs->parent('dashboard', $branchOffice);
     $breadcrumbs->push('Recursos', route('tenant.resources.index', $branchOffice));
+});
+
+Breadcrumbs::for('resource-trash', function ($breadcrumbs, BranchOffice $branchOffice) {
+    $breadcrumbs->parent('resource', $branchOffice);
+    $breadcrumbs->push('Papelera', route('tenant.resources.trash', $branchOffice));
 });
 
 Breadcrumbs::for('resource-create', function ($breadcrumbs, BranchOffice $branchOffice) {
@@ -105,10 +115,20 @@ Breadcrumbs::for('resource-edit', function ($breadcrumbs, BranchOffice $branchOf
     $breadcrumbs->push($resource->name, $resource->url->edit);
 });
 
-// Teacher
+/*
+|--------------------------------------------------------------------------
+| Teacher
+|--------------------------------------------------------------------------
+*/
+
 Breadcrumbs::for('teacher', function ($breadcrumbs, BranchOffice $branchOffice) {
     $breadcrumbs->parent('dashboard', $branchOffice);
     $breadcrumbs->push('Profesor', route('tenant.teachers.index', $branchOffice));
+});
+
+Breadcrumbs::for('teacher-trash', function ($breadcrumbs, BranchOffice $branchOffice) {
+    $breadcrumbs->parent('teacher', $branchOffice);
+    $breadcrumbs->push('Papelera', route('tenant.teachers.trash', $branchOffice));
 });
 
 Breadcrumbs::for('teacher-create', function ($breadcrumbs, BranchOffice $branchOffice) {
@@ -121,10 +141,20 @@ Breadcrumbs::for('teacher-edit', function ($breadcrumbs, BranchOffice $branchOff
     $breadcrumbs->push($teacher->full_name, $teacher->url->edit);
 });
 
-// Promotion
+/*
+|--------------------------------------------------------------------------
+| Promotion
+|--------------------------------------------------------------------------
+*/
+
 Breadcrumbs::for('promotion', function ($breadcrumbs, BranchOffice $branchOffice) {
     $breadcrumbs->parent('dashboard', $branchOffice);
     $breadcrumbs->push('Promociones', route('tenant.promotions.index', $branchOffice));
+});
+
+Breadcrumbs::for('promotion-trash', function ($breadcrumbs, BranchOffice $branchOffice) {
+    $breadcrumbs->parent('promotion', $branchOffice);
+    $breadcrumbs->push('Papelera', route('tenant.promotions.trash', $branchOffice));
 });
 
 Breadcrumbs::for('promotion-create', function ($breadcrumbs, BranchOffice $branchOffice) {
@@ -137,10 +167,20 @@ Breadcrumbs::for('promotion-edit', function ($breadcrumbs, BranchOffice $branchO
     $breadcrumbs->push("Promocion {$promotion->promotion_no}", $promotion->url->edit);
 });
 
-// Student
+/*
+|--------------------------------------------------------------------------
+| Student
+|--------------------------------------------------------------------------
+*/
+
 Breadcrumbs::for('student', function ($breadcrumbs, BranchOffice $branchOffice) {
     $breadcrumbs->parent('dashboard', $branchOffice);
     $breadcrumbs->push('Estudiantes', route('tenant.students.index', $branchOffice));
+});
+
+Breadcrumbs::for('student-trash', function ($breadcrumbs, BranchOffice $branchOffice) {
+    $breadcrumbs->parent('student', $branchOffice);
+    $breadcrumbs->push('Papelera', route('tenant.students.trash', $branchOffice));
 });
 
 Breadcrumbs::for('student-create', function ($breadcrumbs, BranchOffice $branchOffice) {

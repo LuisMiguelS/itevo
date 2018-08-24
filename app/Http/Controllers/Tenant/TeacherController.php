@@ -45,7 +45,7 @@ class TeacherController extends Controller
     {
         $this->authorize('tenant-trash', Teacher::class);
 
-        $breadcrumbs = 'typeCourse-trash';
+        $breadcrumbs = 'teacher-trash';
 
         $title = 'Todos los profesores en la papelera';
 

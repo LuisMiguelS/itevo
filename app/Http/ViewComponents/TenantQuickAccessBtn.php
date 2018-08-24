@@ -31,7 +31,7 @@ class TenantQuickAccessBtn implements Htmlable
      */
     public function toHtml()
     {
-        $period = $this->branchOffice->currentPromotion()->currentPeriod();
+        $period = optional($this->branchOffice->currentPromotion())->currentPeriod();
 
         return view('partials._quick_access')
             ->with([

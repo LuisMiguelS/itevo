@@ -221,4 +221,29 @@ class UpdatePeriodTest extends TestCase
             'ends_at' => (new Carbon($this->defaultData['ends_at']))->toDateTimeString(),
         ]));
     }
+
+
+    /** @test */
+    function it_cannot_update_period_if_parent_promotion_is_finished()
+    {
+        $this->withExceptionHandling();
+
+        $promotion = factory(Promotion::class)->create([
+            'status' => Promotion::STATUS_FINISHED
+        ]);
+
+        $period = factory(Period::class)->create([
+            'promotion_id' => $promotion->id
+        ]);
+
+        $this->actingAs($this->admin)
+            ->put(route('tenant.promotions.periods.update', [
+                'promotion' => $promotion,
+                'branchOffice' => $promotion->branchOffice,
+                'period' => $period
+            ]), $this->withData([
+                'status' => Period::STATUS_WITHOUT_STARTING,
+            ]))
+            ->assertStatus(Response::HTTP_BAD_REQUEST);
+    }
 }

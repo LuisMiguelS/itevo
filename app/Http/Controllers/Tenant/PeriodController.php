@@ -30,7 +30,9 @@ class PeriodController extends Controller
     public function index(TenantPeriodDataTable $dataTable, BranchOffice $branchOffice, Promotion $promotion)
     {
         $this->authorize('tenant-view', Period::class);
+
         $title = "Todos los periodos de la promocion: {$promotion->promotion_no}";
+
         return $dataTable->render('datatables.tenant', compact('branchOffice', 'title'));
     }
 
@@ -45,7 +47,11 @@ class PeriodController extends Controller
     public function create(BranchOffice $branchOffice, Promotion $promotion)
     {
         $this->authorize('tenant-create', Period::class);
+
+        $this->abortCases($branchOffice, $promotion);
+
         $period = new Period;
+
         return view('tenant.period.create', compact('branchOffice', 'promotion', 'period'));
     }
 
@@ -61,12 +67,14 @@ class PeriodController extends Controller
     public function store(StorePeriodRequest $request, BranchOffice $branchOffice, Promotion $promotion)
     {
         $this->authorize('tenant-create', Period::class);
-        abort_unless($promotion->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
-        $this->storeHelpers($promotion);
-        return redirect()->route('tenant.promotions.periods.index', [
-            'branchOffice' => $branchOffice,
-            'promotion' => $promotion
-        ])->with(['flash_success' => $request->createPeriod($promotion)]);
+
+        $this->abortCases($branchOffice, $promotion);
+
+        $this->storeAbortCases($promotion);
+
+        return redirect()
+            ->route('tenant.promotions.periods.index', ['branchOffice' => $branchOffice, 'promotion' => $promotion])
+            ->with(['flash_success' => $request->createPeriod($promotion)]);
     }
 
     /**
@@ -81,7 +89,11 @@ class PeriodController extends Controller
     public function edit(BranchOffice $branchOffice, Promotion $promotion, Period $period)
     {
         $this->authorize('tenant-update', $period);
-        $this->updateHelpers($period);
+
+        $this->abortCases($branchOffice, $promotion);
+
+        $this->updateAbortCases($period);
+
         return view('tenant.period.edit', compact('branchOffice', 'promotion', 'period'));
     }
 
@@ -98,30 +110,50 @@ class PeriodController extends Controller
     public function update(UpdatePeriodRequest $request, BranchOffice $branchOffice, Promotion $promotion, Period $period)
     {
         $this->authorize('tenant-update', $period);
-        abort_unless($promotion->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
-        $this->updateHelpers($period);
-        return redirect()->route('tenant.promotions.periods.index', [
-            'branchOffice' => $branchOffice,
-            'promotion' => $promotion
-        ])->with(['flash_success' => $request->updatePeriod($period)]);
+
+        $this->abortCases($branchOffice, $promotion);
+
+        $this->updateAbortCases($period);
+
+        return redirect()
+            ->route('tenant.promotions.periods.index', ['branchOffice' => $branchOffice, 'promotion' => $promotion])
+            ->with(['flash_success' => $request->updatePeriod($period)]);
     }
 
+    /**
+     * @param \App\BranchOffice $branchOffice
+     * @param \App\Promotion $promotion
+     */
+    protected function abortCases(BranchOffice $branchOffice, Promotion $promotion)
+    {
+        abort_unless($promotion->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
+
+        abort_if(Promotion::STATUS_FINISHED === $promotion->status,
+            Response::HTTP_BAD_REQUEST,
+            "No puede crear, editar o eliminar un periodo si la promoción a la que pertenece está terminada");
+    }
 
     /**
      * @param \App\Promotion $promotion
      */
-    protected function storeHelpers(Promotion $promotion): void
+    protected function storeAbortCases(Promotion $promotion)
     {
-        abort_if($promotion->periods()->count() >= 3, Response::HTTP_BAD_REQUEST, 'No puedes crear mas de 3 periodos por promocion');
+        abort_if($promotion->periods()->count() >= 3,
+            Response::HTTP_BAD_REQUEST,
+            'No puedes crear mas de 3 periodos por promocion');
 
-        abort_if($promotion->periods()->where('status', Period::STATUS_WITHOUT_STARTING)->first(), Response::HTTP_BAD_REQUEST, 'Hay un periodo sin comenzar, No puedes tener 2 periodos sin comenzar al mismo tiempo');
+        abort_if($promotion->periods()->where('status', Period::STATUS_WITHOUT_STARTING)->first(),
+            Response::HTTP_BAD_REQUEST,
+            'Hay un periodo sin comenzar, No puedes tener 2 periodos sin comenzar al mismo tiempo');
     }
 
     /**
      * @param \App\Period $period
      */
-    protected function updateHelpers(Period $period): void
+    protected function updateAbortCases(Period $period)
     {
-        abort_if($period->status == Period::STATUS_FINISHED, Response::HTTP_BAD_REQUEST, 'No puedes editar un periodo finalizado');
+        abort_if($period->status == Period::STATUS_FINISHED,
+            Response::HTTP_BAD_REQUEST,
+            'No puedes editar un periodo finalizado');
     }
 }

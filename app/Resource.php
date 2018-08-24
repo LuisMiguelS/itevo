@@ -11,9 +11,7 @@ class Resource extends Model
 {
 	use SoftDeletes, DatesTranslator;
 
-	protected $fillable = [
-		'name', 'branch_office_id'
-	];
+	protected $guarded = [];
 
     protected $hidden = [
         'url'
@@ -47,11 +45,11 @@ class Resource extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function coursePeriod()
     {
-        return $this->hasMany(CoursePeriod::class);
+        return $this->belongsToMany(CoursePeriod::class);
     }
 
     /**

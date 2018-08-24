@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Tenant;
 
-use App\{BranchOffice,Promotion};
+use App\{BranchOffice, Promotion};
 use App\Http\Controllers\Controller;
-use App\DataTables\TenantPromotionDataTable;
 use Symfony\Component\HttpFoundation\Response;
-use App\Http\Requests\Tenant\StorePromotionRequest;
-use App\Http\Requests\Tenant\UpdatePromotionRequest;
+use App\Http\Requests\Tenant\{StorePromotionRequest, UpdatePromotionRequest};
+use App\DataTables\{TenantPromotionDataTable, TenantPromotionTrashedDataTable};
 
 class PromotionController extends Controller
 {
@@ -28,8 +27,32 @@ class PromotionController extends Controller
     public function index(TenantPromotionDataTable $dataTable, BranchOffice $branchOffice)
     {
         $this->authorize('tenant-view', Promotion::class);
+
         $breadcrumbs = 'promotion';
-        $title = 'Todas las promociones';
+
+        $title = 'Todas las promociones <a href="'. route('tenant.promotions.trash', $branchOffice) .'"class="btn btn-default">Papelera</a>';
+
+        if (! auth()->user()->can('tenant-trash', Promotion::class)) {
+            $title = 'Todas las promociones';
+        }
+
+        return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
+    }
+
+    /**
+     * @param \App\DataTables\TenantPromotionTrashedDataTable $dataTable
+     * @param \App\BranchOffice $branchOffice
+     * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function trashed(TenantPromotionTrashedDataTable $dataTable, BranchOffice $branchOffice)
+    {
+        $this->authorize('tenant-trash', Promotion::class);
+
+        $breadcrumbs = 'promotion-trash';
+
+        $title = 'Todas las promociones en la papelera';
+
         return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
     }
 
@@ -41,6 +64,7 @@ class PromotionController extends Controller
     public function show(BranchOffice $branchOffice, Promotion $promotion)
     {
         $this->authorize('tenant-view', Promotion::class);
+
         abort_unless($promotion->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
     }
 
@@ -52,8 +76,11 @@ class PromotionController extends Controller
     public function create(BranchOffice $branchOffice)
     {
         $this->authorize('tenant-create', Promotion::class);
+
         $this->thereIsCurrentPromotion($branchOffice);
+
         $promotion = new Promotion;
+
         return view('tenant.promotion.create', compact('branchOffice', 'promotion'));
     }
 
@@ -66,8 +93,12 @@ class PromotionController extends Controller
     public function store(StorePromotionRequest $request, BranchOffice $branchOffice)
     {
         $this->authorize('tenant-create', Promotion::class);
+
         $this->thereIsCurrentPromotion($branchOffice);
-        return redirect()->route('tenant.promotions.index', $branchOffice)->with(['flash_success' => $request->createPromotion($branchOffice)]);
+
+        return redirect()
+            ->route('tenant.promotions.index', $branchOffice)
+            ->with(['flash_success' => $request->createPromotion($branchOffice)]);
     }
 
     /**
@@ -79,7 +110,9 @@ class PromotionController extends Controller
     public function edit(BranchOffice $branchOffice, Promotion $promotion)
     {
         $this->authorize('tenant-update', Promotion::class);
+
         abort_unless($promotion->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
+
         return view('tenant.promotion.edit', compact('branchOffice', 'promotion'));
     }
 
@@ -93,8 +126,31 @@ class PromotionController extends Controller
     public function update(UpdatePromotionRequest $request, BranchOffice $branchOffice, Promotion $promotion)
     {
         $this->authorize('tenant-update', $promotion);
+
         abort_unless($promotion->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
-        return redirect()->route('tenant.promotions.index', $branchOffice)->with(['flash_success' => $request->updatePromotion($promotion)]);
+
+        return redirect()->route('tenant.promotions.index', $branchOffice)
+            ->with(['flash_success' => $request->updatePromotion($promotion)]);
+    }
+
+    /**
+     * @param \App\BranchOffice $branchOffice
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function restore(BranchOffice $branchOffice, $id)
+    {
+        $promotion = Promotion::onlyTrashed()->where('id', $id)->firstOrFail();
+
+        $this->authorize('tenant-delete', $promotion);
+
+        abort_unless($promotion->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
+
+        $promotion->restore();
+
+        return redirect()->route('tenant.promotions.trash', $branchOffice)
+            ->with(['flash_success' => "Promocion {$promotion->promotion_no} restaurada con éxito."]);
     }
 
     /**
@@ -102,14 +158,47 @@ class PromotionController extends Controller
      * @param \App\Promotion $promotion
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Exception
      */
-    public function destroy(BranchOffice $branchOffice, Promotion $promotion)
+    public function trash(BranchOffice $branchOffice, Promotion $promotion)
     {
-        $this->authorize('tenant-update', $promotion);
+        $this->authorize('tenant-trash', $promotion);
+
+        abort_if($promotion->students()->exists()
+            || $promotion->periods()->exists(),
+            Response::HTTP_BAD_REQUEST,
+            "No puedes eliminar la promocion {$promotion->promotion_no}, hay informacion que depende de esta");
+
         abort_unless($promotion->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
+
+        $promotion->status = Promotion::STATUS_FINISHED;
+
+        $promotion->save();
+
         $promotion->delete();
-        return redirect()->route('tenant.promotions.index', $branchOffice)->with(['flash_success' => "Promocion no. {$promotion->promotion_no} eliminada correctamente."]);
+
+        return redirect()
+            ->route('tenant.promotions.index', $branchOffice)
+            ->with(['flash_success' => "Promocion {$promotion->promotion_no} enviado a la papelera con éxito."]);
+    }
+
+    /**
+     * @param \App\BranchOffice $branchOffice
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function destroy(BranchOffice $branchOffice, $id)
+    {
+        $promotion = Promotion::onlyTrashed()->where('id', $id)->firstOrFail();
+
+        $this->authorize('tenant-update', $promotion);
+
+        abort_unless($promotion->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
+
+        $promotion->forceDelete();
+
+        return redirect()->route('tenant.promotions.index', $branchOffice)
+            ->with(['flash_success' => "Promocion no. {$promotion->promotion_no} eliminada correctamente."]);
     }
 
     /**
@@ -121,10 +210,16 @@ class PromotionController extends Controller
     public function finish(BranchOffice $branchOffice, Promotion $promotion)
     {
         $this->authorize('tenant-finish', $promotion);
+
         abort_unless($promotion->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
+
         $promotion->status = Promotion::STATUS_FINISHED;
+
         $promotion->save();
-        return redirect()->route('tenant.promotions.index', $branchOffice)->with(['flash_success' => "Estado de la promocion no. {$promotion->promotion_no} finalizado"]);
+
+        return redirect()
+            ->route('tenant.promotions.index', $branchOffice)
+            ->with(['flash_success' => "Estado de la promocion no. {$promotion->promotion_no} finalizado"]);
     }
 
     /**

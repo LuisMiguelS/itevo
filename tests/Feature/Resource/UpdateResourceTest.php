@@ -13,6 +13,7 @@ class UpdateResourceTest extends TestCase
 
     protected $defaultData = [
         'name' => 'Diplomado',
+        'price' => 200,
     ];
 
     private $admin;

@@ -251,13 +251,23 @@ class BouncerSeeder extends Seeder
         ]);
 
         Bouncer::ability()->createForModel(Resource::class, [
-            'name' => 'tenant-delete',
-            'title' => 'Eliminar recurso'
+            'name' => 'tenant-update',
+            'title' => 'Actualizar recurso'
         ]);
 
         Bouncer::ability()->createForModel(Resource::class, [
-            'name' => 'tenant-update',
-            'title' => 'Actualizar recurso'
+            'name' => 'tenant-delete',
+            'title' => 'Eliminar permanentemente un recurso'
+        ]);
+
+        Bouncer::ability()->createForModel(Resource::class, [
+            'name' => 'tenant-trash',
+            'title' => 'Eliminar temporal un recurso'
+        ]);
+
+        Bouncer::ability()->createForModel(Resource::class, [
+            'name' => 'tenant-restore',
+            'title' => 'Restaurar recurso'
         ]);
     }
 
@@ -323,13 +333,23 @@ class BouncerSeeder extends Seeder
         ]);
 
         Bouncer::ability()->createForModel(Promotion::class, [
-            'name' => 'tenant-delete',
-            'title' => 'Eliminar promocion'
+            'name' => 'tenant-update',
+            'title' => 'Actualizar promocion'
         ]);
 
         Bouncer::ability()->createForModel(Promotion::class, [
-            'name' => 'tenant-update',
-            'title' => 'Actualizar promocion'
+            'name' => 'tenant-delete',
+            'title' => 'Eliminar permanentemente una promocion'
+        ]);
+
+        Bouncer::ability()->createForModel(Promotion::class, [
+            'name' => 'tenant-trash',
+            'title' => 'Eliminar temporal una promocion'
+        ]);
+
+        Bouncer::ability()->createForModel(Promotion::class, [
+            'name' => 'tenant-restore',
+            'title' => 'Restaurar promocion'
         ]);
 
         Bouncer::ability()->createForModel(Promotion::class, [
@@ -421,13 +441,23 @@ class BouncerSeeder extends Seeder
         ]);
 
         Bouncer::ability()->createForModel(Student::class, [
-            'name' => 'tenant-delete',
-            'title' => 'Eliminar Estudiante'
+            'name' => 'tenant-update',
+            'title' => 'Actualizar Estudiante'
         ]);
 
         Bouncer::ability()->createForModel(Student::class, [
-            'name' => 'tenant-update',
-            'title' => 'Actualizar Estudiante'
+            'name' => 'tenant-delete',
+            'title' => 'Eliminar permanentemente un estudiante'
+        ]);
+
+        Bouncer::ability()->createForModel(Student::class, [
+            'name' => 'tenant-trash',
+            'title' => 'Eliminar temporal un estudiante'
+        ]);
+
+        Bouncer::ability()->createForModel(Student::class, [
+            'name' => 'tenant-restore',
+            'title' => 'Restaurar estudiante'
         ]);
     }
 

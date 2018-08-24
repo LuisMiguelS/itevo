@@ -2,7 +2,7 @@
 
 namespace App\Http\ViewComponents;
 
-use App\BranchOffice;
+use App\{BranchOffice, Period};
 use Illuminate\Contracts\Support\Htmlable;
 
 class TenantDashboard implements Htmlable
@@ -35,7 +35,7 @@ class TenantDashboard implements Htmlable
     public function toHtml()
     {
         $promotion = $this->branchOffice->currentPromotion();
-        $period = $promotion->currentPeriod();
+        $period = optional($promotion)->currentPeriod() ?? new period;
 
         return view('tenant.dashboard')
             ->with([

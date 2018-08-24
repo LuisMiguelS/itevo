@@ -76,19 +76,6 @@ class CreatePromotionTest extends TestCase
     }
 
     /** @test */
-    function it_can_see_validations_errors()
-    {
-        $this->handleValidationExceptions();
-
-        $this->actingAs($this->admin)
-            ->post(route('tenant.promotions.store', $this->branchOffice), [])
-            ->assertStatus(Response::HTTP_FOUND)
-            ->assertSessionHasErrors(['promotion_no']);
-
-        $this->assertDatabaseEmpty('promotions');
-    }
-
-    /** @test */
     function its_cannot_create_promotion_if_current_promotion_is_active()
     {
         $this->withExceptionHandling();
@@ -104,5 +91,33 @@ class CreatePromotionTest extends TestCase
         ]));
 
         $this->assertCount(1, $this->branchOffice->promotions);
+    }
+
+    /** @test */
+    function it_can_see_validations_errors()
+    {
+        $this->handleValidationExceptions();
+
+        $this->actingAs($this->admin)
+            ->post(route('tenant.promotions.store', $this->branchOffice), [])
+            ->assertStatus(Response::HTTP_FOUND)
+            ->assertSessionHasErrors(['promotion_no']);
+
+        $this->assertDatabaseEmpty('promotions');
+    }
+
+    /** @test */
+    function promotion_no_cannot_be_negative_or_cero()
+    {
+        $this->handleValidationExceptions();
+
+        $this->actingAs($this->admin)
+            ->post(route('tenant.promotions.store', $this->branchOffice), [
+                'promotion_no' => -1
+            ])
+            ->assertStatus(Response::HTTP_FOUND)
+            ->assertSessionHasErrors(['promotion_no']);
+
+        $this->assertDatabaseEmpty('promotions');
     }
 }

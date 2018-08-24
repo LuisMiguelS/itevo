@@ -3,8 +3,9 @@
 namespace App\Http\Requests\Tenant;
 
 use App\BranchOffice;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\PositiveNumber;
 use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StoreResourceRequest extends FormRequest
 {
@@ -31,6 +32,11 @@ class StoreResourceRequest extends FormRequest
                         ['name', $this->request->get('name')],
                     ]);
                 }),
+            ],
+            'price' => [
+                'required',
+                'numeric',
+                new PositiveNumber
             ]
         ];
     }
@@ -38,7 +44,8 @@ class StoreResourceRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name' => 'nombre'
+            'name' => 'nombre',
+            'price' => 'precio'
         ];
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Tenant;
 
+use App\Rules\PositiveNumber;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -34,6 +35,7 @@ class UpdatePromotionRequest extends FormRequest
                         ['promotion_no', $this->request->get('promotion_no')],
                     ]);
                 }),
+                new PositiveNumber
             ]
         ];
     }

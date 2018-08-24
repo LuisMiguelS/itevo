@@ -13,3 +13,22 @@
 	    @endif
     </div>
 </div>
+
+<div class="form-group row {{ $errors->has('price') ? 'has-error' : '' }}">
+    <label for="name" class="col-sm-4 col-form-label text-md-right">Precio: <span class="text-danger">*</span></label>
+
+    <div class="col-md-12">
+        <input id="price"
+               type="number"
+               class="form-control"
+               name="price"
+               value="{{ old('price', $resource->price) }}"
+               required>
+
+        @if ($errors->has('price'))
+            <span class="help-block">
+	            <strong>{{ $errors->first('price') }}</strong>
+	        </span>
+        @endif
+    </div>
+</div>

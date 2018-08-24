@@ -6,13 +6,9 @@ use App\Resource;
 use App\Traits\DatatableRemoveButton;
 use Yajra\DataTables\Services\DataTable;
 
-class TenantResourceDataTable extends DataTable
+class TenantResourceTrashedDataTable extends DataTable
 {
     use DatatableRemoveButton;
-
-    protected $btn_ability = [
-        'tenant-create' => \App\Resource::class
-    ];
 
     /**
      * Build DataTable class.
@@ -40,7 +36,10 @@ class TenantResourceDataTable extends DataTable
      */
     public function query()
     {
-        return request()->branchOffice->resources;
+        return request()->branchOffice
+            ->resources()
+            ->onlyTrashed()
+            ->get();
     }
 
     /**
@@ -51,10 +50,10 @@ class TenantResourceDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->addAction(['width' => '80px', 'title' => 'Acciones', 'printable' => false, 'exportable' => false])
-                    ->parameters($this->getBuilderParameters());
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->addAction(['width' => '80px', 'title' => 'Acciones', 'printable' => false, 'exportable' => false])
+            ->parameters($this->getBuilderParameters());
     }
 
     /**
@@ -71,7 +70,6 @@ class TenantResourceDataTable extends DataTable
             'Fechas',
         ];
     }
-
     /**
      * Get filename for export.
      *
@@ -79,6 +77,6 @@ class TenantResourceDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'TenantResource_' . date('YmdHis');
+        return 'TenantResourceTrashed_' . date('YmdHis');
     }
 }

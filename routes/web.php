@@ -75,9 +75,25 @@ Route::prefix('{branchOffice}')->middleware('tenantAccess')->name('tenant.')->gr
     Route::delete('courses/{id}/restore', 'Tenant\CourseController@restore')->name('courses.trash.restore');
     Route::resource('courses', 'Tenant\CourseController')->except('destroy');
 
-    Route::resource('resources', 'Tenant\ResourceController');
+    /*
+     * Resources
+     */
+    Route::get('resources/trash', 'Tenant\ResourceController@trashed')->name('resources.trash');
+    Route::delete('resources/{id}', 'Tenant\ResourceController@destroy')->name('resources.destroy');
+    Route::delete('resources/{resource}/trash', 'Tenant\ResourceController@trash')->name('resources.trash.destroy');
+    Route::delete('resources/{id}/restore', 'Tenant\ResourceController@restore')->name('resources.trash.restore');
+    Route::resource('resources', 'Tenant\ResourceController')->except('destroy');
+
+    /*
+     * Promotion
+     */
+    Route::get('promotions/trash', 'Tenant\PromotionController@trashed')->name('promotions.trash');
+    Route::delete('promotions/{id}', 'Tenant\PromotionController@destroy')->name('promotions.destroy');
+    Route::delete('promotions/{promotion}/trash', 'Tenant\PromotionController@trash')->name('promotions.trash.destroy');
+    Route::delete('promotions/{id}/restore', 'Tenant\PromotionController@restore')->name('promotions.trash.restore');
     Route::get('promotions/{promotion}/finish', 'Tenant\PromotionController@finish')->name('promotions.finish');
-    Route::resource('promotions', 'Tenant\PromotionController');
+    Route::resource('promotions', 'Tenant\PromotionController')->except('destroy');
+
     Route::resource('promotions.periods', 'Tenant\PeriodController')->except('show', 'destroy');
     Route::resource('periods.course-period', 'Tenant\CoursePeriodController')->parameters([
         'course-period' => 'coursePeriod'
@@ -92,7 +108,23 @@ Route::prefix('{branchOffice}')->middleware('tenantAccess')->name('tenant.')->gr
     Route::delete('teachers/{id}/restore', 'Tenant\TeacherController@restore')->name('teachers.trash.restore');
     Route::resource('teachers', 'Tenant\TeacherController')->except('destroy');
 
-    Route::resource('students', 'Tenant\StudentController');
+    /*
+     * Student
+     */
+    Route::get('students/trash', 'Tenant\StudentController@trashed')->name('students.trash');
+    Route::delete('students/{id}', 'Tenant\StudentController@destroy')->name('students.destroy');
+    Route::delete('students/{student}/trash', 'Tenant\StudentController@trash')->name('students.trash.destroy');
+    Route::delete('students/{id}/restore', 'Tenant\StudentController@restore')->name('students.trash.restore');
+    Route::resource('students', 'Tenant\StudentController')->except('destroy');
+
+   /*
+    * Schedules
+    */
+    Route::get('schedules/trash', 'Tenant\ScheduleController@trashed')->name('schedules.trash');
+    Route::delete('schedules/{id}', 'Tenant\ScheduleController@destroy')->name('schedules.destroy');
+    Route::delete('schedules/{schedule}/trash', 'Tenant\ScheduleController@trash')->name('schedules.trash.destroy');
+    Route::delete('schedules/{id}/restore', 'Tenant\ScheduleController@restore')->name('schedules.trash.restore');
+    Route::resource('schedules', 'Tenant\ScheduleController')->except('destroy');
 
 });
 

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateResourcesTable extends Migration
+class CreateSchedulesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateResourcesTable extends Migration
      */
     public function up()
     {
-        Schema::create('resources', function (Blueprint $table) {
+        Schema::create('schedules', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 50);
-            $table->unsignedInteger('price');
             $table->unsignedInteger('branch_office_id');
-            $table->unique(['name', 'branch_office_id']);
+            $table->unique(['branch_office_id', 'start_at', 'ends_at']);
+            $table->timestamp('start_at')->nullable();
+            $table->timestamp('ends_at')->nullable();
             $table->timestamps();
-            $table->softDeletes();
 
             $table->foreign('branch_office_id')->references('id')->on('branch_offices');
         });
@@ -33,6 +32,6 @@ class CreateResourcesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('resources');
+        Schema::dropIfExists('schedules');
     }
 }

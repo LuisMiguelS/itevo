@@ -6,13 +6,9 @@ use App\Student;
 use App\Traits\DatatableRemoveButton;
 use Yajra\DataTables\Services\DataTable;
 
-class TenantStudentDataTable extends DataTable
+class TenantStudentTrashedDataTable extends DataTable
 {
     use DatatableRemoveButton;
-
-    protected $btn_ability = [
-        'tenant-create' => \App\Student::class
-    ];
 
     /**
      * Build DataTable class.
@@ -44,7 +40,10 @@ class TenantStudentDataTable extends DataTable
      */
     public function query()
     {
-        return request()->branchOffice->students;
+        return request()->branchOffice
+            ->students()
+            ->onlyTrashed()
+            ->get();
     }
 
     /**
@@ -55,10 +54,10 @@ class TenantStudentDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->addAction(['width' => '80px', 'title' => 'Acciones', 'printable' => false, 'exportable' => false])
-                    ->parameters($this->getBuilderParameters());
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->addAction(['width' => '80px', 'title' => 'Acciones', 'printable' => false, 'exportable' => false])
+            ->parameters($this->getBuilderParameters());
     }
 
     /**
@@ -88,6 +87,6 @@ class TenantStudentDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'TenantStudent_' . date('YmdHis');
+        return 'TenantStudentTrashed_' . date('YmdHis');
     }
 }

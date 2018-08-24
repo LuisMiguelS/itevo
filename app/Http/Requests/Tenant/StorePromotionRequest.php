@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Tenant;
 
+use App\Rules\PositiveNumber;
 use App\{BranchOffice, Period};
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -35,6 +36,7 @@ class StorePromotionRequest extends FormRequest
                         ['promotion_no', $this->request->get('promotion_no')],
                     ]);
                 }),
+                new PositiveNumber
             ]
         ];
     }

@@ -113,4 +113,23 @@ class CreatePeriodTest extends TestCase
         $this->assertDatabaseEmpty('periods');
     }
 
+    /** @test */
+    function it_cannot_create_period_if_parent_promotion_is_finished()
+    {
+        $this->withExceptionHandling();
+
+        $promotion = factory(Promotion::class)->create([
+            'status' => Promotion::STATUS_FINISHED
+        ]);
+
+        $this->actingAs($this->admin)
+            ->post(route('tenant.promotions.periods.store', [
+                'branchOffice' => $promotion->branchOffice,
+                'promotion' => $promotion
+            ]), $this->withData())
+            ->assertStatus(Response::HTTP_BAD_REQUEST);
+
+        $this->assertDatabaseEmpty('periods');
+    }
+
 }

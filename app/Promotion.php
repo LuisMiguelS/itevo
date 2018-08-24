@@ -43,14 +43,6 @@ class Promotion extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function coursePeriod()
-    {
-        return $this->hasMany(CoursePeriod::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function students()
     {
         return $this->hasMany(Student::class);

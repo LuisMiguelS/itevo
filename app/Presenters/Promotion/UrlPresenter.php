@@ -2,8 +2,7 @@
 
 namespace App\Presenters\Promotion;
 
-use App\BranchOffice;
-use App\Promotion;
+use App\{BranchOffice, Promotion};
 
 class UrlPresenter
 {
@@ -17,12 +16,22 @@ class UrlPresenter
      */
     private $promotion;
 
+    /**
+     * UrlPresenter constructor.
+     *
+     * @param \App\BranchOffice $branchOffice
+     * @param \App\Promotion $promotion
+     */
     public function __construct(BranchOffice $branchOffice, Promotion $promotion)
     {
         $this->branchOffice = $branchOffice;
         $this->promotion = $promotion;
     }
 
+    /**
+     * @param $key
+     * @return mixed
+     */
     public function __get($key)
     {
         if(method_exists($this, $key))
@@ -33,14 +42,9 @@ class UrlPresenter
         return $this->$key;
     }
 
-    public function delete()
-    {
-        return route('tenant.promotions.destroy', [
-            'branchOffice' => $this->branchOffice,
-            'promotion' => $this->promotion
-        ]);
-    }
-
+    /**
+     * @return string
+     */
     public function edit()
     {
         return route('tenant.promotions.edit', [
@@ -49,6 +53,9 @@ class UrlPresenter
         ]);
     }
 
+    /**
+     * @return string
+     */
     public function update()
     {
         return route('tenant.promotions.update',[
@@ -57,6 +64,9 @@ class UrlPresenter
         ]);
     }
 
+    /**
+     * @return string
+     */
     public function show()
     {
         return route('tenant.promotions.show',[
@@ -65,6 +75,9 @@ class UrlPresenter
         ]);
     }
 
+    /**
+     * @return string
+     */
     public function status()
     {
         return route('tenant.promotions.status',[
@@ -73,6 +86,9 @@ class UrlPresenter
         ]);
     }
 
+    /**
+     * @return string
+     */
     public function finish()
     {
         return route('tenant.promotions.finish', [
@@ -81,5 +97,37 @@ class UrlPresenter
         ]);
     }
 
+    /**
+     * @return string
+     */
+    public function trash()
+    {
+        return route('tenant.promotions.trash.destroy', [
+            'branchOffice' => $this->branchOffice,
+            'promotion' => $this->promotion
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function restore()
+    {
+        return route('tenant.promotions.trash.restore', [
+            'branchOffice' => $this->branchOffice,
+            'id' => $this->promotion->id
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function delete()
+    {
+        return route('tenant.promotions.destroy', [
+            'branchOffice' => $this->branchOffice,
+            'id' => $this->promotion->id
+        ]);
+    }
 
 }

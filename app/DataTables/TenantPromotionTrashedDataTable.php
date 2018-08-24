@@ -6,13 +6,9 @@ use App\Promotion;
 use App\Traits\DatatableRemoveButton;
 use Yajra\DataTables\Services\DataTable;
 
-class TenantPromotionDataTable extends DataTable
+class TenantPromotionTrashedDataTable extends DataTable
 {
     use DatatableRemoveButton;
-
-    protected $btn_ability = [
-        'tenant-create' => \App\Promotion::class
-    ];
 
     private $label_status = [
         Promotion::STATUS_CURRENT => 'primary',
@@ -48,7 +44,11 @@ class TenantPromotionDataTable extends DataTable
      */
     public function query()
     {
-        return request()->branchOffice->promotions()->orderByDesc('promotion_no')->get();
+        return request()->branchOffice
+            ->promotions()
+            ->onlyTrashed()
+            ->orderByDesc('promotion_no')
+            ->get();
     }
 
     /**
@@ -59,10 +59,10 @@ class TenantPromotionDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->addAction(['width' => '100px', 'title' => 'Acciones', 'printable' => false, 'exportable' => false])
-                    ->parameters($this->getBuilderParameters());
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->addAction(['width' => '100px', 'title' => 'Acciones', 'printable' => false, 'exportable' => false])
+            ->parameters($this->getBuilderParameters());
     }
 
     /**
@@ -80,6 +80,7 @@ class TenantPromotionDataTable extends DataTable
         ];
     }
 
+
     /**
      * Get filename for export.
      *
@@ -87,7 +88,7 @@ class TenantPromotionDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'TenantPromotion_' . date('YmdHis');
+        return 'TenantPromotionTrashed_' . date('YmdHis');
     }
 
     public function status(Promotion $promotion)

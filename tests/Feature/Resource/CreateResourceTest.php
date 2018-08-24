@@ -13,6 +13,7 @@ class CreateResourceTest extends TestCase
 
     protected $defaultData = [
         'name' => 'Inscripcion',
+        'price' => 200,
     ];
 
     private $admin;

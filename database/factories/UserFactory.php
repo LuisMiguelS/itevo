@@ -47,6 +47,7 @@ $factory->define(App\TypeCourse::class, function (Faker $faker) {
 $factory->define(App\Resource::class, function (Faker $faker) {
     return [
         'name' => $faker->unique()->word,
+        'price' => $faker->numberBetween(100, 4000),
         'branch_office_id' => factory(App\BranchOffice::class)->create()
     ];
 });

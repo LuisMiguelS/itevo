@@ -3,12 +3,13 @@
 namespace App\Http\Requests\Tenant;
 
 use App\Resource;
+use App\Rules\PositiveNumber;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateResourceRequest extends FormRequest
 {
-    public function authorize ()
+    public function authorize()
     {
         return true;
     }
@@ -31,18 +32,24 @@ class UpdateResourceRequest extends FormRequest
                         ['name', $this->request->get('name')],
                     ]);
                 }),
+            ],
+            'price' => [
+                'required',
+                'numeric',
+                new PositiveNumber
             ]
         ];
     }
 
-    public function attributes ()
+    public function attributes()
     {
         return [
-            'name' => 'nombre'
+            'name' => 'nombre',
+            'price' => 'precio'
         ];
     }
 
-    public function updateResource (Resource $resource)
+    public function updateResource(Resource $resource)
     {
         $resource->update($this->validated());
         return "Recurso {$resource->name} actualizado con éxito.";
