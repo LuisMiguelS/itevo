@@ -132,7 +132,7 @@ class CourseController extends Controller
     {
         $course = Course::onlyTrashed()->where('id', $id)->firstOrFail();
 
-        $this->authorize('tenant-delete', $course);
+        $this->authorize('tenant-restore', $course);
 
         abort_unless($course->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
 
@@ -153,10 +153,10 @@ class CourseController extends Controller
     {
         $this->authorize('tenant-trash', $course);
 
+        abort_unless($course->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
+
         abort_if($course->coursePeriod()->exists(),
             Response::HTTP_BAD_REQUEST, "No puedes eliminar el Curso {$course->name}, hay informacion que depende de esta");
-
-        abort_unless($course->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
 
         $course->delete();
 

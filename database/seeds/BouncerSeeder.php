@@ -7,6 +7,7 @@ use App\{CoursePeriod,
     Period,
     Promotion,
     Resource,
+    Schedule,
     Student,
     Teacher,
     User,
@@ -42,6 +43,7 @@ class BouncerSeeder extends Seeder
         $this->roleAbilities();
         $this->studentAbilities();
         $this->periodAbilities();
+        $this->scheduleAbilities();
     }
 
     protected function createRole()
@@ -74,17 +76,18 @@ class BouncerSeeder extends Seeder
         Bouncer::allow($tenant_admin)->to($abilities);
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Todas las habilidades
+    |--------------------------------------------------------------------------
+    |
+    | Estas habilidades solo las puede tener un rol de administrador, ya que tienen autorizacion total sobre
+    | los distintos modulos del sistema.
+    */
+
     protected function allAbility(): void
     {
-        /*
-         |--------------------------------------------------------------------------
-         | Todas las habilidades
-         |--------------------------------------------------------------------------
-         |
-         | Estas habilidades solo las puede tener un rol de administrador, ya que tienen autorizacion total sobre
-         | los distintos modulos del sistema.
-         */
-
         Bouncer::ability()->create([
             'name' => '*',
             'title' => 'Todas las habilidades',
@@ -92,31 +95,32 @@ class BouncerSeeder extends Seeder
         ]);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Institutos dashboard Habilidades
+    |--------------------------------------------------------------------------
+    |
+    | Habilidad para ver el dashboard de la pagina de administracion
+    */
+
     protected function dashboardAbility(): void
     {
-        /*
-         |--------------------------------------------------------------------------
-         | Institutos dashboard Habilidades
-         |--------------------------------------------------------------------------
-         |
-         | Habilidad para ver el dashboard de la pagina de administracion
-         */
         Bouncer::ability()->createForModel(BranchOffice::class, [
             'name' => 'tenant-view',
             'title' => 'Ver dashboard'
         ]);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Aulas Habilidades
+    |--------------------------------------------------------------------------
+    |
+    | Todas la habilidades para la gestion del crud de aulas
+    */
+
     protected function classroomAbilities(): void
     {
-        /*
-         |--------------------------------------------------------------------------
-         | Aulas Habilidades
-         |--------------------------------------------------------------------------
-         |
-         | Todas la habilidades para la gestion del crud de aulas
-         */
-
         Bouncer::ability()->createForModel(Classroom::class, [
             'name' => 'tenant-view',
             'title' => 'Ver aulas'
@@ -148,16 +152,16 @@ class BouncerSeeder extends Seeder
         ]);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Cursos Habilidades
+    |--------------------------------------------------------------------------
+    |
+    | Todas la habilidades para la gestion del crud de cursos
+    */
+
     protected function courseAbilities(): void
     {
-        /*
-         |--------------------------------------------------------------------------
-         | Cursos Habilidades
-         |--------------------------------------------------------------------------
-         |
-         | Todas la habilidades para la gestion del crud de cursos
-         */
-
         Bouncer::ability()->createForModel(Course::class, [
             'name' => 'tenant-view',
             'title' => 'Ver cursos'
@@ -189,16 +193,15 @@ class BouncerSeeder extends Seeder
         ]);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Tipo de cursos Habilidades
+    |--------------------------------------------------------------------------
+    |
+    | Todas la habilidades para la gestion del crud de tipos de cursos
+    */
     protected function typeCourseAbilities(): void
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Tipo de cursos Habilidades
-        |--------------------------------------------------------------------------
-        |
-        | Todas la habilidades para la gestion del crud de tipos de cursos
-        */
-
         Bouncer::ability()->createForModel(TypeCourse::class, [
             'name' => 'tenant-view',
             'title' => 'Ver tipos cursos'
@@ -230,16 +233,16 @@ class BouncerSeeder extends Seeder
         ]);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Recursos Habilidades
+    |--------------------------------------------------------------------------
+    |
+    | Todas la habilidades para la gestion del crud de recursos
+    */
+
     protected function resourceAbilities(): void
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Recursos Habilidades
-        |--------------------------------------------------------------------------
-        |
-        | Todas la habilidades para la gestion del crud de recursos
-        */
-
         Bouncer::ability()->createForModel(Resource::class, [
             'name' => 'tenant-view',
             'title' => 'Ver recursos'
@@ -271,16 +274,16 @@ class BouncerSeeder extends Seeder
         ]);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Profesores Habilidades
+    |--------------------------------------------------------------------------
+    |
+    | Todas la habilidades para la gestion del crud de profesores
+    */
+
     protected function teacherAbilities(): void
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Profesores Habilidades
-        |--------------------------------------------------------------------------
-        |
-        | Todas la habilidades para la gestion del crud de profesores
-        */
-
         Bouncer::ability()->createForModel(Teacher::class, [
             'name' => 'tenant-view',
             'title' => 'Ver profesores'
@@ -312,16 +315,16 @@ class BouncerSeeder extends Seeder
         ]);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Promociones Habilidades
+    |--------------------------------------------------------------------------
+    |
+    | Todas la habilidades para la gestion del crud de promociones
+    */
+
     protected function promotionAbility(): void
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Promociones Habilidades
-        |--------------------------------------------------------------------------
-        |
-        | Todas la habilidades para la gestion del crud de promociones
-        */
-
         Bouncer::ability()->createForModel(Promotion::class, [
             'name' => 'tenant-view',
             'title' => 'Ver promociones'
@@ -358,16 +361,16 @@ class BouncerSeeder extends Seeder
         ]);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Usuarios Habilidades
+    |--------------------------------------------------------------------------
+    |
+    | Todas la habilidades para la gestion del crud de usuarios
+    */
+
     protected function userAbilities(): void
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Usuarios Habilidades
-        |--------------------------------------------------------------------------
-        |
-        | Todas la habilidades para la gestion del crud de usuarios
-        */
-
         Bouncer::ability()->createForModel(User::class, [
             'name' => 'view',
             'title' => 'Ver usuarios'
@@ -389,16 +392,16 @@ class BouncerSeeder extends Seeder
         ]);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Roles Habilidades
+    |--------------------------------------------------------------------------
+    |
+    | Todas la habilidades para la gestion del crud de roles
+    */
+
     protected function roleAbilities(): void
     {
-        /*
-       |--------------------------------------------------------------------------
-       | Roles Habilidades
-       |--------------------------------------------------------------------------
-       |
-       | Todas la habilidades para la gestion del crud de roles
-       */
-
         Bouncer::ability()->createForModel(Role::class, [
             'name' => 'view',
             'title' => 'Ver roles'
@@ -420,16 +423,16 @@ class BouncerSeeder extends Seeder
         ]);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Students Habilidades
+    |--------------------------------------------------------------------------
+    |
+    | Todas la habilidades para la gestion del crud de estudiantes
+    */
+
     protected function studentAbilities(): void
     {
-        /*
-       |--------------------------------------------------------------------------
-       | Students Habilidades
-       |--------------------------------------------------------------------------
-       |
-       | Todas la habilidades para la gestion del crud de estudiantes
-       */
-
         Bouncer::ability()->createForModel(Student::class, [
             'name' => 'tenant-view',
             'title' => 'Ver Estudiantes'
@@ -461,16 +464,16 @@ class BouncerSeeder extends Seeder
         ]);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Period Habilidades
+    |--------------------------------------------------------------------------
+    |
+    | Todas la habilidades para la gestion del crud de periodos
+    */
+
     protected function periodAbilities(): void
     {
-        /*
-       |--------------------------------------------------------------------------
-       | Period Habilidades
-       |--------------------------------------------------------------------------
-       |
-       | Todas la habilidades para la gestion del crud de periodos
-       */
-
         Bouncer::ability()->createForModel(Period::class, [
             'name' => 'tenant-view',
             'title' => 'Ver Periodos'
@@ -492,16 +495,16 @@ class BouncerSeeder extends Seeder
         ]);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Period Habilidades
+    |--------------------------------------------------------------------------
+    |
+    | Todas la habilidades para la gestion del crud de asignacion de cursos
+    */
+
     protected function coursePromotionAbilities(): void
     {
-        /*
-       |--------------------------------------------------------------------------
-       | Period Habilidades
-       |--------------------------------------------------------------------------
-       |
-       | Todas la habilidades para la gestion del crud de asignacion de cursos
-       */
-
         Bouncer::ability()->createForModel(CoursePeriod::class, [
             'name' => 'tenant-view',
             'title' => 'Ver cursos activos'
@@ -520,6 +523,46 @@ class BouncerSeeder extends Seeder
         Bouncer::ability()->createForModel(CoursePeriod::class, [
             'name' => 'tenant-update',
             'title' => 'Actualizar curso asignado a la promocion'
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Schedule Habilidades
+    |--------------------------------------------------------------------------
+    |
+    | Todas la habilidades para la gestion del crud de horarios
+    */
+    protected function scheduleAbilities()
+    {
+        Bouncer::ability()->createForModel(Schedule::class, [
+            'name' => 'tenant-view',
+            'title' => 'Ver horarios'
+        ]);
+
+        Bouncer::ability()->createForModel(Schedule::class, [
+            'name' => 'tenant-create',
+            'title' => 'Crear horario'
+        ]);
+
+        Bouncer::ability()->createForModel(Schedule::class, [
+            'name' => 'tenant-update',
+            'title' => 'Actualizar horario'
+        ]);
+
+        Bouncer::ability()->createForModel(Schedule::class, [
+            'name' => 'tenant-delete',
+            'title' => 'Eliminar permanentemente un horario'
+        ]);
+
+        Bouncer::ability()->createForModel(Schedule::class, [
+            'name' => 'tenant-trash',
+            'title' => 'Eliminar temporal un horario'
+        ]);
+
+        Bouncer::ability()->createForModel(Schedule::class, [
+            'name' => 'tenant-restore',
+            'title' => 'Restaurar horario'
         ]);
     }
 }

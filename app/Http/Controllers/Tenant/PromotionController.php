@@ -143,7 +143,7 @@ class PromotionController extends Controller
     {
         $promotion = Promotion::onlyTrashed()->where('id', $id)->firstOrFail();
 
-        $this->authorize('tenant-delete', $promotion);
+        $this->authorize('tenant-restore', $promotion);
 
         abort_unless($promotion->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
 
@@ -163,12 +163,12 @@ class PromotionController extends Controller
     {
         $this->authorize('tenant-trash', $promotion);
 
+        abort_unless($promotion->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
+
         abort_if($promotion->students()->exists()
             || $promotion->periods()->exists(),
             Response::HTTP_BAD_REQUEST,
             "No puedes eliminar la promocion {$promotion->promotion_no}, hay informacion que depende de esta");
-
-        abort_unless($promotion->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
 
         $promotion->status = Promotion::STATUS_FINISHED;
 

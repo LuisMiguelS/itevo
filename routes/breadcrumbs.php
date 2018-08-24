@@ -1,6 +1,6 @@
 <?php
 
-use App\{Classroom, Course, BranchOffice, Promotion, Resource, Student, Teacher, TypeCourse};
+use App\{Classroom, Course, BranchOffice, Promotion, Resource, Schedule, Student, Teacher, TypeCourse};
 
 Breadcrumbs::for('home', function ($breadcrumbs) {
     $breadcrumbs->push('Home', route('home'));
@@ -191,4 +191,31 @@ Breadcrumbs::for('student-create', function ($breadcrumbs, BranchOffice $branchO
 Breadcrumbs::for('student-edit', function ($breadcrumbs, BranchOffice $branchOffice, Student $student) {
     $breadcrumbs->parent('student', $branchOffice);
     $breadcrumbs->push($student->full_name, $student->url->edit);
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| Schedule
+|--------------------------------------------------------------------------
+*/
+
+Breadcrumbs::for('schedule', function ($breadcrumbs, BranchOffice $branchOffice) {
+    $breadcrumbs->parent('dashboard', $branchOffice);
+    $breadcrumbs->push('Horarios', route('tenant.schedules.index', $branchOffice));
+});
+
+Breadcrumbs::for('schedule-trash', function ($breadcrumbs, BranchOffice $branchOffice) {
+    $breadcrumbs->parent('schedule', $branchOffice);
+    $breadcrumbs->push('Papelera', route('tenant.schedules.trash', $branchOffice));
+});
+
+Breadcrumbs::for('schedule-create', function ($breadcrumbs, BranchOffice $branchOffice) {
+    $breadcrumbs->parent('schedule', $branchOffice);
+    $breadcrumbs->push('Crear', route('tenant.schedules.create', $branchOffice));
+});
+
+Breadcrumbs::for('schedule-edit', function ($breadcrumbs, BranchOffice $branchOffice, Schedule $schedule) {
+    $breadcrumbs->parent('schedule', $branchOffice);
+    $breadcrumbs->push("{$schedule->start_at->format('h:i:s A')} - {$schedule->ends_at->format('h:i:s A')}", $schedule->url->edit);
 });

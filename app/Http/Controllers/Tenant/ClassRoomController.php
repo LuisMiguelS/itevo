@@ -124,7 +124,7 @@ class ClassRoomController extends Controller
     {
         $classroom = Classroom::onlyTrashed()->where('id', $id)->firstOrFail();
 
-        $this->authorize('tenant-delete', $classroom);
+        $this->authorize('tenant-restore', $classroom);
 
         abort_unless($classroom->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
 
@@ -143,10 +143,10 @@ class ClassRoomController extends Controller
     {
         $this->authorize('tenant-trash', $classroom);
 
+        abort_unless($classroom->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
+
         abort_if($classroom->coursePeriod()->exists(),
             Response::HTTP_BAD_REQUEST, "No puedes eliminar el aula {$classroom->name}, hay informacion que depende de esta");
-
-        abort_unless($classroom->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
 
         $classroom->delete();
 

@@ -138,7 +138,7 @@ class TypeCourseController extends Controller
     {
         $typeCourse = TypeCourse::onlyTrashed()->where('id', $id)->firstOrFail();
 
-        $this->authorize('tenant-delete', $typeCourse);
+        $this->authorize('tenant-restore', $typeCourse);
 
         abort_unless($typeCourse->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
 
@@ -159,10 +159,10 @@ class TypeCourseController extends Controller
     {
         $this->authorize('tenant-trash', $typeCourse);
 
+        abort_unless($typeCourse->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
+
         abort_if($typeCourse->courses()->exists(),
             Response::HTTP_BAD_REQUEST, "No puedes eliminar el tipo de curso {$typeCourse->name}, hay informacion que depende de esta");
-
-        abort_unless($typeCourse->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
 
         $typeCourse->delete();
 

@@ -126,7 +126,7 @@ class TeacherController extends Controller
     {
         $teacher = Teacher::onlyTrashed()->where('id', $id)->firstOrFail();
 
-        $this->authorize('tenant-delete', $teacher);
+        $this->authorize('tenant-restore', $teacher);
 
         abort_unless($teacher->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
 
@@ -147,10 +147,10 @@ class TeacherController extends Controller
     {
         $this->authorize('tenant-trash', $teacher);
 
+        abort_unless($teacher->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
+
         abort_if($teacher->coursePeriod()->exists(),
             Response::HTTP_BAD_REQUEST, "No puedes eliminar el profesor {$teacher->full_name}, hay informacion que depende de esta");
-
-        abort_unless($teacher->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
 
         $teacher->delete();
 

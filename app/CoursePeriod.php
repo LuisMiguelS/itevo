@@ -60,4 +60,12 @@ class CoursePeriod extends Model
     {
         return $this->hasMany(Resource::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
 }

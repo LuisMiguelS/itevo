@@ -132,6 +132,11 @@ class BranchOffice extends Model
         return $this->hasMany(Student::class);
     }
 
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Relations\HasMany|null|object
      */

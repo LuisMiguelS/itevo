@@ -128,7 +128,7 @@ class ResourceController extends Controller
     {
         $resource = Resource::onlyTrashed()->where('id', $id)->firstOrFail();
 
-        $this->authorize('tenant-delete', $resource);
+        $this->authorize('tenant-restore', $resource);
 
         abort_unless($resource->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
 
@@ -149,11 +149,11 @@ class ResourceController extends Controller
     {
         $this->authorize('tenant-trash', $resource);
 
+        abort_unless($resource->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
+
         abort_if($resource->coursePeriod()->exists(),
             Response::HTTP_BAD_REQUEST,
             "No puedes eliminar el recurso {$resource->name}, hay informacion que depende de esta");
-
-        abort_unless($resource->isRegisteredIn($branchOffice), Response::HTTP_NOT_FOUND);
 
         $resource->delete();
 

@@ -20,6 +20,7 @@ class CreateSchedulesTable extends Migration
             $table->timestamp('start_at')->nullable();
             $table->timestamp('ends_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('branch_office_id')->references('id')->on('branch_offices');
         });

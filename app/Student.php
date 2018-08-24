@@ -24,9 +24,7 @@ class Student extends Model
         'signed_up'
     ];
 
-    protected $hidden = [
-        'url'
-    ];
+    protected $hidden = ['url'];
 
     protected $appends = ['url'];
 

@@ -112,6 +112,21 @@
             </li>
             @endif
 
+            @if( auth()->user()->can('tenant-view', \App\Schedule::class) || auth()->user()->can('tenant-create', \App\Schedule::class) )
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-calendar-o"></i> <span>Horario</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                    <ul class="treeview-menu">
+                        @can('tenant-view', \App\Schedule::class)
+                            <li><a href="{{ route('tenant.schedules.index', $branchOffice) }}"><i class="fa fa-circle-o"></i> Todos los horarios</a></li>
+                        @endcan
+
+                        @can('tenant-create', \App\Schedule::class)
+                            <li><a href="{{ route('tenant.schedules.create', $branchOffice) }}"><i class="fa fa-circle-o"></i> Crear estudiante</a></li>
+                        @endcan
+                    </ul>
+                </li>
+            @endif
+
             <li class="header">Accesos rapido</li>
             {{  new App\Http\ViewComponents\TenantQuickAccessBtn($branchOffice) }}
         </ul>
