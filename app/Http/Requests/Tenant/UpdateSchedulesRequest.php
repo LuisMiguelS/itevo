@@ -34,6 +34,10 @@ class UpdateSchedulesRequest extends FormRequest
     public function rules()
     {
         return [
+            'weekday' => [
+                'required',
+                Rule::in([Schedule::MONDAY, Schedule::TUESDAY, Schedule::WEDNESDAY, Schedule::THURSDAY, Schedule::FRIDAY, Schedule::SATURDAY, Schedule::SUNDAY]),
+            ],
             'start_at' => [
                 'required',
                 Rule::unique('schedules')->ignore($this->schedule->id)->where(function ($query) {
@@ -63,6 +67,7 @@ class UpdateSchedulesRequest extends FormRequest
     public function attributes()
     {
         return [
+            'weekday' => 'días laborables',
             'start_at' => 'hora de inicio',
             'ends_at' => 'hora de finalizacion',
         ];
@@ -85,6 +90,7 @@ class UpdateSchedulesRequest extends FormRequest
         $this->extraValidation($start_at, $ends_at);
 
         return [
+            'weekday' => $this->weekday,
             'start_at' =>  $start_at->toDateTimeString(),
             'ends_at' => $ends_at->toDateTimeString()
         ];

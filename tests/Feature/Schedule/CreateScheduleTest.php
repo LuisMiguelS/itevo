@@ -3,7 +3,7 @@
 namespace Tests\Feature\Schedule;
 
 use Tests\TestCase;
-use App\{User, BranchOffice};
+use App\{Schedule, User, BranchOffice};
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -12,6 +12,7 @@ class CreateScheduleTest extends TestCase
     use RefreshDatabase;
 
     protected $defaultData = [
+        'weekday' => Schedule::MONDAY,
         'start_at' => '2018-08-23 07:52:11',
         'ends_at' => '2018-08-23 08:52:11',
     ];

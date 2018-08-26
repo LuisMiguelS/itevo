@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Tenant;
 
 use Carbon\Carbon;
-use App\BranchOffice;
+use App\{BranchOffice, Schedule};
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,6 +34,10 @@ class StoreSchedulesRequest extends FormRequest
     public function rules()
     {
         return [
+            'weekday' => [
+                'required',
+                Rule::in([Schedule::MONDAY, Schedule::TUESDAY, Schedule::WEDNESDAY, Schedule::THURSDAY, Schedule::FRIDAY, Schedule::SATURDAY, Schedule::SUNDAY]),
+            ],
             'start_at' => [
                 'required',
                 Rule::unique('schedules')->where(function ($query) {
@@ -63,6 +67,7 @@ class StoreSchedulesRequest extends FormRequest
     public function attributes()
     {
         return [
+            'weekday' => 'días laborables',
             'start_at' => 'hora de inicio',
             'ends_at' => 'hora de finalizacion',
         ];
@@ -89,6 +94,7 @@ class StoreSchedulesRequest extends FormRequest
         $this->extraValidation($start_at, $ends_at);
 
         return [
+            'weekday' => $this->weekday,
             'start_at' =>  $start_at->toDateTimeString(),
             'ends_at' => $ends_at->toDateTimeString()
         ];
