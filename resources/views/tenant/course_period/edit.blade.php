@@ -12,7 +12,7 @@
                            :teachers="{{ json_encode($teachers)}}"
                            :course-period="{{ json_encode($coursePeriod) }}"
                            :form_data="{{ json_encode([
-                           'route' => route('tenant.periods.course-period.update', ['branchOffice' => $branchOffice, 'period' => $period, 'coursePeriod' => $coursePeriod]),
+                           'route' => $coursePeriod->url->update,
                            'method' => 'put',
                            'redirect' => route('tenant.periods.course-period.index', ['branchOffice' => $branchOffice, 'period' => $period])
                            ])}}">

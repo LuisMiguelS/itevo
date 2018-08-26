@@ -52,7 +52,7 @@ class UpdatePeriodTest extends TestCase
     }
 
     /** @test */
-    function admins_can_update_period()
+    function admin_can_update_period()
     {
         $this->actingAs($this->admin)
             ->put(route('tenant.promotions.periods.update', [
@@ -71,7 +71,7 @@ class UpdatePeriodTest extends TestCase
     }
 
     /** @test */
-    function admins_cannot_update_period_if_use_a_promotion_that_is_not_in_the_actual_branch_office()
+    function admin_cannot_update_period_if_use_a_promotion_that_is_not_in_the_actual_branch_office()
     {
         $this->withExceptionHandling();
 

@@ -5,7 +5,7 @@ return [
      * Default table attributes when generating the table.
      */
     'table' => [
-        'class' => 'table table-striped responsive',
+        'class' => 'table table-striped table-condensed responsive',
         'width' => '100%',
         'id'    => 'dataTableBuilder',
     ],

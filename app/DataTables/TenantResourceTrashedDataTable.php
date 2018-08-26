@@ -19,6 +19,9 @@ class TenantResourceTrashedDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
+            ->editColumn('price', function (Resource $resource){
+                return number_format($resource->price,2,'.',',');
+            })
             ->addColumn('Fechas', function (Resource $resource) {
                 return "<p><b>Fecha de creación:</b> {$resource->created_at->format('l j F Y')}</p>
                         <p><b>Fecha de actualización:</b> {$resource->updated_at->format('l j F Y')}</p>";

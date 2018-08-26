@@ -5,9 +5,9 @@
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
         @can('tenant-update', $coursePeriod)
-        <li><a href="{{ route('tenant.periods.course-period.edit', ['branchOffice' => request('branchOffice'), 'period' => request('period'), 'coursePeriod' => $coursePeriod]) }}"> Editar</a></li>
+        <li><a href="{{ $coursePeriod->url->edit }}"> Editar</a></li>
         @endcan
         <li role="separator" class="divider"></li>
-        <li><a href="#">Something else here</a></li>
+        <li><a href="{{ $coursePeriod->url->resource }}"> Agregar recursos</a></li>
     </ul>
 </div>

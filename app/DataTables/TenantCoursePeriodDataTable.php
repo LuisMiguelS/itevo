@@ -16,14 +16,20 @@ class TenantCoursePeriodDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
+            ->editColumn('price', function (CoursePeriod $coursePeriod){
+                return number_format($coursePeriod->price,2,'.',',');
+            })
             ->editColumn('classroom.name', function (CoursePeriod $coursePeriod) {
                 return "{$coursePeriod->classroom->name} ({$coursePeriod->classroom->building})";
             })
+            ->editColumn('resources', function (CoursePeriod $coursePeriod) {
+                return $coursePeriod->resources()->get()->implode('name', ', ');
+            })
             ->addColumn('Fechas', function (CoursePeriod $coursePeriod) {
-                return "<p><b>Fecha de inicio del curso:</b> {$coursePeriod->start_at->format('l j F Y')}</p>
-                        <p><b>Fecha de finalizacion del curso:</b> {$coursePeriod->ends_at->format('l j F Y')}</p>
-                        <p><b>Fecha de creación:</b> {$coursePeriod->created_at->format('l j F Y')}</p>
-                        <p><b>Fecha de actualización:</b> {$coursePeriod->updated_at->format('l j F Y')}</p>";
+                return "<small><b>Inicio del curso:</b> {$coursePeriod->start_at->format('l j F Y')}</small><br>
+                        <small><b>Fin del curso:</b> {$coursePeriod->ends_at->format('l j F Y')}</small><br>
+                        <small><b>Creación:</b> {$coursePeriod->created_at->format('l j F Y')}</small><br>
+                        <small><b>Actualización:</b> {$coursePeriod->updated_at->format('l j F Y')}</small>";
             })
             ->addColumn('action', function (CoursePeriod $coursePeriod) {
                 return view('tenant.course_period._actions', compact('coursePeriod'));
@@ -46,7 +52,7 @@ class TenantCoursePeriodDataTable extends DataTable
             ->currentPromotion()
             ->currentPeriod()
             ->coursePeriods()
-            ->with('teacher', 'course', 'classroom')
+            ->with('teacher', 'course', 'classroom', 'resources')
             ->get();
     }
 
@@ -75,9 +81,10 @@ class TenantCoursePeriodDataTable extends DataTable
             'id' => ['title' => 'Identificador', 'visible' => false, 'exportable' => false, 'printable' => false,],
             'course.name' => ['title' => 'Curso'],
             'classroom.name' => ['title' => 'Aula'],
+            'resources' => ['title' => 'Recursos'],
             'teacher.full_name' => ['title' => 'Profesor asignado'],
             'price'=> ['title' => 'Precio'],
-            'Fechas',
+            'Fechas' => ['width' => '200px'],
         ];
     }
 

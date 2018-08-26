@@ -7,7 +7,7 @@
         <div class="col-md-8 col-md-offset-2">
 
             @box
-            <form action="{{ route('tenant.courses.store', ['branchOffice' => $branchOffice, 'promotion' => $promotion]) }}" method="POST">
+            <form action="{{ route('tenant.promotions.periods.store', ['branchOffice' => $branchOffice, 'promotion' => $promotion]) }}" method="POST">
 
                 @include('tenant.period._fields')
 

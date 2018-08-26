@@ -46,11 +46,7 @@ class UpdateCoursePeriodTest extends TestCase
     function an_admin_can_update_course_period()
     {
         $this->actingAs($this->admin)
-            ->put(route('tenant.periods.course-period.update', [
-                'branchOffice' => $this->coursePeriod->period->promotion->branchOffice,
-                'period' => $this->coursePeriod->period,
-                'coursePeriod' => $this->coursePeriod
-            ]), $this->withData([
+            ->put($this->coursePeriod->url->update, $this->withData([
                 'teacher_id' => $this->teacher->id,
                 'classroom_id' => $this->classroom->id,
                 'course_id' => $this->course->id,
@@ -74,11 +70,7 @@ class UpdateCoursePeriodTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $this->put(route('tenant.periods.course-period.update', [
-            'branchOffice' => $this->coursePeriod->period->promotion->branchOffice,
-            'period' => $this->coursePeriod->period,
-            'coursePeriod' => $this->coursePeriod
-        ]), [])
+        $this->put($this->coursePeriod->url->update, [])
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
     }
@@ -89,11 +81,7 @@ class UpdateCoursePeriodTest extends TestCase
         $this->withExceptionHandling();
 
         $this->actingAs($this->user)
-            ->put(route('tenant.periods.course-period.update', [
-                'branchOffice' => $this->coursePeriod->period->promotion->branchOffice,
-                'period' => $this->coursePeriod->period,
-                'coursePeriod' => $this->coursePeriod
-            ]), $this->withData([
+            ->put($this->coursePeriod->url->update, $this->withData([
                 'period_id' => $this->period->promotion->id,
                 'teacher_id' => $this->teacher->id,
                 'classroom_id' => $this->classroom->id,
@@ -110,11 +98,7 @@ class UpdateCoursePeriodTest extends TestCase
         $this->handleValidationExceptions();
 
         $this->actingAs($this->admin)
-            ->put(route('tenant.periods.course-period.update', [
-                'branchOffice' => $this->coursePeriod->period->promotion->branchOffice,
-                'period' => $this->coursePeriod->period,
-                'coursePeriod' => $this->coursePeriod
-            ]), [])
+            ->put($this->coursePeriod->url->update, [])
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasErrors([
                 'price',
@@ -138,11 +122,7 @@ class UpdateCoursePeriodTest extends TestCase
         ]);
 
         $this->actingAs($this->admin)
-            ->put(route('tenant.periods.course-period.update', [
-                'branchOffice' => $coursePeriod->period->promotion->branchOffice,
-                'period' => $coursePeriod->period,
-                'coursePeriod' => $coursePeriod
-            ]), $this->withData([
+            ->put($coursePeriod->url->update, $this->withData([
                 'period_id' => $period->promotion->id,
                 'teacher_id' => $this->teacher->id,
                 'classroom_id' => $this->classroom->id,
@@ -168,11 +148,7 @@ class UpdateCoursePeriodTest extends TestCase
         ]);
 
         $this->actingAs($this->admin)
-            ->put(route('tenant.periods.course-period.update', [
-                'branchOffice' => $coursePeriod->period->promotion->branchOffice,
-                'period' => $coursePeriod->period,
-                'coursePeriod' => $coursePeriod
-            ]), $this->withData([
+            ->put($coursePeriod->url->update, $this->withData([
                 'period_id' => $period->id,
                 'teacher_id' => $this->teacher->id,
                 'classroom_id' => $this->classroom->id,
@@ -198,11 +174,7 @@ class UpdateCoursePeriodTest extends TestCase
         ]);
 
         $this->actingAs($this->admin)
-            ->put(route('tenant.periods.course-period.update', [
-                'branchOffice' => $coursePeriod->period->promotion->branchOffice,
-                'period' => $coursePeriod->period,
-                'coursePeriod' => $coursePeriod
-            ]), $this->withData([
+            ->put($coursePeriod->url->update, $this->withData([
                 'period_id' => $period->id,
                 'teacher_id' => $this->teacher->id,
                 'classroom_id' => $this->classroom->id,

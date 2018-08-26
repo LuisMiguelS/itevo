@@ -34,10 +34,11 @@ class StoreRoleRequest extends FormRequest
     public function createRole()
     {
         $role = Role::create($this->validated());
+        
         if (isset($this->validated()['abilities'])) {
             $role->allow($this->validated()['abilities']);
         }
-        Bouncer::refresh();
+      
         return "Rol {$role->title} creado con éxito";
     }
 }

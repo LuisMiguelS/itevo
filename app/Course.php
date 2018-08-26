@@ -15,9 +15,7 @@ class Course extends Model
 		'name', 'branch_office_id', 'type_course_id'
 	];
 
-    protected $hidden = [
-        'url'
-    ];
+    protected $hidden = ['url'];
 
     protected $appends = ['url'];
 

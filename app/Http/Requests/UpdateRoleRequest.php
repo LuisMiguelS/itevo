@@ -43,7 +43,6 @@ class UpdateRoleRequest extends FormRequest
             $role->allow($this->validated()['abilities']);
         }
 
-        Bouncer::refresh();
 
         return "Rol {$role->title} actualizado con éxito.";
     }

@@ -1,30 +1,30 @@
 @csrf
 
-@if($period->status === \App\Period::STATUS_WITHOUT_STARTING)
-    <div class="form-group {{ $errors->has('period_no') ? 'has-error' : '' }}">
-        <label>Periodo <span class="text-danger">*</span></label>
-        <select class="form-control" name="period_no">
-            <option value="{{ App\Period::PERIOD_NO_1 }}"
-                    {{ $period->period_no ===  old('period_no', App\Period::PERIOD_NO_1) ? 'selected' : '' }}>
-                {{ strtoupper(App\Period::PERIOD_NO_1) }}
-            </option>
-            <option value="{{ App\Period::PERIOD_NO_2 }}"
-                    {{ $period->period_no ===  old('period_no', App\Period::PERIOD_NO_2) ? 'selected' : '' }}>
-                {{ strtoupper(App\Period::PERIOD_NO_2) }}
-            </option>
-            <option value="{{ App\Period::PERIOD_NO_3 }}"
-                    {{ $period->period_no ===  old('period_no', App\Period::PERIOD_NO_3) ? 'selected' : '' }}>
-                {{ strtoupper(App\Period::PERIOD_NO_3) }}
-            </option>
-        </select>
 
-        @if ($errors->has('period_no'))
-            <span class="help-block">
-            <strong>{{ $errors->first('period_no') }}</strong>
-        </span>
-        @endif
-    </div>
-@endif
+<div class="form-group {{ $errors->has('period_no') ? 'has-error' : '' }}">
+    <label>Periodo <span class="text-danger">*</span></label>
+    <select class="form-control" name="period_no">
+        <option value="{{ App\Period::PERIOD_NO_1 }}"
+                {{ $period->period_no ===  old('period_no', App\Period::PERIOD_NO_1) ? 'selected' : '' }}>
+            {{ strtoupper(App\Period::PERIOD_NO_1) }}
+        </option>
+        <option value="{{ App\Period::PERIOD_NO_2 }}"
+                {{ $period->period_no ===  old('period_no', App\Period::PERIOD_NO_2) ? 'selected' : '' }}>
+            {{ strtoupper(App\Period::PERIOD_NO_2) }}
+        </option>
+        <option value="{{ App\Period::PERIOD_NO_3 }}"
+                {{ $period->period_no ===  old('period_no', App\Period::PERIOD_NO_3) ? 'selected' : '' }}>
+            {{ strtoupper(App\Period::PERIOD_NO_3) }}
+        </option>
+    </select>
+
+    @if ($errors->has('period_no'))
+        <span class="help-block">
+        <strong>{{ $errors->first('period_no') }}</strong>
+    </span>
+    @endif
+</div>
+
 
 <div class="form-group {{ $errors->has('status') ? 'has-error' : '' }}">
     <label>Estado <span class="text-danger">*</span></label>

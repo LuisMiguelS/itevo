@@ -43,6 +43,7 @@ class BouncerSeeder extends Seeder
         $this->roleAbilities();
         $this->studentAbilities();
         $this->periodAbilities();
+        $this->coursePeriodAbilities();
         $this->scheduleAbilities();
     }
 
@@ -503,7 +504,7 @@ class BouncerSeeder extends Seeder
     | Todas la habilidades para la gestion del crud de asignacion de cursos
     */
 
-    protected function coursePromotionAbilities(): void
+    protected function coursePeriodAbilities(): void
     {
         Bouncer::ability()->createForModel(CoursePeriod::class, [
             'name' => 'tenant-view',
@@ -523,6 +524,11 @@ class BouncerSeeder extends Seeder
         Bouncer::ability()->createForModel(CoursePeriod::class, [
             'name' => 'tenant-update',
             'title' => 'Actualizar curso asignado a la promocion'
+        ]);
+
+        Bouncer::ability()->createForModel(CoursePeriod::class, [
+            'name' => 'tenant-addResource',
+            'title' => 'Vincular recurso con curso activo'
         ]);
     }
 

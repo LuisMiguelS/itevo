@@ -7,6 +7,7 @@ use App\Promotion;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Symfony\Component\HttpFoundation\Response;
 
 class UpdatePeriodRequest extends FormRequest
 {
@@ -59,65 +60,55 @@ class UpdatePeriodRequest extends FormRequest
 
     public function updatePeriod(Period $period)
     {
-        $period->update($this->getFields($period->promotion));
+        $period->update($this->getFields());
         return "Periodo {$period->period} actualizado correctamente.";
     }
 
-    protected function getFields(Promotion $promotion)
+    protected function getFields()
     {
-        $previous_period = $promotion->periods()
-            ->where('id', '<>', $this->period->id)
-            ->orderByDesc('id')->first();
+       $this->extraValidation();
 
-        $this->isLastPeriodEndsAtGreater($previous_period);
+        return [
+            'period_no' => $this->period_no,
+            'start_at' => $this->period->status === Period::STATUS_CURRENT ? $this->period->start_at : new Carbon($this->start_at),
+            'ends_at' => $this->period->status === Period::STATUS_CURRENT ? $this->period->ends_at : new Carbon($this->ends_at),
+            'status' => $this->period->status === Period::STATUS_CURRENT && $this->validated()['status'] === Period::STATUS_WITHOUT_STARTING ? $this->period->status : $this->status,
+        ];
+    }
+
+    protected function extraValidation()
+    {
+        $this->isLastPeriodEndsAtGreater();
 
         $this->isStartDateAtGraterThanOrEqualToEndsAt();
-
-        $data = $this->cannotChangeDateIfStatusIfCurrent();
-        if ($this->period->status === Period::STATUS_CURRENT
-            && $this->validated()['status'] === Period::STATUS_WITHOUT_STARTING) {
-
-            $data['status'] = $this->period->status;
-        }
-        return $data;
     }
 
-    /**
-     * @param $previous_period
-     */
-    protected function isLastPeriodEndsAtGreater($previous_period): void
+    protected function isLastPeriodEndsAtGreater()
     {
-        if ($previous_period) {
-            $previous_period_ends_at = new Carbon($previous_period->start_at);
-            $period_start_at = new Carbon($this->validated()['start_at']);
+        if ($previous_period = $this->getPreviosPeriod()) {
+            $previous_ends_at = new Carbon($previous_period->ends_at);
+            $new_start_at = new Carbon($this->start_at);
 
-            if ($previous_period_ends_at->greaterThan($period_start_at)) {
-                abort(400, 'Debes elegir una fecha de inicio mayor que la fecha de finalizacion del periodo anterior');
-            }
+            abort_if($previous_ends_at->greaterThan($new_start_at),
+                Response::HTTP_BAD_REQUEST,
+                "Tu fecha de inicio elegida [{$new_start_at->toDateTimeString()}] debe ser mayor que [{$previous_ends_at->toDateTimeString()}] la fecha de finalizacion del periodo anterior");
         }
     }
 
-    protected function isStartDateAtGraterThanOrEqualToEndsAt(): void
+    protected function getPreviosPeriod()
     {
-        $start_at = new Carbon($this->validated()['start_at']);
-        $ends_at = new Carbon($this->validated()['ends_at']);
-        if ($start_at->greaterThanOrEqualTo($ends_at)) {
-            abort(400, 'La fecha de inicio no puede ser mayor que la de finalizacion');
-        }
+        return $this->promotion->periods()
+            ->where('id', '<>', $this->period->id)
+            ->orderByDesc('id')->first();
     }
 
-    protected function cannotChangeDateIfStatusIfCurrent()
+    protected function isStartDateAtGraterThanOrEqualToEndsAt()
     {
-        $data = $this->validated();
+        $start_at = new Carbon($this->start_at);
+        $ends_at = new Carbon($this->ends_at);
 
-        if ($this->period->status == Period::STATUS_CURRENT) {
-            $data['start_at'] = $this->period->start_at;
-            $data['ends_at'] = $this->period->ends_at;
-        }else{
-            $data['start_at'] = new Carbon($this->validated()['start_at']);
-            $data['ends_at'] = new Carbon($this->validated()['ends_at']);
-        }
-
-        return $data;
+        abort_if($start_at->greaterThanOrEqualTo($ends_at),
+            Response::HTTP_BAD_REQUEST,
+            "La fecha de inicio no puede ser mayor que la de finalizacion");
     }
 }

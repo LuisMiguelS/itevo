@@ -95,6 +95,14 @@ Route::prefix('{branchOffice}')->middleware('tenantAccess')->name('tenant.')->gr
     Route::resource('promotions', 'Tenant\PromotionController')->except('destroy');
 
     Route::resource('promotions.periods', 'Tenant\PeriodController')->except('show', 'destroy');
+
+    /*
+     * Course-Period
+     */
+    Route::get('periods/{period}/course-period/{coursePeriod}/resources', 'Tenant\CoursePeriodController@resource')
+        ->name('periods.course-period.resources.index');
+    Route::post('periods/{period}/course-period/{coursePeriod}/resources', 'Tenant\CoursePeriodController@addResource')
+        ->name('periods.course-period.resources');
     Route::resource('periods.course-period', 'Tenant\CoursePeriodController')->parameters([
         'course-period' => 'coursePeriod'
     ]);

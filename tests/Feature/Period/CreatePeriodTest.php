@@ -15,8 +15,8 @@ class CreatePeriodTest extends TestCase
     protected $defaultData = [
         'period_no' => Period::PERIOD_NO_1,
         'status' => Period::STATUS_WITHOUT_STARTING,
-        'start_at' => '3/7/2018',
-        'ends_at' => '3/8/2018',
+        'start_at' => '2018-07-03 00:00:00',
+        'ends_at' => '2018-08-03 00:00:00',
     ];
 
     private $admin;
@@ -34,7 +34,7 @@ class CreatePeriodTest extends TestCase
     }
 
     /** @test */
-    function admins_can_create_period()
+    function admin_can_create_period()
     {
         $this->actingAs($this->admin)
             ->post(route('tenant.promotions.periods.store', [
@@ -44,14 +44,11 @@ class CreatePeriodTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Periodo creado correctamente."]);
 
-        $this->assertDatabaseHas('periods', $this->withData([
-            'start_at' => (new Carbon($this->defaultData['start_at']))->toDateTimeString(),
-            'ends_at' => (new Carbon($this->defaultData['ends_at']))->toDateTimeString(),
-        ]));
+        $this->assertDatabaseHas('periods', $this->withData());
     }
 
     /** @test */
-    function admins_cannot_create_period_if_use_a_promotion_that_is_not_in_the_actual_branch_office()
+    function admin_cannot_create_period_if_use_a_promotion_that_is_not_in_the_actual_branch_office()
     {
         $this->withExceptionHandling();
 
@@ -76,10 +73,7 @@ class CreatePeriodTest extends TestCase
         ]), $this->withData())
             ->assertStatus(Response::HTTP_FOUND);
 
-        $this->assertDatabaseMissing('periods', $this->withData([
-            'start_at' => (new Carbon($this->defaultData['start_at']))->toDateTimeString(),
-            'ends_at' => (new Carbon($this->defaultData['ends_at']))->toDateTimeString(),
-        ]));
+        $this->assertDatabaseMissing('periods', $this->withData());
     }
 
     /** @test */
@@ -132,4 +126,26 @@ class CreatePeriodTest extends TestCase
         $this->assertDatabaseEmpty('periods');
     }
 
+    /** @test */
+    function cannot_create_period_if_previos_ends_at_if_lessThan_start_at_new_period()
+    {
+        $this->withExceptionHandling();
+
+        factory(Period::class)->create([
+           'promotion_id' => $this->promotion->id,
+           'period_no' => Period::PERIOD_NO_1,
+           'status' => Period::STATUS_CURRENT,
+           'start_at' => '2018-07-03 00:00:00',
+           'ends_at' => '2018-08-03 00:00:00',
+        ]);
+
+        $this->actingAs($this->admin)
+            ->post(route('tenant.promotions.periods.store', [
+                'branchOffice' => $this->promotion->branchOffice,
+                'promotion' => $this->promotion
+            ]), $this->withData([
+                'period_no' => Period::PERIOD_NO_2,
+            ]))
+            ->assertStatus(Response::HTTP_BAD_REQUEST);
+    }
 }

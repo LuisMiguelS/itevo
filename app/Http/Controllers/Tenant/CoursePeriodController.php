@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
-use App\{BranchOffice, CoursePeriod, DataTables\TenantCoursePeriodDataTable, Period};
 use App\Http\Requests\Tenant\{StoreCoursePeriodRequest, UpdateCoursePeriodRequest};
-use Beta\B;
+use App\{BranchOffice, CoursePeriod, DataTables\TenantCoursePeriodDataTable, Period};
 
 class CoursePeriodController extends Controller
 {
@@ -26,7 +25,9 @@ class CoursePeriodController extends Controller
     public function index(TenantCoursePeriodDataTable $dataTable, BranchOffice $branchOffice, Period $period)
     {
         $this->authorize('tenant-view', CoursePeriod::class);
+
         $title = "Todos los cursos activos del periodo {$period->period_no} de la promocion {$period->promotion->promotion_no}";
+
         return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
     }
 
@@ -41,10 +42,15 @@ class CoursePeriodController extends Controller
     public function create(BranchOffice $branchOffice, Period $period)
     {
         $this->authorize('tenant-create', CoursePeriod::class);
+
         $courses = $this->getCourseArray($branchOffice);
+
         $classrooms = $this->getClassroomArray($branchOffice);
+
         $teachers = $this->getTeacherArray($branchOffice);
+
         $coursePeriod = new CoursePeriod;
+
         return view('tenant.course_period.create', compact('branchOffice', 'period', 'courses', 'classrooms', 'teachers', 'coursePeriod'));
     }
 
@@ -60,6 +66,7 @@ class CoursePeriodController extends Controller
     public function store(StoreCoursePeriodRequest $request, BranchOffice $branchOffice, Period $period)
     {
         $this->authorize('tenant-create', CoursePeriod::class);
+
         return redirect()
             ->route('tenant.periods.course-period.index', [
                 'branchOffice' => $branchOffice,
@@ -91,10 +98,15 @@ class CoursePeriodController extends Controller
     public function edit(BranchOffice $branchOffice, Period $period, CoursePeriod $coursePeriod)
     {
         $this->authorize('tenant-update', $coursePeriod);
+
         $courses = $this->getCourseArray($branchOffice);
+
         $classrooms = $this->getClassroomArray($branchOffice);
+
         $teachers = $this->getTeacherArray($branchOffice);
+
         $coursePeriod->load('course', 'teacher', 'classroom');
+
         return view('tenant.course_period.edit', compact('branchOffice', 'period', 'courses', 'classrooms', 'teachers', 'coursePeriod'));
     }
 
@@ -111,6 +123,7 @@ class CoursePeriodController extends Controller
     public function update(UpdateCoursePeriodRequest $request, BranchOffice $branchOffice, Period $period, CoursePeriod $coursePeriod)
     {
         $this->authorize('tenant-update', $coursePeriod);
+
         return redirect()->route('tenant.periods.course-period.index', [
             'branchOffice' => $branchOffice,
             'period' => $period
@@ -128,6 +141,50 @@ class CoursePeriodController extends Controller
         //
     }
 
+    /**
+     * @param \App\BranchOffice $branchOffice
+     * @param \App\Period $period
+     * @param \App\CoursePeriod $coursePeriod
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function resource(BranchOffice $branchOffice, Period $period, CoursePeriod $coursePeriod)
+    {
+        $this->authorize('tenant-addResource', $coursePeriod);
+
+        return view('tenant.course_period.add_resource', compact('branchOffice','period', 'coursePeriod'));
+    }
+
+    /**
+     * @param \App\BranchOffice $branchOffice
+     * @param \App\Period $period
+     * @param \App\CoursePeriod $coursePeriod
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function addResource(BranchOffice $branchOffice, Period $period, CoursePeriod $coursePeriod)
+    {
+        $this->authorize('tenant-addResource', $coursePeriod);
+
+        if (request('resources') === null){
+            $coursePeriod->resources()->detach();
+
+            return back();
+        }
+
+        $coursePeriod->addResources(request('resources'));
+
+        return redirect()->route('tenant.periods.course-period.resources.index', [
+            'branchOffice' => $branchOffice,
+            'period' => $period,
+            'coursePeriod' => $coursePeriod
+        ])->with(['flash_success' => 'Recursos actualizados con éxito para el curso del periodo actual']);
+    }
+
+    /**
+     * @param \App\BranchOffice $branchOffice
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
+     */
     protected function getCourseArray(BranchOffice $branchOffice)
     {
         return $branchOffice->courses()->get()->map(function ($values) {
@@ -138,6 +195,10 @@ class CoursePeriodController extends Controller
         });
     }
 
+    /**
+     * @param \App\BranchOffice $branchOffice
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
+     */
     protected function getClassroomArray(BranchOffice $branchOffice)
     {
         return $branchOffice->classrooms()->get()->map(function ($values) {
@@ -148,6 +209,10 @@ class CoursePeriodController extends Controller
         });
     }
 
+    /**
+     * @param \App\BranchOffice $branchOffice
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
+     */
     protected function getTeacherArray(BranchOffice $branchOffice)
     {
         return $branchOffice->teachers()->get()->map(function ($values) {

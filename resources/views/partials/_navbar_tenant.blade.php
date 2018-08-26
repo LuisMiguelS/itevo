@@ -22,22 +22,23 @@
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         {{--<img src="" class="user-image" alt="User Image">--}}
-                        <span> {{ auth()->user()->name }} <i class="fa fa-user"></i></span>
+                        <span> {{ auth()->user()->name }}
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
-                        <li class="user-header">
-                           {{-- <img src="" class="img-circle" alt="User Image">--}}
-
+                        <li class="user-header"> 
+                        <img src="{{ asset('img/logo-itevo.png') }}">
+                            {{--
                             <p>
                                 {{ auth()->user()->name }}
                                 <small>Miembro desde  {{ auth()->user()->created_at->format('d/m/Y') }}</small>
                             </p>
+                            --}}
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                                {{-- <a href="#" class="btn btn-default btn-flat">Perfil</a> --}}
                             </div>
                             <div class="pull-right">
                                 <a class="btn btn-default btn-fla" href="{{ route('logout') }}"
