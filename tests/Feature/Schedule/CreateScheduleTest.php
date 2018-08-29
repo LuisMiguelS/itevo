@@ -12,7 +12,7 @@ class CreateScheduleTest extends TestCase
     use RefreshDatabase;
 
     protected $defaultData = [
-        'weekday' => Schedule::MONDAY,
+        'weekday' => 'lunes',
         'start_at' => '2018-08-23 07:52:11',
         'ends_at' => '2018-08-23 08:52:11',
     ];

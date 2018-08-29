@@ -126,4 +126,23 @@ class UrlPresenter
             'id' => $this->coursePeriod->id
         ]);
     }
+
+    public function schedule()
+    {
+        return route('tenant.periods.course-period.schedules.index', [
+            'branchOffice' => $this->branchOffice,
+            'period' => $this->period,
+            'id' => $this->coursePeriod->id
+        ]);
+    }
+
+    public function addSchedule()
+    {
+        return route('tenant.periods.course-period.schedules', [
+            'branchOffice' => $this->branchOffice,
+            'period' => $this->period,
+            'id' => $this->coursePeriod->id
+        ]);
+    }
+
 }

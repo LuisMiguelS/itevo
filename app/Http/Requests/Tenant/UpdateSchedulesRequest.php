@@ -36,7 +36,7 @@ class UpdateSchedulesRequest extends FormRequest
         return [
             'weekday' => [
                 'required',
-                Rule::in([Schedule::MONDAY, Schedule::TUESDAY, Schedule::WEDNESDAY, Schedule::THURSDAY, Schedule::FRIDAY, Schedule::SATURDAY, Schedule::SUNDAY]),
+                Rule::in(Schedule::WEEKDAY),
             ],
             'start_at' => [
                 'required',

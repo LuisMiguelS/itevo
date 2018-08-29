@@ -181,6 +181,32 @@ class CoursePeriodController extends Controller
         ])->with(['flash_success' => 'Recursos actualizados con éxito para el curso del periodo actual']);
     }
 
+    public function schedule(BranchOffice $branchOffice, Period $period, CoursePeriod $coursePeriod)
+    {
+        $this->authorize('tenant-addSchedule', $coursePeriod);
+
+        return view('tenant.course_period.add_schedule', compact('branchOffice','period', 'coursePeriod'));
+    }
+
+    public function addSchedule(BranchOffice $branchOffice, Period $period, CoursePeriod $coursePeriod)
+    {
+        $this->authorize('tenant-addSchedule', $coursePeriod);
+
+        if (request('schedules') === null){
+            $coursePeriod->schedules()->detach();
+
+            return back();
+        }
+
+        $coursePeriod->addSchedules(request('schedules'));
+
+        return redirect()->route('tenant.periods.course-period.resources.index', [
+            'branchOffice' => $branchOffice,
+            'period' => $period,
+            'coursePeriod' => $coursePeriod
+        ])->with(['flash_success' => 'Recursos actualizados con éxito para el curso del periodo actual']);
+    }
+
     /**
      * @param \App\BranchOffice $branchOffice
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection

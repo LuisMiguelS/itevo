@@ -17,14 +17,15 @@ class Schedule extends Model
 
     protected $appends = ['url'];
 
-    const MONDAY = 'lunes';
-    const TUESDAY = 'martes';
-    const WEDNESDAY = 'miercoles';
-    const THURSDAY = 'jueves';
-    const FRIDAY = 'viernes';
-    const SATURDAY = 'sabado';
-    const SUNDAY = 'domingo';
-
+    const WEEKDAY = [
+      'monday' => 'lunes',
+      'tuesday' => 'martes',
+      'wednesday' => 'miercoles',
+      'thursday' => 'jueves',
+      'friday' => 'viernes',
+      'saturday' => 'sabado',
+      'SUNDAY' => 'domingo',
+    ];
 
     /**
      * @return \App\Presenters\Schedule\UrlPresenter

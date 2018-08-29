@@ -5,6 +5,7 @@ namespace App;
 use App\Traits\DatesTranslator;
 use Illuminate\Database\Eloquent\Model;
 use App\Presenters\CoursePeriod\UrlPresenter;
+use Illuminate\Support\Collection;
 
 class CoursePeriod extends Model
 {
@@ -108,10 +109,47 @@ class CoursePeriod extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function schedules()
     {
-        return $this->hasMany(Schedule::class);
+        return $this->belongsToMany(Schedule::class);
+    }
+
+    public function addSchedules($request)
+    {
+        $this->schedules()->detach();
+
+        foreach ($request as $schedule_id) {
+            $schedule = Schedule::find($schedule_id);
+
+            if ($schedule) {
+                $course = $this->haveSameWeekday($schedule);
+
+                if ($course->isNotEmpty() && $course->first()->isNotEmpty()) {
+                    foreach ($course->first() as $course_schedule) {
+                        if (! ($course_schedule->start_at->toTimeString() >= $schedule->start_at->toTimeString() && $course_schedule->ends_at->toTimeString() <= $schedule->ends_at->toTimeString())) {
+                            $this->schedules()->syncWithoutDetaching($schedule->id);
+                        }
+                    }
+                }else {
+                    $this->schedules()->syncWithoutDetaching($schedule->id);
+                }
+            }
+        }
+
+
+    }
+
+    public function haveSameWeekday($schedule)
+    {
+        return $this->getCurrentCourses()->map(function ($object) use ($schedule){
+            return $object->schedules()->where('weekday', $schedule->weekday)->get();
+        });
+    }
+
+    public function getCurrentCourses()
+    {
+        return  collect($this->period->coursePeriods()->where('id', '<>', $this->id)->get());
     }
 }

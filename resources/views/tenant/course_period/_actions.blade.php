@@ -9,5 +9,6 @@
         @endcan
         <li role="separator" class="divider"></li>
         <li><a href="{{ $coursePeriod->url->resource }}"> Agregar recursos</a></li>
+        <li><a href="{{ $coursePeriod->url->schedule }}"> Agregar horarios</a></li>
     </ul>
 </div>

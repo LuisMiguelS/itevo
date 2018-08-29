@@ -116,3 +116,13 @@ $factory->define(App\CoursePeriod::class, function (Faker $faker) {
         'ends_at' =>\Carbon\Carbon::now()->addMonth(2),
     ];
 });
+
+$factory->define(App\Schedule::class, function (Faker $faker) {
+
+    return [
+        'branch_office_id' => factory(App\BranchOffice::class),
+        'weekday' => $faker->randomElement(\App\Schedule::WEEKDAY),
+        'start_at' => \Carbon\Carbon::now()->addDay($faker->numberBetween(1, 7)),
+        'ends_at' =>\Carbon\Carbon::now()->addMonth($faker->numberBetween(1, 7)),
+    ];
+});

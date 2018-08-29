@@ -103,6 +103,11 @@ Route::prefix('{branchOffice}')->middleware('tenantAccess')->name('tenant.')->gr
         ->name('periods.course-period.resources.index');
     Route::post('periods/{period}/course-period/{coursePeriod}/resources', 'Tenant\CoursePeriodController@addResource')
         ->name('periods.course-period.resources');
+
+    Route::get('periods/{period}/course-period/{coursePeriod}/schedules', 'Tenant\CoursePeriodController@schedule')
+        ->name('periods.course-period.schedules.index');
+    Route::post('periods/{period}/course-period/{coursePeriod}/schedules', 'Tenant\CoursePeriodController@addSchedule')
+        ->name('periods.course-period.schedules');
     Route::resource('periods.course-period', 'Tenant\CoursePeriodController')->parameters([
         'course-period' => 'coursePeriod'
     ]);

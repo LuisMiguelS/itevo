@@ -17,7 +17,7 @@ class CreateSchedulesTable extends Migration
         Schema::create('schedules', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('branch_office_id');
-            $table->enum('weekday', [Schedule::MONDAY, Schedule::TUESDAY, Schedule::WEDNESDAY, Schedule::THURSDAY, Schedule::FRIDAY, Schedule::SATURDAY, Schedule::SUNDAY]);
+            $table->enum('weekday', Schedule::WEEKDAY);
             $table->unique(['branch_office_id', 'weekday', 'start_at', 'ends_at']);
             $table->timestamp('start_at')->nullable();
             $table->timestamp('ends_at')->nullable();
