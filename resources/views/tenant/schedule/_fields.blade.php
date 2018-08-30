@@ -7,7 +7,7 @@
     <select class="form-control" name="weekday">
         @foreach(App\Schedule::WEEKDAY as $weekday)
             <option value="{{ $weekday }}"
-                    {{ $schedule->weekday ===  old('weekday',$weekday) ? 'selected' : '' }}>
+                    {{ $weekday ===  old('weekday', $schedule->weekday) ? 'selected' : '' }}>
                 {{ strtoupper($weekday) }}
             </option>
         @endforeach

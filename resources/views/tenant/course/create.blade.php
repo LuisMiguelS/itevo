@@ -11,18 +11,20 @@
         <div class="col-md-8 col-md-offset-2">
 
             @box
-            <form action="{{ route('tenant.courses.store', $branchOffice) }}" method="POST">
+                @slot('title', 'Crear curso')
 
-                @include('tenant.course._fields')
+                <form action="{{ route('tenant.courses.store', $branchOffice) }}" method="POST">
 
-                <div class="form-group row mb-0">
-                    <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary btn-block">
-                            Guardar
-                        </button>
+                    @include('tenant.course._fields')
+
+                    <div class="form-group row mb-0">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary btn-block">
+                                Guardar
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
             @endbox
 
         </div>

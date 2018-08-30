@@ -4,4 +4,10 @@
             <i class="fa fa-circle-o text-red"></i> <span>Cursos activos</span>
         </a>
     </li>
+
+    <li>
+        <a href="{{ route('tenant.inscription.index', ['branchOffice' => $branchOffice]) }}">
+            <i class="fa fa-circle-o text-yellow"></i> <span>Inscripción</span>
+        </a>
+    </li>
 @endif

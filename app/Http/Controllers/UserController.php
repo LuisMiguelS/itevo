@@ -26,15 +26,17 @@ class UserController extends Controller
     public function index()
     {
         $this->authorize('view', User::class);
-        $users = User::where('id','<>', auth()->id())
-            ->unless(auth()->user()->isAdmin(), function ($user_query){
-                $user_query->whereHas('roles', function ($role_query) {
-                   $role_query->where([
-                       ['name', '<>', User::ROLE_ADMIN],
-                       ['name', '<>', User::ROLE_TENANT_ADMIN]
-                   ]);
+
+        $users = User::unless(auth()->user()->isSuperAdmin(), function ($query) {
+            $query->unless(auth()->user()->isAdmin(), function ($query_not_admin) {
+                $query_not_admin->whereHas('branchOffices', function ($branchOffice_query) {
+                    $branchOffice_query->whereHas('users', function ($q) {
+                        $q->where('user_id', auth()->id());
+                    });
                 });
-            })->paginate();
+            });
+        })->paginate();
+
         return view('user.index', compact('users'));
     }
 
@@ -47,7 +49,13 @@ class UserController extends Controller
     public function create()
     {
         $this->authorize('create', User::class);
-        $branchOffices = BranchOffice::select('id','name')->get();
+
+        $branchOffices = BranchOffice::unless(auth()->user()->isAdmin(), function ($query) {
+            $query->whereHas('users', function ($q) {
+                $q->where('user_id', auth()->id());
+            });
+        })->select('id','name')->get();
+
         $roles = Role::unless(auth()->user()->isAdmin(), function ($query) {
             $query->where([
                 ['name', '<>', User::ROLE_ADMIN],

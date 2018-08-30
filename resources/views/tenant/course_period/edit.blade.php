@@ -7,16 +7,19 @@
         <div class="col-md-8 col-md-offset-2">
 
             @box
-            <course_period :courses="{{ json_encode($courses) }}"
-                           :classrooms="{{ json_encode($classrooms)}}"
-                           :teachers="{{ json_encode($teachers)}}"
-                           :course-period="{{ json_encode($coursePeriod) }}"
-                           :form_data="{{ json_encode([
-                           'route' => $coursePeriod->url->update,
-                           'method' => 'put',
-                           'redirect' => route('tenant.periods.course-period.index', ['branchOffice' => $branchOffice, 'period' => $period])
-                           ])}}">
-            </course_period>
+            <form action="{{ $coursePeriod->url->update }}" method="post">
+
+                @include('tenant.course_period._fields')
+
+                <div class="form-group row mb-0">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary btn-block">
+                            Actualizar
+                        </button>
+                    </div>
+                </div>
+
+            </form>
             @endbox
 
         </div>

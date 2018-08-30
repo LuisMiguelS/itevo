@@ -26,7 +26,7 @@ class CoursePeriodController extends Controller
     {
         $this->authorize('tenant-view', CoursePeriod::class);
 
-        $title = "Todos los cursos activos del periodo {$period->period_no} de la promocion {$period->promotion->promotion_no}";
+        $title = "Todos los cursos activos del periodo {$period->period_no} de la promocion no. {$period->promotion->promotion_no}";
 
         return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
     }

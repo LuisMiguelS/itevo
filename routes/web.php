@@ -139,6 +139,10 @@ Route::prefix('{branchOffice}')->middleware('tenantAccess')->name('tenant.')->gr
     Route::delete('schedules/{id}/restore', 'Tenant\ScheduleController@restore')->name('schedules.trash.restore');
     Route::resource('schedules', 'Tenant\ScheduleController')->except('destroy');
 
+    /*
+     * Inscription
+     */
+    Route::get('inscriptiones','Tenant\InscriptionController@index')->name('inscription.index');
 });
 
 

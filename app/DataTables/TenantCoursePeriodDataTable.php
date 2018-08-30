@@ -19,11 +19,12 @@ class TenantCoursePeriodDataTable extends DataTable
             ->editColumn('price', function (CoursePeriod $coursePeriod){
                 return number_format($coursePeriod->price,2,'.',',');
             })
+            ->editColumn('course', function (CoursePeriod $coursePeriod) {
+                return "{$coursePeriod->course->name} ({$coursePeriod->course->typeCourse->name}) <br>
+                        <small><b>Profesor:</b> {$coursePeriod->teacher->full_name}</small>";
+            })
             ->editColumn('classroom.name', function (CoursePeriod $coursePeriod) {
                 return "{$coursePeriod->classroom->name} ({$coursePeriod->classroom->building})";
-            })
-            ->editColumn('resources', function (CoursePeriod $coursePeriod) {
-                return $coursePeriod->resources()->get()->implode('name', ', ');
             })
             ->addColumn('Fechas', function (CoursePeriod $coursePeriod) {
                 return "<small><b>Inicio del curso:</b> {$coursePeriod->start_at->format('l j F Y')}</small><br>
@@ -34,7 +35,7 @@ class TenantCoursePeriodDataTable extends DataTable
             ->addColumn('action', function (CoursePeriod $coursePeriod) {
                 return view('tenant.course_period._actions', compact('coursePeriod'));
             })
-            ->rawColumns(['action', 'Fechas']);
+            ->rawColumns(['action', 'Fechas', 'course']);
     }
 
     /**
@@ -52,7 +53,7 @@ class TenantCoursePeriodDataTable extends DataTable
             ->currentPromotion()
             ->currentPeriod()
             ->coursePeriods()
-            ->with('teacher', 'course', 'classroom', 'resources')
+            ->with('teacher', 'course', 'classroom')
             ->get();
     }
 
@@ -78,11 +79,10 @@ class TenantCoursePeriodDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id' => ['title' => 'Identificador', 'visible' => false, 'exportable' => false, 'printable' => false,],
-            'course.name' => ['title' => 'Curso'],
+            'id' => ['title' => 'Identificador', 'visible' => false, 'exportable' => false, 'printable' => false],
+            'course' => ['title' => 'Curso'],
             'classroom.name' => ['title' => 'Aula'],
-            'resources' => ['title' => 'Recursos'],
-            'teacher.full_name' => ['title' => 'Profesor asignado'],
+            'teacher.full_name' => ['title' => 'Profesor asignado', 'visible' => false, 'exportable' => false, 'printable' => false],
             'price'=> ['title' => 'Precio'],
             'Fechas' => ['width' => '200px'],
         ];

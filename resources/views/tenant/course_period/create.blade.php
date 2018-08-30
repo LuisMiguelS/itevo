@@ -7,16 +7,21 @@
         <div class="col-md-8 col-md-offset-2">
 
             @box
-            <course_period :courses="{{ json_encode($courses) }}"
-                           :classrooms="{{ json_encode($classrooms) }}"
-                           :teachers="{{ json_encode($teachers) }}"
-                           :coursePeriod="{{ json_encode($coursePeriod) }}"
-                           :form_data="{{ json_encode([
-                           'route' => route('tenant.periods.course-period.store', ['branchOffice' => $branchOffice, 'period' => $period]),
-                           'method' => 'post',
-                           'redirect' => route('tenant.periods.course-period.index', ['branchOffice' => $branchOffice, 'period' => $period])
-                           ])}}">
-            </course_period>
+                @slot('title', "Crear un nuevo curso (activo) para el periodo {$period->period_no}")
+
+                <form action="{{ route('tenant.periods.course-period.store', ['branchOffice' => $branchOffice, 'period' => $period]) }}" method="post">
+
+                    @include('tenant.course_period._fields')
+
+                    <div class="form-group row mb-0">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary btn-block">
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
             @endbox
 
         </div>

@@ -46,7 +46,7 @@
         }
 
         .title {
-            font-size: 84px;
+            font-size: 54px;
         }
 
         .links > a {
@@ -71,6 +71,10 @@
         <div class="title m-b-md">
             403<br>
             ACCESO PROHIBIDO
+        </div>
+
+        <div class="links">
+            <a href="javascript:history.back()">Haz click aqui para regresar</a>
         </div>
     </div>
 </div>

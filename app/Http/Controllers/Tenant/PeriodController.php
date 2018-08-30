@@ -31,7 +31,7 @@ class PeriodController extends Controller
     {
         $this->authorize('tenant-view', Period::class);
 
-        $title = "Todos los periodos de la promocion: {$promotion->promotion_no}";
+        $title = "Todos los periodos de la promocion no. {$promotion->promotion_no}";
 
         return $dataTable->render('datatables.tenant', compact('branchOffice', 'title'));
     }

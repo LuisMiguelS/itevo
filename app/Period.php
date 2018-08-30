@@ -15,9 +15,9 @@ class Period extends Model
     const STATUS_CURRENT = 'actual';
     const STATUS_FINISHED = 'terminado';
 
-    const  PERIOD_NO_1 = "Primer periodo";
-    const  PERIOD_NO_2 = "Segundo periodo";
-    const  PERIOD_NO_3 = "Tercer periodo";
+    const  PERIOD_NO_1 = "primer periodo";
+    const  PERIOD_NO_2 = "segundo periodo";
+    const  PERIOD_NO_3 = "tercer periodo";
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

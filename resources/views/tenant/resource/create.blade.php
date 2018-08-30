@@ -11,18 +11,20 @@
         <div class="col-md-8 col-md-offset-2">
 
             @box
-            <form action="{{ route('tenant.resources.store', $branchOffice) }}" method="POST">
+                @slot('title', 'Crear recurso')
 
-                @include('tenant.resource._fields')
+                <form action="{{ route('tenant.resources.store', $branchOffice) }}" method="POST">
 
-                <div class="form-group row mb-0">
-                    <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary btn-block">
-                            Guardar
-                        </button>
+                    @include('tenant.resource._fields')
+
+                    <div class="form-group row mb-0">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary btn-block">
+                                Guardar
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
             @endbox
 
         </div>
