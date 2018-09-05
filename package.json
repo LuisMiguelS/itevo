@@ -21,6 +21,8 @@
     },
     "dependencies": {
         "moment": "^2.22.2",
+        "vue-currency-filter": "^2.2.6",
+        "vue-multiselect": "^2.1.0",
         "vue-numeric": "^2.3.0",
         "vue-select": "^2.4.0"
     }

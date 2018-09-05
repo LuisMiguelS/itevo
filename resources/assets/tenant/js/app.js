@@ -11,9 +11,23 @@ window.Vue = require('vue');
 
 import vSelect from 'vue-select'
 import VueNumeric from 'vue-numeric'
+import Multiselect from 'vue-multiselect'
+import VueCurrencyFilter from 'vue-currency-filter'
 
 Vue.component('v-select', vSelect);
 Vue.use(VueNumeric);
+Vue.component('multiselect', Multiselect);
+
+Vue.use(VueCurrencyFilter, {
+    symbol : '$',
+    thousandsSeparator: ',',
+    fractionCount: 2,
+    fractionSeparator: '.',
+    symbolPosition: 'front',
+    symbolSpacing: true
+});
+
+Vue.component('Inscription', require('./components/Inscription'));
 
 const app = new Vue({
     el: '#app'

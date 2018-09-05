@@ -200,7 +200,7 @@ class CoursePeriodController extends Controller
 
         $coursePeriod->addSchedules(request('schedules'));
 
-        return redirect()->route('tenant.periods.course-period.resources.index', [
+        return redirect()->route('tenant.periods.course-period.schedules.index', [
             'branchOffice' => $branchOffice,
             'period' => $period,
             'coursePeriod' => $coursePeriod

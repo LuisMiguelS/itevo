@@ -143,6 +143,9 @@ Route::prefix('{branchOffice}')->middleware('tenantAccess')->name('tenant.')->gr
      * Inscription
      */
     Route::get('inscriptiones','Tenant\InscriptionController@index')->name('inscription.index');
+    Route::post('inscriptiones','Tenant\InscriptionController@store')->name('inscription.store');
+    Route::get('inscription/students','Tenant\InscriptionController@students')->name('inscription.students');
+    Route::get('inscription/courses','Tenant\InscriptionController@courses')->name('inscription.courses');
 });
 
 

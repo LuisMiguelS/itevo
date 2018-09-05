@@ -17,8 +17,7 @@ class CreateCoursePeriodStudentTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('course_period_id');
             $table->unsignedInteger('student_id');
-            $table->string('student_code');
-            $table->string('status', 10);
+            $table->unique(['course_period_id', 'student_id']);
             $table->timestamps();
 
             $table->foreign('course_period_id')->references('id')->on('course_period');

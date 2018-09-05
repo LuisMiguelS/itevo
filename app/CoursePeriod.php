@@ -44,11 +44,11 @@ class CoursePeriod extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function students()
     {
-        return $this->hasMany(Student::class);
+        return $this->belongsToMany(Student::class);
     }
 
     /**
@@ -151,5 +151,12 @@ class CoursePeriod extends Model
     public function getCurrentCourses()
     {
         return  collect($this->period->coursePeriods()->where('id', '<>', $this->id)->get());
+    }
+
+    public function totalCourse()
+    {
+        return  $this->resources->sum(function ($resources){
+                return $resources->price;
+            }) + $this->price;
     }
 }

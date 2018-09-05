@@ -17,6 +17,7 @@ class CreateResourcesTable extends Migration
             $table->increments('id');
             $table->string('name', 50);
             $table->unsignedInteger('price');
+            $table->tinyInteger('necessary')->default(\App\Resource::UNNECESSARY);
             $table->unsignedInteger('branch_office_id');
             $table->unique(['name', 'branch_office_id']);
             $table->timestamps();

@@ -13,9 +13,10 @@ class Resource extends Model
 
 	protected $guarded = [];
 
-    protected $hidden = [
-        'url'
-    ];
+    protected $hidden = ['url'];
+
+    const NECESSARY = true;
+    const UNNECESSARY = false;
 
     protected $appends = ['url'];
 

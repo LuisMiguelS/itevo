@@ -23,6 +23,7 @@ class CreateStudentsTable extends Migration
             $table->string('phone', 14);
             $table->string('address');
             $table->string('tutor_id_card', 13)->nullable();
+            $table->string('notes')->nullable();
             $table->unique(['branch_office_id', 'id_card']);
             $table->timestamp('birthdate');
             $table->timestamp('signed_up')->nullable();
