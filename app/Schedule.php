@@ -24,7 +24,7 @@ class Schedule extends Model
       'thursday' => 'jueves',
       'friday' => 'viernes',
       'saturday' => 'sabado',
-      'SUNDAY' => 'domingo',
+      'sunday' => 'domingo',
     ];
 
     /**

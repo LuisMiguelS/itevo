@@ -53,7 +53,8 @@ class StoreStudentRequest extends FormRequest
                 'max:14',
             ],
             'birthdate' => 'required|date',
-            'address' => 'required|min:15|max:255'
+            'address' => 'required|min:15|max:255',
+            'notes' => 'nullable|min:10'
         ];
     }
 
@@ -67,6 +68,7 @@ class StoreStudentRequest extends FormRequest
             'phone' => 'teléfono',
             'address' => 'direccion',
             'birthdate' => 'fecha de nacimiento',
+            'notes' => 'notas'
         ];
     }
 

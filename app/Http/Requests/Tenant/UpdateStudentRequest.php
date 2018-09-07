@@ -51,7 +51,8 @@ class UpdateStudentRequest extends FormRequest
                 'max:14',
             ],
             'birthdate' => 'required|date',
-            'address' => 'required|min:15|max:255'
+            'address' => 'required|min:15|max:255',
+            'notes' => 'nullable|min:10'
         ];
     }
 
@@ -65,6 +66,7 @@ class UpdateStudentRequest extends FormRequest
             'phone' => 'teléfono',
             'address' => 'direccion',
             'birthdate' => 'fecha de nacimiento',
+            'notes' => 'notas'
         ];
     }
 
@@ -79,8 +81,8 @@ class UpdateStudentRequest extends FormRequest
         $this->additionalValidationFields();
 
         $data = $this->validated();
-        $data['birthdate'] = (new Carbon($this->validated()['birthdate']))->toDateTimeString();
-        $data['tutor_id_card'] = $this->isAdult(new Carbon($this->validated()['birthdate'])) ? null : $this->validated()['tutor_id_card'];
+        $data['birthdate'] = (new Carbon($this->birthdate))->toDateTimeString();
+        $data['tutor_id_card'] = $this->isAdult(new Carbon($this->birthdate)) ? null : $this->tutor_id_card;
 
         return $data;
     }

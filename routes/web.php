@@ -11,6 +11,11 @@
 |
 */
 
+use App\Http\Controllers\{BranchOfficeController,
+    Tenant\ClassRoomController,
+    Tenant\CourseController,
+    Tenant\TypeCourseController};
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -36,25 +41,26 @@ Route::resource('abilities', 'AbilitieController')->only('index');
 Route::resource('roles', 'RoleController');
 
 
-Route::prefix('{branchOffice}')->middleware('tenantAccess')->name('tenant.')->group(function () {
-    Route::get('dashboard', 'BranchOfficeController@dashboard')->name('dashboard');
+Route::prefix('{branchOffice}')->middleware(['auth', 'tenantAccess'])->name('tenant.')->group(function () {
+
+    Route::get('dashboard', [BranchOfficeController::class, 'dashboard'])->name('dashboard');
 
     /*
      * Classrooms
      */
-    Route::get('classrooms/trash', 'Tenant\ClassRoomController@trashed')->name('classrooms.trash');
-    Route::delete('classrooms/{id}', 'Tenant\ClassRoomController@destroy')->name('classrooms.destroy');
-    Route::delete('classrooms/{classroom}/trash', 'Tenant\ClassRoomController@trash')->name('classrooms.trash.destroy');
-    Route::delete('classrooms/{id}/restore', 'Tenant\ClassRoomController@restore')->name('classrooms.trash.restore');
+    Route::get('classrooms/trash', [ClassRoomController::class, 'trashed'])->name('classrooms.trash');
+    Route::delete('classrooms/{id}', [ClassRoomController::class, 'destroy'])->name('classrooms.destroy');
+    Route::delete('classrooms/{classroom}/trash', [ClassRoomController::class, 'trash'])->name('classrooms.trash.destroy');
+    Route::delete('classrooms/{id}/restore', [ClassRoomController::class, 'restore'])->name('classrooms.trash.restore');
     Route::resource('classrooms', 'Tenant\ClassRoomController')->except('destroy');
 
     /*
      * Type Course
      */
-    Route::get('types/courses/trash', 'Tenant\TypeCourseController@trashed')->name('typeCourses.trash');
-    Route::delete('types/courses/{id}', 'Tenant\TypeCourseController@destroy')->name('typeCourses.destroy');
-    Route::delete('types/courses/{typeCourse}/trash', 'Tenant\TypeCourseController@trash')->name('typeCourses.trash.destroy');
-    Route::delete('types/courses/{id}/restore', 'Tenant\TypeCourseController@restore')->name('typeCourses.trash.restore');
+    Route::get('types/courses/trash', [TypeCourseController::class, 'trashed'])->name('typeCourses.trash');
+    Route::delete('types/courses/{id}', [TypeCourseController::class, 'destroy'])->name('typeCourses.destroy');
+    Route::delete('types/courses/{typeCourse}/trash', [TypeCourseController::class, 'trash'])->name('typeCourses.trash.destroy');
+    Route::delete('types/courses/{id}/restore', [TypeCourseController::class, 'restore'])->name('typeCourses.trash.restore');
     Route::resource('types/courses', 'Tenant\TypeCourseController')->names([
         'index' => 'typeCourses.index',
         'show' => 'typeCourses.show',
@@ -69,10 +75,10 @@ Route::prefix('{branchOffice}')->middleware('tenantAccess')->name('tenant.')->gr
     /*
      * Course
      */
-    Route::get('courses/trash', 'Tenant\CourseController@trashed')->name('courses.trash');
-    Route::delete('courses/{id}', 'Tenant\CourseController@destroy')->name('courses.destroy');
-    Route::delete('courses/{course}/trash', 'Tenant\CourseController@trash')->name('courses.trash.destroy');
-    Route::delete('courses/{id}/restore', 'Tenant\CourseController@restore')->name('courses.trash.restore');
+    Route::get('courses/trash', [CourseController::class, 'trashed'])->name('courses.trash');
+    Route::delete('courses/{id}', [CourseController::class, 'destroy'])->name('courses.destroy');
+    Route::delete('courses/{course}/trash', [CourseController::class, 'trash'])->name('courses.trash.destroy');
+    Route::delete('courses/{id}/restore', [CourseController::class, 'restore'])->name('courses.trash.restore');
     Route::resource('courses', 'Tenant\CourseController')->except('destroy');
 
     /*
@@ -146,6 +152,18 @@ Route::prefix('{branchOffice}')->middleware('tenantAccess')->name('tenant.')->gr
     Route::post('inscriptiones','Tenant\InscriptionController@store')->name('inscription.store');
     Route::get('inscription/students','Tenant\InscriptionController@students')->name('inscription.students');
     Route::get('inscription/courses','Tenant\InscriptionController@courses')->name('inscription.courses');
+
+    /*
+     * Invoice
+     */
+    Route::get('invoices', 'Tenant\InvoiceController@index')->name('invoice.index');
+    Route::get('invoices/{invoice}', 'Tenant\InvoiceController@show')->name('invoice.show');
+
+    /*
+     * Accounts Receivable
+     */
+    Route::get('accounts/receivable', 'Tenant\AccountsReceivableController@index')->name('accounts_receivable.index');
+    Route::get('accounts/receivable/students', 'Tenant\AccountsReceivableController@students')->name('accounts_receivable.students');
 });
 
 

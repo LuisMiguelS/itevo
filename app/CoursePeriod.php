@@ -153,10 +153,8 @@ class CoursePeriod extends Model
         return  collect($this->period->coursePeriods()->where('id', '<>', $this->id)->get());
     }
 
-    public function totalCourse()
+    public function invoices()
     {
-        return  $this->resources->sum(function ($resources){
-                return $resources->price;
-            }) + $this->price;
+        return $this->morphToMany(Invoice::class, 'invoicable');
     }
 }

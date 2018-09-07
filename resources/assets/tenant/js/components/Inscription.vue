@@ -27,6 +27,7 @@
                                                  v-model="course"
                                                  :options="courses"
                                                  :custom-label="courseFullName"
+                                                 @input="dispatchActionCourse"
                                                  placeholder="Seleciona un curso">
                                         <span slot="noResult">Oops! No se encontraron resultados. Considere cambiar la consulta de búsqueda.</span>
                                     </multiselect>
@@ -42,13 +43,15 @@
                                   <p> <strong> Cedula:</strong> {{ student.id_card }}</p>
                                   <p> <strong> Cedula del tutor:</strong> {{ student.tutor_id_card }} </p>
                                   <p> <strong> Telefono:</strong> {{ student.phone }} </p>
+                                  <p style="margin-top:20px"> <strong>Notas:</strong> {{ student.notes }}</p>
                               </div>
                             </div>
 
                             <div class="col-md-6">
                               <div v-if="course">
                                   <p> <strong> Curso:</strong> {{ course.course.name }} ({{ course.course.type_course.name }})</p>
-                                  <small> <strong> Fecha de inicio:</strong> {{ course.start_at.date }} <strong> Fecha de finalización:</strong> {{ course.ends_at.date }}</small>
+                                  <p> <strong> Fecha de inicio:</strong> {{ course.start_at.date }} </p>
+                                  <p> <strong> Fecha de finalización:</strong> {{ course.ends_at.date }}</p>
                                   <p> <strong> Profesor:</strong> {{ course.teacher.full_name }}</p>
                                   <p> <strong> Aula:</strong> {{ course.classroom.name }} - {{ course.classroom.building }}</p>
                                   <p> <strong>Horario</strong>
@@ -69,6 +72,7 @@
                                        type="checkbox"
                                        :id="resource.id"
                                        :value="resource"
+                                       :disabled="resource.necessary === 1"
                                        v-model="resources">
                                 <label class="custom-control-label" :for="resource.id">{{ resource.name }} - costo {{ resource.price | currency }}</label>
                             </div>
@@ -145,7 +149,6 @@
                 student: null,
                 courses: [],
                 course: null,
-                data: [],
                 payment: 0,
                 cash_received: 0,
                 resources: [],
@@ -167,18 +170,43 @@
             courseFullName({ course }) {
                 return `${course.name} (${course.type_course.name})`;
             },
+            dispatchActionCourse() {
+              this.resource = [];
+              if (this.course) {
+                  this.course.resources.forEach(resource => {
+                     if (resource.necessary === 1) {
+                         this.resources.push(resource);
+                     }
+                  });
+              }
+            },
             inscription() {
                 axios.post(`/${this.branchOffice.slug}/inscriptiones`, {
-                    'course_period_id': this.course.id,
-                    'resources': this.resources,
                     'student_id': this.student.id,
+                    'course_period': [this.course],
+                    'resources': this.resources,
                     'paid_out': this.payment,
                     'cash_received': this.cash_received,
                 }).then((response => {
-                     window.open('https://www.google.com/', '_blank').focus();
+                    this.clear();
+                     window.open(`/${this.branchOffice.slug}/invoices/${response.data.data.id}`, '_blank').focus();
                 })).catch((error => {
-                    console.log(error);
+                    if (error.response) {
+                        console.log(error.response.data.message);
+                    } else if (error.request) {
+                        console.log(error.request);
+                    } else {
+                        console.log('Error', error.message);
+                    }
+                    console.log(error.config);
                 }));
+            },
+            clear() {
+                this.student = null;
+                this.course = null;
+                this.payment = 0;
+                this.cash_received = 0;
+                this.resources = [];
             }
         },
         computed: {

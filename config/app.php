@@ -151,6 +151,7 @@ return [
          * Package Service Providers...
          */
         Silber\Bouncer\BouncerServiceProvider::class,
+        Barryvdh\Snappy\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -211,6 +212,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Bouncer' => Silber\Bouncer\BouncerFacade::class,
+        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+        'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
 
     ],
 

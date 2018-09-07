@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Tenant;
 
-use App\{BranchOffice, CoursePeriod, Student};
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
-use DB;
+use App\Http\Requests\Tenant\InscriptionRequest;
+use App\{BranchOffice};
 
 class InscriptionController extends Controller
 {
@@ -20,44 +19,9 @@ class InscriptionController extends Controller
             ->with(['branchOffice' => $branchOffice]);
     }
 
-    public function store(BranchOffice $branchOffice)
+    public function store(InscriptionRequest $request, BranchOffice $branchOffice)
     {
-        $course_period = CoursePeriod::findOrFail(request('course_period_id'));
-        $student = Student::findOrFail(request('student_id'));
-
-        abort_unless($course_period->course->branchOffice->id === $branchOffice->id, 400);
-
-        abort_unless($student->branchOffice->id === $branchOffice->id, 400);
-
-        return DB::transaction(function () use ($course_period, $student){
-
-            if ($student->signed_up === null) {
-                $student->signed_up = Carbon::now();
-                $student->save();
-            }
-
-            $course_period->students()->attach($student->id);
-
-            $course_period_student = DB::table('course_period_student')
-                ->where('course_period_id', $course_period->id)
-                ->orderByDesc('id')
-                ->first();
-
-            $payment_id = DB::table('payments')->insertGetId([
-                'course_period_student_id' => $course_period_student->id,
-                'total' => $course_period->totalCourse(),
-                'paid_out' => request('paid_out')
-            ]);
-
-            DB::table('transactions')->insertGetId([
-                'payment_id' => $payment_id,
-                'paid_out' => request('paid_out'),
-                'cash_received' =>  request('cash_received'),
-                'description' => 'pago...'
-            ]);
-
-            return $payment_id;
-        });
+        return response()->json(['data' => $request->createInscription($branchOffice)], 201);
     }
 
     public function students(BranchOffice $branchOffice)

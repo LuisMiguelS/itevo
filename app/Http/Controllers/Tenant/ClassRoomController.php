@@ -11,14 +11,6 @@ use App\DataTables\{TenantClassroomDataTable, TenantClassroomTrashedDataTable};
 class ClassRoomController extends Controller
 {
     /**
-     * ClassRoomController constructor.
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
      * @param \App\BranchOffice $branchOffice
      * @param \App\DataTables\TenantClassroomDataTable $dataTable
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View

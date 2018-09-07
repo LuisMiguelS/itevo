@@ -14,7 +14,9 @@ trait DatatableRemoveButton
 
     protected function removeCreateButton()
     {
-        if (! auth()->user()->can('tenant-create', $this->btn_ability['tenant-create']) || request()->route()->getActionMethod() === 'trashed')
+        if (! auth()->user()->can('tenant-create', $this->btn_ability['tenant-create'])
+            || request()->route()->getActionMethod() === 'trashed'
+            || $this->createRemove)
             unset($this->parameters['buttons'][0]);
     }
 

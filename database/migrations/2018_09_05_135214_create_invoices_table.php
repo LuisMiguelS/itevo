@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCoursePeriodStudentTable extends Migration
+class CreateInvoicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateCoursePeriodStudentTable extends Migration
      */
     public function up()
     {
-        Schema::create('course_period_student', function (Blueprint $table) {
-            $table->unsignedInteger('course_period_id');
+        Schema::create('invoices', function (Blueprint $table) {
+            $table->increments('id');
             $table->unsignedInteger('student_id');
-            $table->unique(['course_period_id', 'student_id']);
+            $table->enum('status', [\App\Invoice::STATUS_CANCEL, \App\Invoice::STATUS_PENDING, \App\Invoice::STATUS_COMPLETE])->default(\App\Invoice::STATUS_PENDING);
+            $table->timestamps();
 
-            $table->foreign('course_period_id')->references('id')->on('course_period');
             $table->foreign('student_id')->references('id')->on('students');
         });
     }
@@ -30,6 +30,6 @@ class CreateCoursePeriodStudentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('course_period_student');
+        Schema::dropIfExists('invoices');
     }
 }

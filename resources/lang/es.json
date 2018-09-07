@@ -9,5 +9,10 @@
     "Confirm Password": "Confirmar contraseña",
     "Reset Password": "Reestablecer contraseña",
     "Send Password Reset Link": "Enviar enlace para restablecer contraseña",
-    "Logout": "Cerrar sesión"
+    "Logout": "Cerrar sesión",
+    "Page Not Found": "Página no encontrada",
+    "Sorry, the page you are looking for could not be found.": "Lo sentimos, la página que está buscando no se pudo encontrar.",
+    "Go Home": "Ir al Home",
+    "Unauthorized": "No autorizado",
+    "Sorry, you are not authorized to access this page.": "Lo sentimos, no estás autorizado para acceder a esta página."
 }

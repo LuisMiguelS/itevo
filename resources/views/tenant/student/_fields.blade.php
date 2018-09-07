@@ -118,3 +118,18 @@
         </span>
     @endif
 </div>
+
+<div class="form-group {{ $errors->has('notes') ? 'has-error' : '' }}">
+    <label class="control-label">Notas</label>
+
+    <textarea id="notes"
+              type="text"
+              class="form-control"
+              name="notes">{{ old('notes', $student->notes) }}</textarea>
+
+    @if ($errors->has('notes'))
+        <span class="help-block">
+            <strong>{{ $errors->first('notes') }}</strong>
+        </span>
+    @endif
+</div>

@@ -61,6 +61,12 @@ class Resource extends Model
         return $this->belongsTo(BranchOffice::class);
     }
 
+
+    public function invoices()
+    {
+        return $this->morphToMany(Invoice::class, 'invoicable');
+    }
+
     /**
      * @param \App\BranchOffice $branchOffice
      * @return bool

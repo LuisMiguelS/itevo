@@ -11,14 +11,6 @@ use App\DataTables\{TenantTypeCourseDataTable, TenantTypeCourseTrashedDataTable}
 class TypeCourseController extends Controller
 {
     /**
-     * TypeCourseController constructor.
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
      * Display a listing of the resource.
      *
      * @param \App\DataTables\TenantTypeCourseDataTable $dataTable

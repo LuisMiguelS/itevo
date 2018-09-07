@@ -11,22 +11,11 @@ class Student extends Model
 {
     use SoftDeletes, DatesTranslator;
 
-    protected $fillable = [
-        'branch_office_id',
-        'promotion_id',
-        'name',
-        'last_name',
-        'id_card',
-        'phone',
-        'address',
-        'tutor_id_card',
-        'birthdate',
-        'signed_up'
-    ];
+    protected $guarded = [];
 
     protected $hidden = ['url'];
 
-    protected $appends = ['url'];
+    protected $appends = ['url', 'full_name'];
 
     /**
      * @param $name
@@ -109,5 +98,10 @@ class Student extends Model
     public function isRegisteredIn(BranchOffice $branchOffice)
     {
         return $this->branchOffice()->where('id', $branchOffice->id)->count() > 0;
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
     }
 }

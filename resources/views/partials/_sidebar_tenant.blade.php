@@ -127,6 +127,10 @@
                 </li>
             @endif
 
+            <li><a href="{{ route('tenant.invoice.index', $branchOffice) }}"><i class="fa fa-file-o"></i> Todos los recibos</a></li>
+
+            <li><a href="{{ route('tenant.accounts_receivable.index', $branchOffice) }}"><i class="fa fa-file-o"></i> Cuentas x Cobrar</a></li>
+
             <li class="header">Accesos rapido</li>
             {{  new App\Http\ViewComponents\TenantQuickAccessBtn($branchOffice) }}
         </ul>

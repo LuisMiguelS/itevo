@@ -90,8 +90,8 @@ return [
                 "className" => 'btn-outline-primary'
             ],
             [
-                "extend" => 'excel',
-                "text" => '<i class="fa fa-file-excel-o"></i>  Excel',
+                "extend" => 'export',
+                "text" => 'Exportar <i class="fa fa-caret-down" aria-hidden="true"></i>',
                 "className" => 'btn-outline-primary'
             ],
             [

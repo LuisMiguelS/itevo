@@ -47,11 +47,11 @@ class StoreUserRequest extends FormRequest
     public function createUser()
     {
         $user = User::create($this->validated());
-        if (isset($this->validated()['role'])){
-            $user->assign($this->validated()['role']);
+        if (isset($this->role)){
+            $user->assign($this->role);
         }
-        if (isset($this->validated()['branchOffices'])){
-            $user->branchOffices()->attach($this->validated()['branchOffices']);
+        if (isset($this->branchOffices)){
+            $user->branchOffices()->attach($this->branchOffices);
         }
         return "Usuario {$user->name} creado con éxito.";
     }

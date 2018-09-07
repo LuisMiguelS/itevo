@@ -55,26 +55,39 @@ class InscriptionTest extends TestCase
     {
         $this->actingAs($this->admin)
             ->post(route('tenant.inscription.store',  $this->coursePeriod->course->branchOffice), [
-                'course_period_id' => $this->coursePeriod->id,
+                'course_period' => [
+                    $this->coursePeriod,
+                ],
                 'resources' => [
-                    [
-                        'id' => $this->resource->id,
-                        'price' => $this->resource->price,
-                    ]
+                    $this->resource
                 ],
                 'student_id' => $this->student->id,
                 'paid_out' => 200,
                 'cash_received' => 500,
-            ])->assertStatus(Response::HTTP_OK);
+            ])->assertStatus(Response::HTTP_CREATED);
 
         $this->assertDatabaseHas('course_period_student', [
             'course_period_id' => $this->coursePeriod->id,
             'student_id' => $this->student->id,
         ]);
 
+        $this->assertDatabaseHas('invoices', [
+            'student_id' => $this->student->id,
+        ]);
+
+        $this->assertDatabaseHas('invoicables', [
+            'invoicable_type' => 'App\\CoursePeriod',
+            'invoicable_id' => $this->coursePeriod->id
+        ]);
+
+        $this->assertDatabaseHas('invoicables', [
+            'invoicable_type' => 'App\\Resource',
+            'invoicable_id' => $this->resource->id
+        ]);
+
         $this->assertDatabaseHas('payments', [
-            'total' => $this->coursePeriod->totalCourse(),
-            'paid_out' => 200
+            'payment_amount' => 200,
+            'cash_received' => 500,
         ]);
     }
 }
