@@ -23,8 +23,8 @@ class TenantScheduleTrashedDataTable extends DataTable
                 return "<p> {$schedule->start_at->format('h:i:s A')} - {$schedule->ends_at->format('h:i:s A')} </p>";
             })
             ->addColumn('Fechas', function (Schedule $schedule) {
-                return "<p><b>Fecha de creación:</b> {$schedule->created_at->format('l j F Y')}</p>
-                        <p><b>Fecha de actualización:</b> {$schedule->updated_at->format('l j F Y')}</p>";
+                return "<p><b>Creación:</b> {$schedule->created_at->format('d/m/Y')}</p>
+                        <p><b>Actualización:</b> {$schedule->updated_at->format('d/m/Y')}</p>";
             })
             ->addColumn('action', function (Schedule $schedule) {
                 return view('tenant.schedule._actions', compact('schedule'));

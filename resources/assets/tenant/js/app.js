@@ -18,6 +18,13 @@ Vue.component('v-select', vSelect);
 Vue.use(VueNumeric);
 Vue.component('multiselect', Multiselect);
 
+const moment = require('moment')
+require('moment/locale/es')
+
+Vue.use(require('vue-moment'), {
+    moment
+})
+
 Vue.use(VueCurrencyFilter, {
     symbol : '$',
     thousandsSeparator: ',',

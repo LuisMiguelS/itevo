@@ -2,13 +2,17 @@
 
 @section('title', "Editar periodo {$period->period} de la promocion no. { $promotion->promotion_no }")
 
+@section('breadcrumb')
+    {{ Breadcrumbs::render($breadcrumbs, $branchOffice, $promotion, $period) }}
+@endsection
+
 @section('content')
     <div class="row justify-content-center">
         <div class="col-md-8 col-md-offset-2">
 
             @box
             @slot('title')
-                Editar periodo: <strong>{{ $period->period }}</strong> de la promocion No. {{ $promotion->promotion_no }}
+                Editar periodo: <strong>{{ $period->period_no }}</strong> de la promocion No. {{ $promotion->promotion_no }}
             @endslot
 
             <form action="{{ route('tenant.promotions.periods.update', ['branchOffice' => request('branchOffice'),'promotion' => request('promotion'),'period' => $period]) }}"

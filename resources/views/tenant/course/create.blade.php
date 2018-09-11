@@ -19,7 +19,7 @@
 
                     <div class="form-group row mb-0">
                         <div class="col-md-12">
-                            <button type="submit" class="btn btn-primary btn-block">
+                            <button type="submit" class="btn btn-primary btn-block" @if($typeCourses->isEmpty()) disabled @endif>
                                 Guardar
                             </button>
                         </div>

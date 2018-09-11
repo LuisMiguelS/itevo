@@ -51,7 +51,7 @@ class CourseController extends Controller
 
         $breadcrumbs = 'course-trash';
 
-        $title = 'Todos los cursos en la papelera';
+        $title = 'Todos los cursos en la papelera <a href="'. route('tenant.courses.index', $branchOffice) .'"class="btn btn-default">Cursos</a>';
 
         return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
     }

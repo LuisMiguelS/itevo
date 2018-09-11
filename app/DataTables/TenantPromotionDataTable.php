@@ -32,8 +32,8 @@ class TenantPromotionDataTable extends DataTable
                 return $this->status($promotion);
             })
             ->addColumn('Fechas', function (Promotion $promotion) {
-                return "<p><b>Fecha de creación:</b> {$promotion->created_at->format('l j F Y')}</p>
-                        <p><b>Fecha de actualización:</b> {$promotion->updated_at->format('l j F Y')}</p>";
+                return "<p><b>Creación:</b> {$promotion->created_at->format('d/m/Y')}</p>
+                        <p><b>Actualización:</b> {$promotion->updated_at->format('d/m/Y')}</p>";
             })
             ->addColumn('action', function (Promotion $promotion) {
                 return view('tenant.promotion._actions', compact('promotion'));

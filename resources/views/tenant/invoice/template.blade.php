@@ -144,7 +144,7 @@
 
         <tr class="total">
             <td></td>
-            <td>Total: {{ number_format($invoice->total(), 2, '.', ',') }}</td>
+            <td>Total: {{ number_format($invoice->total, 2, '.', ',') }}</td>
         </tr>
 
     </table>
@@ -171,7 +171,7 @@
 
         <tr class="total">
             <td></td>
-            <td>Total pagado: {{ number_format($invoice->totalPagado(), 2, '.', ',') }}</td>
+            <td>Total pagado: {{ number_format($invoice->balance, 2, '.', ',') }}</td>
         </tr>
 
     </table>

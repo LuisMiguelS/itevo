@@ -51,7 +51,7 @@ class ResourceController extends Controller
 
         $breadcrumbs = 'resource-trash';
 
-        $title = 'Todos los recursos en la papelera';
+        $title = 'Todos los recursos en la papelera  <a href="'. route('tenant.resources.index', $branchOffice) .'"class="btn btn-default">Recursos</a>';
 
         return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
     }

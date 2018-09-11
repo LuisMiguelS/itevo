@@ -47,7 +47,7 @@ class ScheduleController extends Controller
 
         $breadcrumbs = 'schedule-trash';
 
-        $title = 'Todos los horarios en la papelera';
+        $title = 'Todos los horarios en la papelera <a href="'. route('tenant.schedules.index', $branchOffice) .'"class="btn btn-default">Horarios</a>';
 
         return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
     }

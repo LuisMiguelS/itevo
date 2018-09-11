@@ -1,7 +1,7 @@
 @csrf
 
 <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
-    <label class="control-label">Nombre(s): <span class="text-danger">*</span></label>
+    <label class="control-label">Nombre(s) <span class="text-danger">*</span></label>
 
     <input id="name"
            name="name"
@@ -19,7 +19,7 @@
 </div>
 
 <div class="form-group {{ $errors->has('last_name') ? 'has-error' : '' }}">
-    <label class="control-label">Apellido(s): <span class="text-danger">*</span></label>
+    <label class="control-label">Apellido(s) <span class="text-danger">*</span></label>
 
     <input id="last_name"
            name="last_name"
@@ -36,7 +36,7 @@
 </div>
 
 <div class="form-group {{ $errors->has('id_card') ? 'has-error' : '' }}">
-    <label class="control-label">Cédula: <span class="text-danger">*</span></label>
+    <label class="control-label">Cédula <span class="text-danger">*</span></label>
 
     <input id="id_card"
            name="id_card"
@@ -54,7 +54,7 @@
 </div>
 
 <div class="form-group {{ $errors->has('phone') ? 'has-error' : '' }}">
-    <label class="control-label">Teléfono: <span class="text-danger">*</span></label>
+    <label class="control-label">Teléfono <span class="text-danger">*</span></label>
 
     <input id="phone"
            type="text"

@@ -22,15 +22,33 @@ class TenantStudentTrashedDataTable extends DataTable
             ->addColumn('Estudiante', function (Student $student) {
                 return $student->full_name;
             })
+            ->editColumn('id_card', function (Student $student) {
+                if ($student->id_card) {
+                    return $student->id_card;
+                }
+                return '<span class="label label-info">Sin especificar</span>';
+            })
+            ->editColumn('tutor_id_card', function (Student $student) {
+                if ($student->tutor_id_card) {
+                    return $student->tutor_id_card;
+                }
+                return '<span class="label label-info">Sin especificar</span>';
+            })
+            ->editColumn('signed_up', function (Student $student) {
+                if ($student->signed_up) {
+                    return $student->signed_up->format('d/m/Y');
+                }
+                return '<span class="label label-info">Sin inscribir</span>';
+            })
             ->addColumn('Fechas', function (Student $student) {
-                return "<small><b>Creación:</b> {$student->created_at->format('l j F Y')}</small> <br>
-                        <small><b>Actualización:</b> {$student->updated_at->format('l j F Y')}</small> <br>
-                        <small><b>Nacimiento:</b> {$student->birthdate->format('l j F Y')}</small>";
+                return "<small><b>Creación:</b> {$student->created_at->format('d/m/Y')}</small> <br>
+                        <small><b>Actualización:</b> {$student->updated_at->format('d/m/Y')}</small> <br>
+                        <small><b>Nacimiento:</b> {$student->birthdate->format('d/m/Y')}</small>";
             })
             ->addColumn('action', function (Student $student) {
                 return view('tenant.student._actions', compact('student'));
             })
-            ->rawColumns(['Fechas', 'action']);
+            ->rawColumns(['action', 'Fechas', 'id_card', 'tutor_id_card', 'signed_up']);
     }
 
     /**

@@ -20,8 +20,8 @@ class TenantCourseTrashedDataTable extends DataTable
     {
         return datatables($query)
             ->addColumn('Fechas', function (Course $course) {
-                return "<p><b>Fecha de creación:</b> {$course->created_at->format('l j F Y')}</p>
-                        <p><b>Fecha de actualización:</b> {$course->updated_at->format('l j F Y')}</p>";
+                return "<p><b>Creación:</b> {$course->created_at->format('d/m/Y')}</p>
+                        <p><b>Actualización:</b> {$course->updated_at->format('d/m/Y')}</p>";
             })
             ->addColumn('action', function (Course $course) {
                 return view('tenant.course._actions', compact('course'));

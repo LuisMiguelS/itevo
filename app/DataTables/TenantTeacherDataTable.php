@@ -24,8 +24,8 @@ class TenantTeacherDataTable extends DataTable
     {
         return datatables($query)
             ->addColumn('Fechas', function (Teacher $teacher) {
-                return "<p><b>Fecha de creación:</b> {$teacher->created_at->format('l j F Y')}</p>
-                        <p><b>Fecha de actualización:</b> {$teacher->updated_at->format('l j F Y')}</p>";
+                return "<p><b>Creación:</b> {$teacher->created_at->format('d/m/Y')}</p>
+                        <p><b>Actualización:</b> {$teacher->updated_at->format('d/m/Y')}</p>";
             })
             ->addColumn('action', function (Teacher $teacher) {
                 return view('tenant.teacher._actions', compact('teacher'));

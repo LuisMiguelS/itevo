@@ -36,8 +36,6 @@
         </section>
 
         <section class="content">
-            @include('partials._alert')
-
             @yield('content')
         </section>
     </div>

@@ -5,6 +5,8 @@
         </h3>
     </div>
     <div class="box-body">
+        @include('partials._alert')
+
         {{ $slot }}
     </div>
 </div>

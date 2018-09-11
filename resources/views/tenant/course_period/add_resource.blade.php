@@ -2,6 +2,10 @@
 
 @section('title', 'Crear curso')
 
+@section('breadcrumb')
+    {{ Breadcrumbs::render('coursePeriod-resource', $branchOffice, $period, $coursePeriod) }}
+@endsection
+
 @section('content')
     <div class="row justify-content-center">
         <div class="col-md-8 col-md-offset-2">
@@ -12,8 +16,6 @@
 
             <form action="{{ $coursePeriod->url->addResource }}" method="POST">
                 @csrf
-
-
 
                 <div class="form-group row">
                 <label for="abilities" class="col-sm-4 col-form-label text-md-right">Recursos</label>

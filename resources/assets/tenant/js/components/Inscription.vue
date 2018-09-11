@@ -5,6 +5,16 @@
             <div class="box">
                 <div class="box-header with-border"><h3 class="box-title">Inscripcion</h3></div>
                 <div class="box-body">
+
+                    <div class="alert alert-danger alert-dismissible" role="alert" v-if="errors">
+                        <strong v-if="errors.message"> {{ errors.message }}</strong>
+                        <ul v-for="error in errors.errors">
+                           <li v-for="message in error">
+                               {{ message }}
+                           </li>
+                        </ul>
+                    </div>
+
                         <div class="row">
 
                             <div class="col-md-6">
@@ -50,12 +60,12 @@
                             <div class="col-md-6">
                               <div v-if="course">
                                   <p> <strong> Curso:</strong> {{ course.course.name }} ({{ course.course.type_course.name }})</p>
-                                  <p> <strong> Fecha de inicio:</strong> {{ course.start_at.date }} </p>
-                                  <p> <strong> Fecha de finalización:</strong> {{ course.ends_at.date }}</p>
+                                  <p> <strong> Fecha de inicio:</strong> {{ course.start_at.date | moment("dddd, MMMM D YYYY") }} </p>
+                                  <p> <strong> Fecha de finalización:</strong> {{ course.ends_at.date | moment("dddd, MMMM D YYYY") }}</p>
                                   <p> <strong> Profesor:</strong> {{ course.teacher.full_name }}</p>
                                   <p> <strong> Aula:</strong> {{ course.classroom.name }} - {{ course.classroom.building }}</p>
-                                  <p> <strong>Horario</strong>
-                                      <small v-for="schedule in course.schedules"> {{ schedule.weekday }} {{ schedule.start_at.date}} - {{ schedule.ends_at.date}}</small>
+                                  <p> <strong>Horario:</strong>
+                                      <small v-for="schedule in course.schedules"><br> {{ schedule.weekday }} {{ schedule.start_at.date |  moment("h:mm a") }} - {{ schedule.ends_at.date |  moment("h:mm a") }}</small>
                                   </p>
                               </div>
                             </div>
@@ -152,6 +162,7 @@
                 payment: 0,
                 cash_received: 0,
                 resources: [],
+                errors: false,
             }
         },
         mounted(){
@@ -191,14 +202,8 @@
                     this.clear();
                      window.open(`/${this.branchOffice.slug}/invoices/${response.data.data.id}`, '_blank').focus();
                 })).catch((error => {
-                    if (error.response) {
-                        console.log(error.response.data.message);
-                    } else if (error.request) {
-                        console.log(error.request);
-                    } else {
-                        console.log('Error', error.message);
-                    }
-                    console.log(error.config);
+                    this.errors = false;
+                    this.errors = error.response.data;
                 }));
             },
             clear() {
@@ -207,6 +212,7 @@
                 this.payment = 0;
                 this.cash_received = 0;
                 this.resources = [];
+                this.errors = false;
             }
         },
         computed: {

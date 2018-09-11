@@ -53,7 +53,7 @@ class StudentController extends Controller
 
         $breadcrumbs = 'student-trash';
 
-        $title = 'Todos los estudiantes en la papelera';
+        $title = 'Todos los estudiantes en la papelera <a href="'. route('tenant.students.index', $branchOffice) .'"class="btn btn-default">Estudiantes</a>';
 
         return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
     }

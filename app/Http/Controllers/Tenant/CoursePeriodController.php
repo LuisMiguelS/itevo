@@ -26,9 +26,11 @@ class CoursePeriodController extends Controller
     {
         $this->authorize('tenant-view', CoursePeriod::class);
 
+        $breadcrumbs = 'coursePeriod';
+
         $title = "Todos los cursos activos del periodo {$period->period_no} de la promocion no. {$period->promotion->promotion_no}";
 
-        return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
+        return $dataTable->render('datatables.tenant', compact('branchOffice', 'period', 'breadcrumbs', 'title'));
     }
 
     /**
@@ -128,17 +130,6 @@ class CoursePeriodController extends Controller
             'branchOffice' => $branchOffice,
             'period' => $period
         ])->with(['flash_success' => $request->updateCoursePeriod($coursePeriod)]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\CoursePeriod  $coursePromotion
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(CoursePeriod $coursePromotion)
-    {
-        //
     }
 
     /**

@@ -45,7 +45,7 @@ class TypeCourseController extends Controller
 
         $breadcrumbs = 'typeCourse-trash';
 
-        $title = 'Todos los tipos de curso en la papelera';
+        $title = 'Todos los tipos de curso en la papelera <a href="'. route('tenant.typeCourses.index', $branchOffice) .'"class="btn btn-default">Tipos de cursos</a>';
 
         return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
     }

@@ -43,7 +43,7 @@ class ClassRoomController extends Controller
 
         $breadcrumbs = 'classroom-trash';
 
-        $title = 'Todas las aulas en la papelera';
+        $title = 'Todas las aulas en la papelera <a href="'. route('tenant.classrooms.index', $branchOffice) .'"class="btn btn-default">Aulas</a>';
 
         return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
     }

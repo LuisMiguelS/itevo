@@ -2,6 +2,10 @@
 
 @section('title', 'Asignar horario')
 
+@section('breadcrumb')
+    {{ Breadcrumbs::render('coursePeriod-resource', $branchOffice, $period, $coursePeriod) }}
+@endsection
+
 @section('content')
     <div class="row justify-content-center">
         <div class="col-md-8 col-md-offset-2">
@@ -17,7 +21,7 @@
 
                 <div class="form-group row">
                     <label for="abilities" class="col-sm-4 col-form-label text-md-right">Horarios</label>
-                    <div class="col-md-6 row">
+                    <div class="col-md-10 row">
                         @foreach($branchOffice->schedules as $schedule)
                             <div class="custom-control custom-checkbox col-md-6">
                                 <input name="schedules[{{ $schedule->id }}]"

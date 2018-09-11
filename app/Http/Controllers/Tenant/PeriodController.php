@@ -31,9 +31,11 @@ class PeriodController extends Controller
     {
         $this->authorize('tenant-view', Period::class);
 
+        $breadcrumbs = 'period';
+
         $title = "Todos los periodos de la promocion no. {$promotion->promotion_no}";
 
-        return $dataTable->render('datatables.tenant', compact('branchOffice', 'title'));
+        return $dataTable->render('datatables.tenant', compact('branchOffice','promotion', 'breadcrumbs', 'title'));
     }
 
     /**
@@ -50,9 +52,11 @@ class PeriodController extends Controller
 
         $this->abortCases($branchOffice, $promotion);
 
+        $breadcrumbs = 'period-create';
+
         $period = new Period;
 
-        return view('tenant.period.create', compact('branchOffice', 'promotion', 'period'));
+        return view('tenant.period.create', compact('branchOffice', 'promotion', 'breadcrumbs', 'period'));
     }
 
     /**
@@ -94,7 +98,9 @@ class PeriodController extends Controller
 
         $this->updateAbortCases($period);
 
-        return view('tenant.period.edit', compact('branchOffice', 'promotion', 'period'));
+        $breadcrumbs = 'period-edit';
+
+        return view('tenant.period.edit', compact('branchOffice', 'promotion', 'period', 'breadcrumbs'));
     }
 
     /**

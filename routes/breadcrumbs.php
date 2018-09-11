@@ -1,6 +1,16 @@
 <?php
 
-use App\{Classroom, Course, BranchOffice, Promotion, Resource, Schedule, Student, Teacher, TypeCourse};
+use App\{Classroom,
+    Course,
+    BranchOffice,
+    CoursePeriod,
+    Period,
+    Promotion,
+    Resource,
+    Schedule,
+    Student,
+    Teacher,
+    TypeCourse};
 
 Breadcrumbs::for('home', function ($breadcrumbs) {
     $breadcrumbs->push('Home', route('home'));
@@ -218,4 +228,57 @@ Breadcrumbs::for('schedule-create', function ($breadcrumbs, BranchOffice $branch
 Breadcrumbs::for('schedule-edit', function ($breadcrumbs, BranchOffice $branchOffice, Schedule $schedule) {
     $breadcrumbs->parent('schedule', $branchOffice);
     $breadcrumbs->push("{$schedule->start_at->format('h:i:s A')} - {$schedule->ends_at->format('h:i:s A')}", $schedule->url->edit);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Period
+|--------------------------------------------------------------------------
+*/
+
+Breadcrumbs::for('period', function ($breadcrumbs, BranchOffice $branchOffice, Promotion $promotion) {
+    $breadcrumbs->parent('promotion', $branchOffice);
+    $breadcrumbs->push("Periodos de la promocion no. {$promotion->promotion_no}", route('tenant.promotions.periods.index', ['branchOffice' => $branchOffice, 'promotion' => $promotion]));
+});
+
+Breadcrumbs::for('period-create', function ($breadcrumbs, BranchOffice $branchOffice, Promotion $promotion) {
+    $breadcrumbs->parent('period', $branchOffice, $promotion);
+    $breadcrumbs->push("Crear", route('tenant.promotions.periods.create', ['branchOffice' => $branchOffice, 'promotion' => $promotion]));
+});
+
+Breadcrumbs::for('period-edit', function ($breadcrumbs, BranchOffice $branchOffice, Promotion $promotion, Period $period) {
+    $breadcrumbs->parent('period', $branchOffice, $promotion);
+    $breadcrumbs->push("{$period->period_no}", route('tenant.promotions.periods.edit', ['branchOffice' => $branchOffice, 'promotion' => $promotion, 'period' => $period]));
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| CoursePeriod
+|--------------------------------------------------------------------------
+*/
+
+Breadcrumbs::for('coursePeriod', function ($breadcrumbs, BranchOffice $branchOffice, Period $period) {
+    $breadcrumbs->parent('period', $branchOffice, $period->promotion);
+    $breadcrumbs->push("Cursos activos del {$period->period_no}", route('tenant.periods.course-period.index', ['branchOffice' => $branchOffice, 'period' => $period]));
+});
+
+Breadcrumbs::for('coursePeriod-create', function ($breadcrumbs, BranchOffice $branchOffice, Period $period) {
+    $breadcrumbs->parent('coursePeriod', $branchOffice, $period);
+    $breadcrumbs->push("Crear", route('tenant.periods.course-period.create', ['branchOffice' => $branchOffice, 'period' => $period]));
+});
+
+Breadcrumbs::for('coursePeriod-edit', function ($breadcrumbs, BranchOffice $branchOffice, Period $period, CoursePeriod $coursePeriod) {
+    $breadcrumbs->parent('coursePeriod', $branchOffice, $period);
+    $breadcrumbs->push("{$coursePeriod->course->name} ({$coursePeriod->course->typeCourse->name})", route('tenant.periods.course-period.edit', ['branchOffice' => $branchOffice, 'period' => $period, 'coursePeriod' => $coursePeriod]));
+});
+
+Breadcrumbs::for('coursePeriod-resource', function ($breadcrumbs, BranchOffice $branchOffice, Period $period, CoursePeriod $coursePeriod) {
+    $breadcrumbs->parent('coursePeriod', $branchOffice, $period);
+    $breadcrumbs->push("Agregar recursos: {$coursePeriod->course->name} ({$coursePeriod->course->typeCourse->name})", route('tenant.periods.course-period.resources.index', ['branchOffice' => $branchOffice, 'period' => $period, 'coursePeriod' => $coursePeriod]));
+});
+
+Breadcrumbs::for('coursePeriod-schedule', function ($breadcrumbs, BranchOffice $branchOffice, Period $period, CoursePeriod $coursePeriod) {
+    $breadcrumbs->parent('coursePeriod', $branchOffice, $period);
+    $breadcrumbs->push("Agregar horarios: {$coursePeriod->course->name} ({$coursePeriod->course->typeCourse->name})", route('tenant.periods.course-period.schedules.index', ['branchOffice' => $branchOffice, 'period' => $period, 'coursePeriod' => $coursePeriod]));
 });

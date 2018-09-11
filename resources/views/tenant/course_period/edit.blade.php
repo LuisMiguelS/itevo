@@ -2,6 +2,10 @@
 
 @section('title', 'Editar curso')
 
+@section('breadcrumb')
+    {{ Breadcrumbs::render('coursePeriod-edit', $branchOffice, $period, $coursePeriod) }}
+@endsection
+
 @section('content')
     <div class="row justify-content-center">
         <div class="col-md-8 col-md-offset-2">

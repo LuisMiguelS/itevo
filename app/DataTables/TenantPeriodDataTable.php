@@ -29,23 +29,27 @@ class TenantPeriodDataTable extends DataTable
             ->editColumn('start_at', function(Period $period) {
                 if ($period->getOriginal('start_at') === null)
                     return 'Sin definir';
-                return $period->start_at->format('l j F Y');
+                return $period->start_at->format('d/m/Y');
             })
             ->editColumn('ends_at', function(Period $period) {
                 if ($period->getOriginal('ends_at') === null)
                     return 'Sin definir';
-                return $period->ends_at->format('l j F Y');
+                return $period->ends_at->format('d/m/Y');
             })
             ->editColumn('created_at', function(Period $period) {
-                return $period->created_at->format('l j F Y');
+                return $period->created_at->format('d/m/Y');
             })
             ->editColumn('updated_at', function(Period $period) {
-                return $period->updated_at->format('l j F Y');
+                return $period->updated_at->format('d/m/Y');
+            })
+            ->addColumn('dates', function (Period $period) {
+                return "<small><strong>Creación:</strong> {$period->created_at->format('d/m/Y')}</small><br>
+                        <small><strong>Actualización:</strong> {$period->updated_at->format('d/m/Y')}</small>";
             })
             ->addColumn('action', function (Period $period) {
                 return view('tenant.period._actions', compact('period'));
             })
-            ->rawColumns(['action', 'status']);
+            ->rawColumns(['action', 'status', 'dates']);
     }
 
     /**
@@ -80,13 +84,14 @@ class TenantPeriodDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id' => ['title' => 'Identificador', 'visible' => false, 'exportable' => false, 'printable' => false,],
+            'id' => ['title' => 'Identificador', 'visible' => false, 'exportable' => false, 'printable' => false],
             'period_no' =>  ['title' => 'Período'],
             'status' => ['title' => 'Estado'],
             'start_at' => ['title' => 'Inicio del período'],
             'ends_at' => ['title' => 'Fin del período'],
-            'created_at' => ['title' => 'Fecha de creación'],
-            'updated_at' => ['title' => 'Fecha de actualización']
+            'created_at' => ['title' => 'Fecha de creación', 'visible' => false],
+            'updated_at' => ['title' => 'Fecha de actualización', 'visible' => false],
+            'dates' => ['title' => 'Fechas', 'exportable' => false, 'printable' => false, 'searchable' => false]
         ];
     }
 

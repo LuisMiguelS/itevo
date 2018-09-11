@@ -4,7 +4,13 @@
 
 @section('breadcrumb')
    @isset($breadcrumbs)
-       {{ Breadcrumbs::render($breadcrumbs, $branchOffice) }}
+       @isset($promotion)
+           {{ Breadcrumbs::render($breadcrumbs, $branchOffice, $promotion) }}
+       @elseif(isset($period))
+           {{ Breadcrumbs::render($breadcrumbs, $branchOffice, $period) }}
+       @else
+           {{ Breadcrumbs::render($breadcrumbs, $branchOffice) }}
+       @endisset
     @endisset
 @endsection
 

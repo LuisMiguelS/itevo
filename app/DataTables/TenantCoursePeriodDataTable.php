@@ -26,16 +26,28 @@ class TenantCoursePeriodDataTable extends DataTable
             ->editColumn('classroom.name', function (CoursePeriod $coursePeriod) {
                 return "{$coursePeriod->classroom->name} ({$coursePeriod->classroom->building})";
             })
+            ->addColumn('resource', function (CoursePeriod $coursePeriod) {
+                if ($coursePeriod->resources->count()){
+                    return '<span class="label label-success">Tiene recursos</span>';
+                }
+                return '<span class="label label-warning">No tiene recursos</span>';
+            })
+            ->addColumn('schedule', function (CoursePeriod $coursePeriod) {
+                if ($coursePeriod->schedules->count()){
+                    return '<span class="label label-success">Tiene horario</span>';
+                }
+                return '<span class="label label-warning">No tiene horario</span>';
+            })
             ->addColumn('Fechas', function (CoursePeriod $coursePeriod) {
-                return "<small><b>Inicio del curso:</b> {$coursePeriod->start_at->format('l j F Y')}</small><br>
-                        <small><b>Fin del curso:</b> {$coursePeriod->ends_at->format('l j F Y')}</small><br>
-                        <small><b>Creación:</b> {$coursePeriod->created_at->format('l j F Y')}</small><br>
-                        <small><b>Actualización:</b> {$coursePeriod->updated_at->format('l j F Y')}</small>";
+                return "<small><b>Inicio del curso:</b> {$coursePeriod->start_at->format('d/m/Y')}</small><br>
+                        <small><b>Fin del curso:</b> {$coursePeriod->ends_at->format('d/m/Y')}</small><br>
+                        <small><b>Creación:</b> {$coursePeriod->created_at->format('d/m/Y')}</small><br>
+                        <small><b>Actualización:</b> {$coursePeriod->updated_at->format('d/m/Y')}</small>";
             })
             ->addColumn('action', function (CoursePeriod $coursePeriod) {
                 return view('tenant.course_period._actions', compact('coursePeriod'));
             })
-            ->rawColumns(['action', 'Fechas', 'course']);
+            ->rawColumns(['action', 'Fechas', 'course', 'resource', 'schedule']);
     }
 
     /**
@@ -84,6 +96,8 @@ class TenantCoursePeriodDataTable extends DataTable
             'classroom.name' => ['title' => 'Aula'],
             'teacher.full_name' => ['title' => 'Profesor asignado', 'visible' => false, 'exportable' => false, 'printable' => false],
             'price'=> ['title' => 'Precio'],
+            'resource' => ['title' => 'Recursos', 'searchable' => false],
+            'schedule' => ['title' => 'Horarios', 'searchable' => false],
             'Fechas' => ['width' => '200px'],
         ];
     }

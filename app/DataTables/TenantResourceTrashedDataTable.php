@@ -23,8 +23,8 @@ class TenantResourceTrashedDataTable extends DataTable
                 return number_format($resource->price,2,'.',',');
             })
             ->addColumn('Fechas', function (Resource $resource) {
-                return "<p><b>Fecha de creación:</b> {$resource->created_at->format('l j F Y')}</p>
-                        <p><b>Fecha de actualización:</b> {$resource->updated_at->format('l j F Y')}</p>";
+                return "<p><b>Creación:</b> {$resource->created_at->format('d/m/Y')}</p>
+                        <p><b>Actualización:</b> {$resource->updated_at->format('d/m/Y')}</p>";
             })
             ->addColumn('action', function (Resource $resource) {
                 return view('tenant.resource._actions', compact('resource'));
@@ -68,7 +68,7 @@ class TenantResourceTrashedDataTable extends DataTable
     {
         return [
             'id' => ['title' => 'Identificador', 'visible' => false, 'exportable' => false, 'printable' => false,],
-            'name' => ['title' => 'Nombre del recurso'],
+            'name' => ['title' => 'Recurso'],
             'price' => ['title' => 'Precio'],
             'Fechas',
         ];

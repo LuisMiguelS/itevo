@@ -47,7 +47,7 @@ class TeacherController extends Controller
 
         $breadcrumbs = 'teacher-trash';
 
-        $title = 'Todos los profesores en la papelera';
+        $title = 'Todos los profesores en la papelera <a href="'. route('tenant.teachers.index', $branchOffice) .'"class="btn btn-default">Profesores</a>';
 
         return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
     }

@@ -51,7 +51,7 @@ class PromotionController extends Controller
 
         $breadcrumbs = 'promotion-trash';
 
-        $title = 'Todas las promociones en la papelera';
+        $title = 'Todas las promociones en la papelera <a href="'.route('tenant.promotions.index', $branchOffice).'"class="btn btn-default">Promociones</a>';
 
         return $dataTable->render('datatables.tenant', compact('branchOffice', 'breadcrumbs', 'title'));
     }
