@@ -22,6 +22,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::redirect('/', '/home', 301);
+
 Route::get('home', 'HomeController@index')->name('home');
 
 Route::resource('branch/offices', 'BranchOfficeController')->names([
@@ -158,11 +160,13 @@ Route::prefix('{branchOffice}')->middleware(['auth', 'tenantAccess'])->name('ten
      */
     Route::get('invoices', 'Tenant\InvoiceController@index')->name('invoice.index');
     Route::get('invoices/{invoice}', 'Tenant\InvoiceController@show')->name('invoice.show');
+    Route::get('invoices/accounts/receivable/{id}', 'Tenant\InvoiceController@accountReceivable')->name('invoice.accounts_receivable');
 
     /*
      * Accounts Receivable
      */
     Route::get('accounts/receivable', 'Tenant\AccountsReceivableController@index')->name('accounts_receivable.index');
+    Route::post('accounts/receivable', 'Tenant\AccountsReceivableController@store')->name('accounts_receivable.store');
     Route::get('accounts/receivable/students', 'Tenant\AccountsReceivableController@students')->name('accounts_receivable.students');
 });
 

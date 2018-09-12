@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use Silber\Bouncer\Database\Role;
 use Silber\Bouncer\Database\Ability;
 use App\{CoursePeriod,
+    Invoice,
     Period,
     Promotion,
     Resource,
@@ -45,6 +46,7 @@ class BouncerSeeder extends Seeder
         $this->periodAbilities();
         $this->coursePeriodAbilities();
         $this->scheduleAbilities();
+        $this->invoiceAbilities();
     }
 
     protected function createRole()
@@ -530,6 +532,11 @@ class BouncerSeeder extends Seeder
             'name' => 'tenant-addResource',
             'title' => 'Vincular recurso con curso activo'
         ]);
+
+        Bouncer::ability()->createForModel(CoursePeriod::class, [
+            'name' => 'tenant-addSchedule',
+            'title' => 'Vincular horario con curso activo'
+        ]);
     }
 
     /*
@@ -569,6 +576,31 @@ class BouncerSeeder extends Seeder
         Bouncer::ability()->createForModel(Schedule::class, [
             'name' => 'tenant-restore',
             'title' => 'Restaurar horario'
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Invoice Habilidades
+    |--------------------------------------------------------------------------
+    |
+    | Todas la habilidades para la gestion del crud de facturas
+    */
+    public function invoiceAbilities()
+    {
+        Bouncer::ability()->createForModel(Invoice::class, [
+            'name' => 'tenant-view',
+            'title' => 'Ver facturas'
+        ]);
+
+        Bouncer::ability()->createForModel(Invoice::class, [
+            'name' => 'tenant-create',
+            'title' => 'Crear facturas'
+        ]);
+
+        Bouncer::ability()->createForModel(Invoice::class, [
+            'name' => 'tenant-update',
+            'title' => 'Pagar facturas'
         ]);
     }
 }

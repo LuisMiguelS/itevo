@@ -123,9 +123,14 @@
             </li>
             @endif
 
-            <li><a href="{{ route('tenant.invoice.index', $branchOffice) }}"><i class="fa fa-file-o"></i><span> Todos los recibos</span></a></li>
+            @if(  auth()->user()->can('tenant-view', \App\Invoice::class) )
+                <li><a href="{{ route('tenant.invoice.index', $branchOffice) }}"><i class="fa fa-file-o"></i><span> Todas las facturas</span></a></li>
+            @endif
 
-            <li><a href="{{ route('tenant.accounts_receivable.index', $branchOffice) }}"><i class="fa fa-file-o"></i> <span>Cuentas x Cobrar</span></a></li>
+            @if(  auth()->user()->can('tenant-update', \App\Invoice::class) )
+                <li><a href="{{ route('tenant.accounts_receivable.index', $branchOffice) }}"><i class="fa fa-money"></i> <span>Cuentas x Cobrar</span></a></li>
+            @endif
+
 
             <li class="header">Accesos rapido</li>
             {{  new App\Http\ViewComponents\TenantQuickAccessBtn($branchOffice) }}

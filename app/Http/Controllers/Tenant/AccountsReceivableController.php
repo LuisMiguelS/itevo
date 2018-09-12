@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Tenant;
 
-use App\{BranchOffice, Invoice, Student};
 use App\Http\Controllers\Controller;
+use App\{BranchOffice, Invoice, Student};
+use App\Http\Requests\Tenant\AccountsReceivableRequest;
 
 class AccountsReceivableController extends Controller
 {
@@ -14,7 +15,16 @@ class AccountsReceivableController extends Controller
 
     public function index(BranchOffice $branchOffice)
     {
+        $this->authorize('tenant-update', Invoice::class);
+
         return view('tenant.accounts_receivable.index', compact('branchOffice'));
+    }
+
+    public function store(AccountsReceivableRequest $request, BranchOffice $branchOffice)
+    {
+        $this->authorize('tenant-update', Invoice::class);
+
+        return response()->json(['data' => $request->createAccountReceivable($branchOffice)], 201);
     }
 
     public function students(BranchOffice $branchOffice)
@@ -27,7 +37,7 @@ class AccountsReceivableController extends Controller
                 })
                 ->with(['invoices' => function ($invoices) {
                     $invoices->where('status', Invoice::STATUS_PENDING)->with(['coursePeriod' => function ($coursePeriod) {
-                        $coursePeriod->with('course');
+                        $coursePeriod->with('course', 'resources');
                     }]);
                 }])
                 ->get()

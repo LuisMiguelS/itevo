@@ -4,8 +4,8 @@ namespace App\Http\Requests\Tenant;
 
 use DB;
 use Carbon\Carbon;
-use App\{CoursePeriod, Resource, Student};
 use Illuminate\Foundation\Http\FormRequest;
+use App\{CoursePeriod, Invoice, Resource, Student};
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class InscriptionRequest extends FormRequest
@@ -38,7 +38,7 @@ class InscriptionRequest extends FormRequest
 
     public function createInscription(\App\BranchOffice $branchOffice)
     {
-        $invoice = DB::transaction(function () use ($branchOffice){
+        $invoice = DB::transaction(function () use ($branchOffice) {
             $student = tap(Student::findOrFail(request('student_id')), function ($student) {
                 if ($student->signed_up === null) {
                     $student->signed_up = Carbon::now();
@@ -73,6 +73,11 @@ class InscriptionRequest extends FormRequest
             'payment_amount' => $this->paid_out,
             'cash_received' => $this->cash_received
         ]);
+
+        if (((int) $invoice->total - $invoice->balance) == 0){
+            $invoice->status = Invoice::STATUS_COMPLETE;
+            $invoice->save();
+        }
 
         return $invoice;
     }

@@ -2099,6 +2099,87 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "accounts_receivable",
@@ -2107,26 +2188,91 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             students: [],
             student: null,
-            course: null,
             payment: 0,
             cash_received: 0,
-            resources: []
+            resources: [],
+            invoice: null,
+            errors: false
         };
     },
     mounted: function mounted() {
-        var _this = this;
-
-        axios.get("/" + this.branchOffice.slug + "/accounts/receivable/students").then(function (response) {
-            _this.students = response.data.data;
-        });
+        this.getStudent();
     },
 
     methods: {
+        getStudent: function getStudent() {
+            var _this = this;
+
+            axios.get('/' + this.branchOffice.slug + '/accounts/receivable/students').then(function (response) {
+                _this.students = response.data.data;
+            });
+        },
         fullName: function fullName(_ref) {
             var name = _ref.name,
                 last_name = _ref.last_name;
 
-            return name + " " + last_name;
+            return name + ' ' + last_name;
+        },
+        getInvoice: function getInvoice(invoice) {
+            this.invoice = invoice;
+        },
+        dispatchActionStudent: function dispatchActionStudent() {
+            this.invoice = null;
+            this.resources = [];
+        },
+        findResource: function findResource(resource_id) {
+            return this.invoice.resources.find(function (resource) {
+                return resource_id !== resource.id;
+            });
+        },
+        facturar: function facturar() {
+            var _this2 = this;
+
+            axios.post('/' + this.branchOffice.slug + '/accounts/receivable', {
+                'invoice_id': this.invoice.id,
+                'resources': this.resources,
+                'paid_out': this.payment,
+                'cash_received': this.cash_received
+            }).then(function (response) {
+                _this2.clear();
+                window.open('/' + _this2.branchOffice.slug + '/invoices/accounts/receivable/' + response.data.data.id, '_blank').focus();
+                _this2.getStudent();
+            }).catch(function (error) {
+                _this2.errors = false;
+                _this2.errors = error.response.data;
+            });
+        },
+        clear: function clear() {
+            this.student = null;
+            this.payment = 0;
+            this.cash_received = 0;
+            this.resources = [];
+            this.invoice = null;
+            this.errors = false;
+        }
+    },
+    computed: {
+        totalResource: function totalResource() {
+            return this.resources.reduce(function (total, resource) {
+                return total + resource.price;
+            }, 0);
+        },
+        total: function total() {
+            if (!this.invoice) return 0;
+            return parseFloat(this.invoice.total - this.invoice.balance) + parseFloat(this.totalResource);
+        },
+        retunedMoney: function retunedMoney() {
+            if (this.payment > this.cash_received) {
+                return false;
+            }
+
+            return parseFloat(this.cash_received - this.payment);
+        },
+        isDisabled: function isDisabled() {
+            if (this.payment === 0 || this.cash_received === 0 || this.retunedMoney === false) {
+                return true;
+            }
+            return false;
         }
     }
 });
@@ -20372,6 +20518,35 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("main", [
+    _vm.errors
+      ? _c(
+          "div",
+          {
+            staticClass: "alert alert-danger alert-dismissible",
+            attrs: { role: "alert" }
+          },
+          [
+            _vm.errors.message
+              ? _c("strong", [_vm._v(" " + _vm._s(_vm.errors.message))])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._l(_vm.errors.errors, function(error) {
+              return _c(
+                "ul",
+                _vm._l(error, function(message) {
+                  return _c("li", [
+                    _vm._v(
+                      "\n                " + _vm._s(message) + "\n            "
+                    )
+                  ])
+                })
+              )
+            })
+          ],
+          2
+        )
+      : _vm._e(),
+    _vm._v(" "),
     _c("div", { staticClass: "col-md-4" }, [
       _c("div", { staticClass: "box" }, [
         _vm._m(0),
@@ -20392,6 +20567,7 @@ var render = function() {
                     "custom-label": _vm.fullName,
                     placeholder: "Seleciona un estudiante"
                   },
+                  on: { input: _vm.dispatchActionStudent },
                   model: {
                     value: _vm.student,
                     callback: function($$v) {
@@ -20429,7 +20605,14 @@ var render = function() {
                 _vm._l(_vm.student.invoices, function(item_invoice) {
                   return _c(
                     "a",
-                    { staticClass: "list-group-item" },
+                    {
+                      staticClass: "list-group-item",
+                      on: {
+                        click: function($event) {
+                          _vm.getInvoice(item_invoice)
+                        }
+                      }
+                    },
                     [
                       _vm._l(item_invoice.course_period, function(
                         item_course_period
@@ -20440,6 +20623,13 @@ var render = function() {
                           [
                             _vm._v(
                               "\n                            " +
+                                _vm._s(
+                                  _vm._f("moment")(
+                                    item_invoice.created_at.date,
+                                    "DD/MM/YYYY"
+                                  )
+                                ) +
+                                " " +
                                 _vm._s(item_course_period.course.name) +
                                 " (" +
                                 _vm._s(
@@ -20452,7 +20642,13 @@ var render = function() {
                       }),
                       _vm._v(" "),
                       _c("p", { staticClass: "list-group-item-text" }, [
-                        _vm._v("asds sad asd dsadasds ds adsdsada")
+                        _c("strong", [_vm._v("Total:")]),
+                        _vm._v(" " + _vm._s(item_invoice.total))
+                      ]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "list-group-item-text" }, [
+                        _c("strong", [_vm._v("Total Pagado:")]),
+                        _vm._v(" " + _vm._s(item_invoice.balance))
                       ])
                     ],
                     2
@@ -20464,7 +20660,199 @@ var render = function() {
         : _vm._e()
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "col-md-8" })
+    _vm.invoice
+      ? _c("div", { staticClass: "col-md-4" }, [
+          _c("div", { staticClass: "box" }, [
+            _vm._m(3),
+            _vm._v(" "),
+            _c("div", { staticClass: "box-body" }, [
+              _c(
+                "div",
+                { staticClass: "form-group" },
+                _vm._l(_vm.invoice.course_period[0].resources, function(
+                  resource
+                ) {
+                  return _c(
+                    "div",
+                    { staticClass: "custom-control custom-checkbox" },
+                    [
+                      _vm.findResource(resource.id)[0]
+                        ? _c("div", [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.resources,
+                                  expression: "resources"
+                                }
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: { type: "checkbox", id: resource.id },
+                              domProps: {
+                                value: resource,
+                                checked: Array.isArray(_vm.resources)
+                                  ? _vm._i(_vm.resources, resource) > -1
+                                  : _vm.resources
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$a = _vm.resources,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = resource,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        (_vm.resources = $$a.concat([$$v]))
+                                    } else {
+                                      $$i > -1 &&
+                                        (_vm.resources = $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1)))
+                                    }
+                                  } else {
+                                    _vm.resources = $$c
+                                  }
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "custom-control-label",
+                                attrs: { for: resource.id }
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(resource.name) +
+                                    " - costo " +
+                                    _vm._s(_vm._f("currency")(resource.price))
+                                )
+                              ]
+                            )
+                          ])
+                        : _vm._e()
+                    ]
+                  )
+                })
+              )
+            ])
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.invoice
+      ? _c("div", { staticClass: "col-md-4" }, [
+          _c("div", { staticClass: "box" }, [
+            _c("div", { staticClass: "box-header with-border" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-success btn-block",
+                  attrs: { disabled: _vm.isDisabled },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.facturar($event)
+                    }
+                  }
+                },
+                [_vm._v("\n                    Facturar")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "box-body" }, [
+              _c("h3", [
+                _vm._v(
+                  "Recursos: " + _vm._s(_vm._f("currency")(_vm.totalResource))
+                )
+              ]),
+              _vm._v(" "),
+              _c("h3", [
+                _vm._v("Total: " + _vm._s(_vm._f("currency")(_vm.total)))
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "form-group" },
+                [
+                  _c("label", [_vm._v("Monto a pagar")]),
+                  _vm._v(" "),
+                  _c("vue-numeric", {
+                    staticClass: "form-control",
+                    attrs: {
+                      placeholder: "Monto a pagar",
+                      currency: "$",
+                      separator: ",",
+                      minus: false,
+                      min: _vm.totalResource,
+                      max: _vm.total
+                    },
+                    model: {
+                      value: _vm.payment,
+                      callback: function($$v) {
+                        _vm.payment = $$v
+                      },
+                      expression: "payment"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "form-group" },
+                [
+                  _c("label", [_vm._v("Efectivo recibido")]),
+                  _vm._v(" "),
+                  _c("vue-numeric", {
+                    staticClass: "form-control",
+                    attrs: {
+                      placeholder: "Efectivo recibido",
+                      currency: "$",
+                      separator: ",",
+                      minus: false,
+                      min: _vm.payment,
+                      max: 20000
+                    },
+                    model: {
+                      value: _vm.cash_received,
+                      callback: function($$v) {
+                        _vm.cash_received = $$v
+                      },
+                      expression: "cash_received"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _vm.retunedMoney
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "alert alert-info",
+                      attrs: { role: "alert" }
+                    },
+                    [
+                      _c("strong", [
+                        _vm._v(
+                          " Devuelta: " +
+                            _vm._s(_vm._f("currency")(_vm.retunedMoney)) +
+                            " "
+                        )
+                      ])
+                    ]
+                  )
+                : _vm._e()
+            ])
+          ])
+        ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = [
@@ -20491,6 +20879,14 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "box-header with-border" }, [
       _c("h3", { staticClass: "box-title" }, [_vm._v("Deudas")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "box-header with-border" }, [
+      _c("h3", { staticClass: "box-title" }, [_vm._v("Recursos")])
     ])
   }
 ]

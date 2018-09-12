@@ -6,19 +6,13 @@
 
     <title>{{ config('app.name') }}</title>
 
-    <script>
-        window.onload = function() {
-            window.print();
-        };
-    </script>
-
     <style>
         .invoice-box {
             max-width: 800px;
             margin: auto;
             padding: 30px;
-           /* border: 1px solid #eee;
-            box-shadow: 0 0 10px rgba(0, 0, 0, .15);*/
+            /* border: 1px solid #eee;
+             box-shadow: 0 0 10px rgba(0, 0, 0, .15);*/
             font-size: 16px;
             line-height: 24px;
             font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
@@ -93,8 +87,8 @@
                         </td>
 
                         <td>
-                            Recibo #: {{ $invoice->id }}<br>
-                            Fecha: {{ $invoice->created_at->format('d/m/Y') }}<br>
+                            Abono #: {{ $payment->id }}<br>
+                            Fecha: {{ $payment->invoice->created_at->format('d/m/Y') }}<br>
                         </td>
                     </tr>
                 </table>
@@ -114,10 +108,10 @@
 
                         <td>
                             A, <br>
-                            <strong>{{ $invoice->student->full_name }}</strong><br />
-                            {!! str_replace(',',', <br>', $invoice->student->address) !!} <br>
-                            Cedula:  {{ $invoice->student->id_card }} <br>
-                            Teléfono:  {{ $invoice->student->phone }}
+                            <strong>{{ $payment->invoice->student->full_name }}</strong><br />
+                            {!! str_replace(',',', <br>', $payment->invoice->student->address) !!} <br>
+                            Cedula:  {{ $payment->invoice->student->id_card }} <br>
+                            Teléfono:  {{ $payment->invoice->student->phone }}
                         </td>
                     </tr>
                 </table>
@@ -125,53 +119,12 @@
         </tr>
         <tr class="heading">
             <td>Descripción</td>
-            <td>Precio</td>
+            <td>Monto Pagado</td>
         </tr>
 
-        @foreach($invoice->coursePeriod as $item)
-            <tr class="item">
-                <td>{{ $item->course->name }} ({{ $item->course->typeCourse->name  }})</td>
-                <td>{{ number_format($item->price, 2, '.', ',') }}</td>
-            </tr>
-        @endforeach
-
-        @foreach($invoice->resources as $item)
-            <tr class="item {{ $loop->last ? 'last' : '' }}">
-                <td>{{ $item->name }}</td>
-                <td>{{ number_format($item->price, 2, '.', ',') }}</td>
-            </tr>
-        @endforeach
-
-        <tr class="total">
-            <td></td>
-            <td>Total: {{ number_format($invoice->total, 2, '.', ',') }}</td>
-        </tr>
-
-    </table>
-
-
-
-    <table cellpadding="0" cellspacing="0">
-
-        <tr class="top">
-            <h1 style="text-align: center">Historial de pagos</h1>
-        </tr>
-
-        <tr class="heading">
-            <td>Fecha</td>
-            <td>Monto pagado</td>
-        </tr>
-
-        @foreach($invoice->payments as $payment)
-            <tr class="item {{ $loop->last ? 'last' : '' }}">
-                <td>{{ $payment->created_at->format('d/m/Y') }}</td>
-                <td>{{ $payment->payment_amount }}</td>
-            </tr>
-        @endforeach
-
-        <tr class="total">
-            <td></td>
-            <td>Total pagado: {{ number_format($invoice->balance, 2, '.', ',') }}</td>
+        <tr class="item">
+            <td>abono a factura pendiente</td>
+            <td>{{ number_format($payment->payment_amount, 2, '.', ',') }}</td>
         </tr>
 
     </table>

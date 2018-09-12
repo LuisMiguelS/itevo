@@ -36,7 +36,7 @@ class TenantStudentTrashedDataTable extends DataTable
             })
             ->editColumn('signed_up', function (Student $student) {
                 if ($student->signed_up) {
-                    return $student->signed_up->format('d/m/Y');
+                    return (new Carbon($student->signed_up))->format('d/m/Y');
                 }
                 return '<span class="label label-info">Sin inscribir</span>';
             })

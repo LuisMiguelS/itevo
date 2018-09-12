@@ -25,7 +25,7 @@ class TenantInvoiceDataTable extends DataTable
                 return $invoice->student->full_name;
             })
             ->addColumn('total', function (Invoice $invoice) {
-                return number_format($invoice->total(),2,'.',',');
+                return number_format($invoice->total,2,'.',',');
             })
             ->editColumn('balance', function (Invoice $invoice) {
                 return number_format($invoice->balance,2,'.',',');
@@ -41,7 +41,7 @@ class TenantInvoiceDataTable extends DataTable
             })
             ->addColumn('pays', function (Invoice $invoice) {
                 return $invoice->payments->map(function ($payment) {
-                   return "<a href='' target='_blank'>Abono #{$payment->id}  a recibo {$payment->invoice_id} - {$payment->created_at->format('d/m/Y')} </a>";
+                   return "<a href='".route('tenant.invoice.accounts_receivable', ['branchOffice' => request()->branchOffice, 'id' => $payment->id])."' target='_blank'>Abono #{$payment->id}  a recibo {$payment->invoice_id} - {$payment->created_at->format('d/m/Y')} </a>";
                 })->implode('<br>');
             })
             ->rawColumns(['date', 'action', 'pays']);

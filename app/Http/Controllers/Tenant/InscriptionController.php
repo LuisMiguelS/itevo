@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Tenant;
 
+use App\{BranchOffice};
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Tenant\InscriptionRequest;
-use App\{BranchOffice};
 
 class InscriptionController extends Controller
 {
@@ -15,12 +15,16 @@ class InscriptionController extends Controller
 
     public function index(BranchOffice $branchOffice)
     {
+        $this->authorize('tenant-store', \App\Invoice::class);
+
         return view('tenant.inscription.index')
             ->with(['branchOffice' => $branchOffice]);
     }
 
     public function store(InscriptionRequest $request, BranchOffice $branchOffice)
     {
+        $this->authorize('tenant-store', \App\Invoice::class);
+
         return response()->json(['data' => $request->createInscription($branchOffice)], 201);
     }
 
