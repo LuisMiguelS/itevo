@@ -37,11 +37,20 @@ class TenantDashboard implements Htmlable
         $promotion = $this->branchOffice->currentPromotion();
         $period = optional($promotion)->currentPeriod() ?? new period;
 
+        $incomeDay =  \App\Invoice::with(['payments', 'student' => function ($query) {
+            $query->where('branch_office_id', $this->branchOffice->id);
+        }])->get()->pluck('payments')->collapse()->sum(function ($payment) {
+            if (now()->toDateString() === $payment->created_at->toDateString()) {
+                return $payment->payment_amount;
+            }
+        });
+
         return view('tenant.dashboard')
             ->with([
                 'branchOffice' => $this->branchOffice,
                 'promotion' => $promotion,
-                'period' => $period
+                'period' => $period,
+                'incomeDay' => $incomeDay
             ])
             ->render();
     }

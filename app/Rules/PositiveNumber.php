@@ -25,6 +25,6 @@ class PositiveNumber implements Rule
      */
     public function message()
     {
-        return 'The :attribute debe ser un número positivo.';
+        return 'El :attribute debe ser un número positivo.';
     }
 }

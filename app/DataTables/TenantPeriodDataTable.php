@@ -28,12 +28,12 @@ class TenantPeriodDataTable extends DataTable
             })
             ->editColumn('start_at', function(Period $period) {
                 if ($period->getOriginal('start_at') === null)
-                    return 'Sin definir';
+                    return '<span class="label label-danger">Sin definir</span>';
                 return $period->start_at->format('d/m/Y');
             })
             ->editColumn('ends_at', function(Period $period) {
                 if ($period->getOriginal('ends_at') === null)
-                    return 'Sin definir';
+                    return '<span class="label label-danger">Sin definir</span>';
                 return $period->ends_at->format('d/m/Y');
             })
             ->editColumn('created_at', function(Period $period) {
@@ -49,7 +49,7 @@ class TenantPeriodDataTable extends DataTable
             ->addColumn('action', function (Period $period) {
                 return view('tenant.period._actions', compact('period'));
             })
-            ->rawColumns(['action', 'status', 'dates']);
+            ->rawColumns(['action', 'status', 'dates', 'start_at', 'ends_at']);
     }
 
     /**

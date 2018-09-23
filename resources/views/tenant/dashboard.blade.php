@@ -25,14 +25,14 @@
 		<div class="col-lg-3 col-xs-6">
 			<div class="small-box bg-green">
 				<div class="inner">
-					<h3>100,000.00</h3>
+					<h3>{{ number_format($incomeDay, 2) }}</h3>
 
 					<p><strong>Ingresos del día</strong></p>
 				</div>
 				<div class="icon">
 					<i class="fa fa-dollar"></i>
 				</div>
-				<a href="#" class="small-box-footer">Ver detalle <i class="fa fa-arrow-circle-right"></i></a>
+				<a href="{{ route('tenant.invoice.index', $branchOffice) }}" class="small-box-footer">Ver detalle <i class="fa fa-arrow-circle-right"></i></a>
 			</div>
 		</div>
 
@@ -67,7 +67,7 @@
 				<div class="icon">
 					<i class="fa fa-spinner"></i>
 				</div>
-				<a href="{{ $promotion->url->show ?? '#' }}" class="small-box-footer">Más informacion <i class="fa fa-arrow-circle-right"></i></a>
+				<a href="{{ route('tenant.promotions.index', $branchOffice) }}" class="small-box-footer">Más informacion <i class="fa fa-arrow-circle-right"></i></a>
 			</div>
 		</div>
 	</div>

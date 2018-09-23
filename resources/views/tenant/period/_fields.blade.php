@@ -59,6 +59,7 @@
            type="date"
            class="form-control"
            name="start_at"
+
            @if($period->getOriginal('ends_at') !== null) readonly @endif
            value="{{ old('start_at', $period->start_at->format('Y-m-d')) }}">
 
