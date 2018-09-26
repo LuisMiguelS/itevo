@@ -59,8 +59,12 @@
            type="date"
            class="form-control"
            name="start_at"
-
-           @if($period->getOriginal('ends_at') !== null) readonly @endif
+           @if($lastPeriod)
+           min="{{$lastPeriod->ends_at->format('Y-m-d')}}"
+           @endif
+           @if($period->getOriginal('ends_at') !== null)
+           readonly
+           @endif
            value="{{ old('start_at', $period->start_at->format('Y-m-d')) }}">
 
     @if ($errors->has('start_at'))
@@ -77,7 +81,10 @@
            type="date"
            class="form-control"
            name="ends_at"
-           @if($period->getOriginal('ends_at') !== null) readonly @endif
+           max="{{ "{$promotion->created_at->format('Y')}-12-29" }}"
+           @if($period->getOriginal('ends_at') !== null)
+           readonly
+           @endif
            value="{{ old('ends_at', $period->ends_at->format('Y-m-d')) }}">
 
     @if ($errors->has('ends_at'))

@@ -82,31 +82,14 @@ class CoursePeriod extends Model
     {
         $this->resources()->detach();
 
-        foreach ($resources as $resource_id) {
-           $this->onlyIntergerParameter((int) $resource_id);
-        }
-    }
-
-    /**
-     * @param $interger
-     */
-    public function onlyIntergerParameter($interger)
-    {
-        if (is_int($interger)){
-            $resource = Resource::findOrFail($interger);
-            $this->isResource($resource);
-        }
-    }
-
-    /**
-     * @param \App\Resource $resource
-     */
-    public function isResource(Resource $resource)
-    {
-        if ($resource) {
+        collect($resources)->filter(function ($object) {
+           if (is_int( (int) $object)) return $object;
+        })->each(function ($resource_id) {
+            $resource = Resource::findOrFail($resource_id);
             $this->resources()->syncWithoutDetaching($resource);
-        }
+        });
     }
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -116,28 +99,26 @@ class CoursePeriod extends Model
         return $this->morphedByMany(Schedule::class, 'coursable');
     }
 
-    public function addSchedules($request)
+    public function addSchedules($schedules)
     {
         $this->schedules()->detach();
 
-        foreach ($request as $schedule_id) {
-            $schedule = Schedule::find($schedule_id);
-
-            if ($schedule) {
-                $course = $this->haveSameWeekday($schedule);
-
-                if ($course->isNotEmpty() && $course->first()->isNotEmpty()) {
-                    foreach ($course->first() as $course_schedule) {
-                        if (! ($course_schedule->start_at->toTimeString() >= $schedule->start_at->toTimeString() && $course_schedule->ends_at->toTimeString() <= $schedule->ends_at->toTimeString())) {
-                            $this->schedules()->syncWithoutDetaching($schedule->id);
-                        }
+        collect($schedules)->each(function ($schedule_id) {
+            tap(Schedule::find($schedule_id), function(Schedule $schedule) {
+                tap($this->haveSameWeekday($schedule), function ($courses) use($schedule) {
+                    if ($courses->collapse()->isNotEmpty()) {
+                        $courses->collapse()->each(function ($course) use($schedule) {
+                            if (! ($course->start_at->toTimeString() >= $schedule->start_at->toTimeString()
+                                && $course->ends_at->toTimeString() <= $schedule->ends_at->toTimeString())) {
+                                $this->schedules()->syncWithoutDetaching($schedule->id);
+                            }
+                        });
+                        return;
                     }
-                }else {
                     $this->schedules()->syncWithoutDetaching($schedule->id);
-                }
-            }
-        }
-
+                });
+            });
+        });
 
     }
 

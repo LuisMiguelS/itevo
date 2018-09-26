@@ -34,8 +34,8 @@ Vue.use(VueCurrencyFilter, {
     symbolSpacing: true
 });
 
-Vue.component('inscription', require('./components/Inscription'));
-Vue.component('accounts-receivable', require('./components/Accounts_Receivable'));
+Vue.component('inscription', require('./components/Inscription/InscriptionPage'));
+Vue.component('accounts-receivable', require('./components/AccountRecivable/AccountReceivablePage'));
 
 const app = new Vue({
     el: '#app'

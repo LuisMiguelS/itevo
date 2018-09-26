@@ -1,13 +1,6 @@
 <template>
     <main>
-        <div class="alert alert-danger alert-dismissible" role="alert" v-if="errors">
-            <strong v-if="errors.message"> {{ errors.message }}</strong>
-            <ul v-for="error in errors.errors">
-                <li v-for="message in error">
-                    {{ message }}
-                </li>
-            </ul>
-        </div>
+        <error-account-recivable :errors="errors" v-if="errors"></error-account-recivable>
 
         <div class="col-md-4">
             <div class="box">
@@ -27,42 +20,14 @@
                 </div>
             </div>
 
-            <div class="box" v-if="student">
-                <div class="box-header with-border"><h3 class="box-title">Deudas</h3></div>
-                <div class="box-body">
-                    <ul class="list-group">
-                        <a class="list-group-item" v-for="item_invoice in student.invoices" @click="getInvoice(item_invoice)">
-                            <h5 class="list-group-item-heading" v-for="item_course_period in item_invoice.course_period">
-                                {{ item_invoice.created_at.date | moment("DD/MM/YYYY") }} {{ item_course_period.course.name }} ({{ item_course_period.course.type_course.name }})
-                            </h5>
-                            <p class="list-group-item-text"><strong>Total:</strong> {{ item_invoice.total }}</p>
-                            <p class="list-group-item-text"><strong>Total Pagado:</strong> {{ item_invoice.balance }}</p>
-                        </a>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4" v-if="invoice">
-            <div class="box">
-                <div class="box-header with-border"><h3 class="box-title">Recursos</h3></div>
-                <div class="box-body">
-                    <div class="form-group">
-                        <div class="custom-control custom-checkbox" v-for="resource in invoice.course_period[0].resources">
-                            <div v-if="findResource(resource.id)[0]">
-                                <input class="custom-control-input"
-                                       type="checkbox"
-                                       :id="resource.id"
-                                       :value="resource"
-                                       v-model="resources">
-                                <label class="custom-control-label" :for="resource.id">{{ resource.name }} - costo {{ resource.price | currency }}</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <debts v-if="student"
+                   :student="student"
+                   v-on:click-debt="getInvoice">
+            </debts>
 
         </div>
+
+        <resources v-if="invoice" :invoice="invoice" v-on:change-resources="changeResources"></resources>
 
         <div class="col-md-4" v-if="invoice">
 
@@ -119,9 +84,18 @@
 </template>
 
 <script>
+    import ErrorAccountRecivable from './ErrorAccountRecivable';
+    import Debts from './debt';
+    import Resources from './Resources';
+
     export default {
         name: "accounts_receivable",
         props: ['branchOffice'],
+        components: {
+            ErrorAccountRecivable,
+            Debts,
+            Resources
+        },
         data() {
             return {
                 students: [],
@@ -152,11 +126,6 @@
                 this.invoice = null;
                 this.resources = [];
             },
-            findResource(resource_id) {
-                return this.invoice.resources.find((resource) => {
-                    return resource_id !== resource.id
-                })
-            },
             facturar() {
                 axios.post(`/${this.branchOffice.slug}/accounts/receivable`, {
                     'invoice_id': this.invoice.id,
@@ -179,6 +148,9 @@
                 this.resources = [];
                 this.invoice = null;
                 this.errors = false;
+            },
+            changeResources(newResources) {
+                this.resources = newResources;
             }
         },
         computed: {

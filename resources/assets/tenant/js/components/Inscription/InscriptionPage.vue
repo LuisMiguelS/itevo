@@ -1,22 +1,11 @@
 <template>
     <main>
         <div class="col-md-8">
-
             <div class="box">
                 <div class="box-header with-border"><h3 class="box-title">Inscripcion</h3></div>
                 <div class="box-body">
-
-                    <div class="alert alert-danger alert-dismissible" role="alert" v-if="errors">
-                        <strong v-if="errors.message"> {{ errors.message }}</strong>
-                        <ul v-for="error in errors.errors">
-                           <li v-for="message in error">
-                               {{ message }}
-                           </li>
-                        </ul>
-                    </div>
-
+                    <error-inscription :errors="errors" v-if="errors"></error-inscription>
                         <div class="row">
-
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Estudiante <span class="text-danger">*</span></label>
@@ -29,7 +18,6 @@
                                     </multiselect>
                                 </div>
                             </div>
-
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Curso <span class="text-danger">*</span></label>
@@ -45,34 +33,16 @@
                             </div>
 
                         </div>
-
                         <div class="row">
                             <div class="col-md-6">
-                              <div v-if="student">
-                                  <p> <strong> Estudiante:</strong> {{ student.name }} {{ student.last_name }} </p>
-                                  <p> <strong> Cedula:</strong> {{ student.id_card }}</p>
-                                  <p> <strong> Cedula del tutor:</strong> {{ student.tutor_id_card }} </p>
-                                  <p> <strong> Telefono:</strong> {{ student.phone }} </p>
-                                  <p style="margin-top:20px"> <strong>Notas:</strong> {{ student.notes }}</p>
-                              </div>
+                                <student-info :student="student" v-if="student"></student-info>
                             </div>
-
                             <div class="col-md-6">
-                              <div v-if="course">
-                                  <p> <strong> Curso:</strong> {{ course.course.name }} ({{ course.course.type_course.name }})</p>
-                                  <p> <strong> Fecha de inicio:</strong> {{ course.start_at.date | moment("dddd, MMMM D YYYY") }} </p>
-                                  <p> <strong> Fecha de finalización:</strong> {{ course.ends_at.date | moment("dddd, MMMM D YYYY") }}</p>
-                                  <p> <strong> Profesor:</strong> {{ course.teacher.full_name }}</p>
-                                  <p> <strong> Aula:</strong> {{ course.classroom.name }} - {{ course.classroom.building }}</p>
-                                  <p> <strong>Horario:</strong>
-                                      <small v-for="schedule in course.schedules"><br> {{ schedule.weekday }} {{ schedule.start_at.date |  moment("h:mm a") }} - {{ schedule.ends_at.date |  moment("h:mm a") }}</small>
-                                  </p>
-                              </div>
+                                <course-info :course="course" v-if="course"></course-info>
                             </div>
                         </div>
                 </div>
             </div>
-
             <div class="box" v-if="course">
                 <div class="box-body">
                     <div class="form-group row">
@@ -90,11 +60,8 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
         <div class="col-md-4">
-
             <div class="box">
                 <div class="box-header with-border">
                     <button class="btn btn-success btn-block"
@@ -103,16 +70,11 @@
                         Facturar</button>
                 </div>
                 <div class="box-body">
-
                     <h3>Curso: {{ totalCourse | currency }}</h3>
-
                     <h3>Recursos: {{ totalResource | currency }}</h3>
-
                     <h3>Total: {{ total | currency }}</h3>
-
                     <div class="form-group">
                         <label>Monto a pagar</label>
-
                         <vue-numeric
                                 class="form-control"
                                 placeholder="Monto a pagar"
@@ -123,10 +85,8 @@
                                 v-bind:max="total"
                                 v-model="payment"></vue-numeric>
                     </div>
-
                     <div class="form-group">
                         <label>Efectivo recibido</label>
-
                         <vue-numeric
                                 class="form-control"
                                 placeholder="Efectivo recibido"
@@ -137,22 +97,28 @@
                                 v-bind:max="20000"
                                 v-model="cash_received"></vue-numeric>
                     </div>
-
                     <div class="alert alert-info" role="alert" v-if="retunedMoney">
                         <strong> Devuelta: {{ retunedMoney | currency }} </strong>
                     </div>
-
                 </div>
             </div>
-
         </div>
     </main>
 </template>
 
 <script>
+    import ErrorInscription from './ErrorInscription';
+    import StudentInfo from './StudentInfo';
+    import CourseInfo from './CourseInfo';
+
     export default {
         name: "inscription",
         props: ['branchOffice'],
+        components: {
+            CourseInfo,
+            StudentInfo,
+            ErrorInscription
+        },
         data() {
             return {
                 students: [],

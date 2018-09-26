@@ -51,10 +51,6 @@ class StorePromotionRequest extends FormRequest
     public function createPromotion(BranchOffice $branchOffice)
     {
         $promotion = $branchOffice->promotions()->create($this->validated());
-        $promotion->periods()->create([
-            'status' => Period::STATUS_WITHOUT_STARTING,
-            'period_no' => Period::PERIOD_NO_1,
-        ]);
         return "Promocion No. {$promotion->promotion_no} creada correctamente.";
     }
 }

@@ -43,11 +43,6 @@ class CreatePromotionTest extends TestCase
         $this->assertDatabaseHas('promotions', [
             'promotion_no' => 1
         ]);
-
-        $this->assertDatabaseHas('periods', [
-            'status' => Period::STATUS_WITHOUT_STARTING,
-            'period_no' => Period::PERIOD_NO_1,
-        ]);
     }
 
     /** @test */

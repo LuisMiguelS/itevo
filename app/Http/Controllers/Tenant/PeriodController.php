@@ -56,7 +56,9 @@ class PeriodController extends Controller
 
         $period = new Period;
 
-        return view('tenant.period.create', compact('branchOffice', 'promotion', 'breadcrumbs', 'period'));
+        $lastPeriod = $promotion->periods->last();
+
+        return view('tenant.period.create', compact('branchOffice', 'promotion', 'breadcrumbs', 'period', 'lastPeriod'));
     }
 
     /**
@@ -100,7 +102,9 @@ class PeriodController extends Controller
 
         $breadcrumbs = 'period-edit';
 
-        return view('tenant.period.edit', compact('branchOffice', 'promotion', 'period', 'breadcrumbs'));
+        $lastPeriod = $promotion->periods()->where('id', '<>', $period->id)->get()->last();
+
+        return view('tenant.period.edit', compact('branchOffice', 'promotion', 'period', 'breadcrumbs', 'lastPeriod'));
     }
 
     /**

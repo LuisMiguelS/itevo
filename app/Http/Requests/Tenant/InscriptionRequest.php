@@ -38,7 +38,7 @@ class InscriptionRequest extends FormRequest
 
     public function createInscription(\App\BranchOffice $branchOffice)
     {
-        $invoice = DB::transaction(function () use ($branchOffice) {
+        return DB::transaction(function () use ($branchOffice) {
             $student = tap(Student::findOrFail(request('student_id')), function ($student) {
                 if ($student->signed_up === null) {
                     $student->signed_up = Carbon::now();
@@ -51,7 +51,7 @@ class InscriptionRequest extends FormRequest
                 }
             });
 
-            return tap($student->invoices()->create(), function ($invoice) use ($student) {
+            $invoice = tap($student->invoices()->create(), function ($invoice) use ($student) {
                 collect(request('course_period'))->unique('id')->each(function ($course_period) use ($student, $invoice) {
                     $active_course = CoursePeriod::findOrFail($course_period['id']);
                     try{
@@ -67,18 +67,19 @@ class InscriptionRequest extends FormRequest
                     $invoice->resources()->attach($resource->id,  ['price' => $resource->price]);
                 });
             });
+
+            $invoice->payments()->create([
+                'description' => "Abono inicial a factura #{$invoice->id}",
+                'payment_amount' => $this->paid_out,
+                'cash_received' => $this->cash_received
+            ]);
+
+            if (((int) $invoice->total - $invoice->balance) == 0){
+                $invoice->status = Invoice::STATUS_COMPLETE;
+                $invoice->save();
+            }
+
+            return $invoice;
         });
-
-        $invoice->payments()->create([
-            'payment_amount' => $this->paid_out,
-            'cash_received' => $this->cash_received
-        ]);
-
-        if (((int) $invoice->total - $invoice->balance) == 0){
-            $invoice->status = Invoice::STATUS_COMPLETE;
-            $invoice->save();
-        }
-
-        return $invoice;
     }
 }

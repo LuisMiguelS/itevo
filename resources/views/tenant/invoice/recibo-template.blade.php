@@ -123,7 +123,7 @@
         </tr>
 
         <tr class="item">
-            <td>abono a factura pendiente</td>
+            <td>{{ $payment->description }}</td>
             <td>{{ number_format($payment->payment_amount, 2, '.', ',') }}</td>
         </tr>
 
