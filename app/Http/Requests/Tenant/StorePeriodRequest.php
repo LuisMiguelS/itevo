@@ -78,6 +78,11 @@ class StorePeriodRequest extends FormRequest
 
     protected function extraValidation()
     {
+        abort_if($this->promotion->periods->last()['status'] === Period::STATUS_CURRENT
+            && $this->status != Period::STATUS_WITHOUT_STARTING,
+            Response::HTTP_BAD_REQUEST,
+            "Debe finalizar el período actual para crear un nuevo período actual o final");
+
         if ($previous_period = $this->getPreviosPeriod()) {
             $this->isLastPeriodEndsAtGreater($previous_period);
         }
@@ -103,7 +108,7 @@ class StorePeriodRequest extends FormRequest
 
         abort_if($previous_ends_at->greaterThan($new_start_at),
             Response::HTTP_BAD_REQUEST,
-            "Tu fecha de inicio elegida [{$new_start_at->toDateTimeString()}] debe ser mayor que [{$previous_ends_at->toDateTimeString()}] la fecha de finalizacion del periodo anterior");
+            "Tu fecha de inicio elegida {$new_start_at->format('d-m-Y')} debe ser mayor que {$previous_ends_at->format('d-m-Y')} la fecha de finalizacion del periodo anterior");
 
     }
 
@@ -114,7 +119,7 @@ class StorePeriodRequest extends FormRequest
 
         abort_if($start_at->greaterThanOrEqualTo($ends_at),
             Response::HTTP_BAD_REQUEST,
-            "La fecha de inicio [{$start_at->toDateTimeString()}] no puede ser mayor que la de finalizacion [{$ends_at->toDateTimeString()}]");
+            "La fecha de inicio {$start_at->format('d-m-Y')} no puede ser mayor que la de finalizacion {$ends_at->format('d-m-Y')}");
 
     }
 }

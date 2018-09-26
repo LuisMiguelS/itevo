@@ -78,6 +78,11 @@ class UpdatePeriodRequest extends FormRequest
 
     protected function extraValidation()
     {
+        abort_if($this->promotion->periods()->where('id', '<>', $this->period->id)->get()->last()['status'] === Period::STATUS_CURRENT
+            && $this->status != Period::STATUS_WITHOUT_STARTING,
+            Response::HTTP_BAD_REQUEST,
+            "Debe finalizar el período actual para crear un nuevo período actual o final");
+
         $this->isLastPeriodEndsAtGreater();
 
         $this->isStartDateAtGraterThanOrEqualToEndsAt();
@@ -97,9 +102,9 @@ class UpdatePeriodRequest extends FormRequest
 
     protected function getPreviosPeriod()
     {
-        return $this->promotion->periods()
-            ->where('id', '<>', $this->period->id)
-            ->orderByDesc('id')->first();
+        return $this->promotion->periods()->get()->last(function ($value) {
+            return $value->id < $this->period->id;
+        });
     }
 
     protected function isStartDateAtGraterThanOrEqualToEndsAt()
