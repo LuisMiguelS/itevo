@@ -38,3 +38,23 @@
         @endif
     </div>
 </div>
+
+<div class="form-group  {{ $errors->has('necessary') ? 'has-error' : '' }}">
+    <label>Imprescindible/Necesario</label>
+    <br>
+    <label class="radio-inline">
+        <input type="radio" name="necessary" value="{{ \App\Resource::UNNECESSARY }}" @if($resource->necessary == \App\Resource::UNNECESSARY) checked @endif>
+        No necesario
+    </label>
+    <label class="radio-inline">
+        <input type="radio" name="necessary" value="{{ \App\Resource::NECESSARY }}" @if($resource->necessary == \App\Resource::NECESSARY) checked @endif>
+        Necesario
+    </label>
+
+    @if ($errors->has('necessary'))
+        <span class="help-block">
+            <strong>{{ $errors->first('necessary') }}</strong>
+        </span>
+    @endif
+</div>
+

@@ -42,7 +42,10 @@ class UpdateClassroomTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Aula {$this->defaultData['name']} actualizada con éxito."]);
 
-        $this->assertDatabaseHas('classrooms', $this->withData());
+        $this->assertDatabaseHas('classrooms', [
+            'name' => 'aula 100',
+            'building' => 'edificio j'
+        ]);
     }
 
     /** @test */
@@ -59,7 +62,7 @@ class UpdateClassroomTest extends TestCase
 
         $this->assertDatabaseHas('classrooms', [
             'id' => $this->classroom->id,
-            'name' => $this->classroom->name,
+            'name' => strtolower($this->classroom->name),
         ]);
     }
 
@@ -72,7 +75,10 @@ class UpdateClassroomTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
-        $this->assertDatabaseMissing('classrooms', $this->withData());
+        $this->assertDatabaseMissing('classrooms', [
+            'name' => 'aula 100',
+            'building' => 'edificio j'
+        ]);
     }
 
     /** @test */
@@ -84,7 +90,10 @@ class UpdateClassroomTest extends TestCase
             ->put($this->classroom->url->update, $this->withData())
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
-        $this->assertDatabaseMissing('classrooms', $this->withData());
+        $this->assertDatabaseMissing('classrooms', [
+            'name' => 'aula 100',
+            'building' => 'edificio j'
+        ]);
     }
 
     /** @test */
@@ -97,6 +106,9 @@ class UpdateClassroomTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasErrors(['name', 'building']);
 
-        $this->assertDatabaseMissing('classrooms', $this->withData());
+        $this->assertDatabaseMissing('classrooms', [
+            'name' => 'aula 100',
+            'building' => 'edificio j'
+        ]);
     }
 }

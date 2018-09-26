@@ -42,7 +42,10 @@ class CreateTeacherTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Profesor {$this->defaultData['name']} {$this->defaultData['last_name']} creado correctamente."]);
 
-        $this->assertDatabaseHas('teachers', $this->withData());
+        $this->assertDatabaseHas('teachers', $this->withData([
+            'name' => 'cristian',
+            'last_name' => 'gomez',
+        ]));
     }
 
     /** @test */
@@ -97,7 +100,9 @@ class CreateTeacherTest extends TestCase
             ->assertSessionHasErrors(['id_card']);
 
         $this->assertDatabaseMissing('teachers', $this->withData([
-            'id_card' => $teacher->id_card
+            'id_card' => $teacher->id_card,
+            'name' => 'cristian',
+            'last_name' => 'gomez',
         ]));
     }
 
@@ -116,7 +121,9 @@ class CreateTeacherTest extends TestCase
             ->assertSessionHasErrors(['phone']);
 
         $this->assertDatabaseMissing('teachers', $this->withData([
-            'phone' => $teacher->phone
+            'phone' => $teacher->phone,
+            'name' => 'cristian',
+            'last_name' => 'gomez',
         ]));
     }
 }

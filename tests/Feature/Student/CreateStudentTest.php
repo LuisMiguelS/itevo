@@ -44,7 +44,9 @@ class CreateStudentTest extends TestCase
             ->assertSessionHas(['flash_success' => "Estudiante {$this->defaultData['name']} {$this->defaultData['last_name']} creado correctamente."]);
 
         $this->assertDatabaseHas('students', $this->withData([
-            'birthdate' => new Carbon($this->defaultData['birthdate'])
+            'birthdate' => new Carbon($this->defaultData['birthdate']),
+            'name' => 'cristian',
+            'last_name' => 'gomez',
         ]));
     }
 
@@ -101,6 +103,8 @@ class CreateStudentTest extends TestCase
 
         $this->assertDatabaseMissing('students', $this->withData([
             'id_card' => $student->id_card,
+            'name' => 'cristian',
+            'last_name' => 'gomez',
         ]));
     }
 
@@ -116,7 +120,10 @@ class CreateStudentTest extends TestCase
             ->post(route('tenant.students.store', $branchOffice), $this->withData())
             ->assertStatus(Response::HTTP_BAD_REQUEST);
 
-        $this->assertDatabaseMissing('students', $this->withData());
+        $this->assertDatabaseMissing('students', $this->withData([
+            'name' => 'cristian',
+            'last_name' => 'gomez',
+        ]));
     }
 
     /** @test */
@@ -132,6 +139,9 @@ class CreateStudentTest extends TestCase
             ]))
             ->assertStatus(Response::HTTP_BAD_REQUEST);
 
-        $this->assertDatabaseMissing('students', $this->withData());
+        $this->assertDatabaseMissing('students', $this->withData([
+            'name' => 'cristian',
+            'last_name' => 'gomez',
+        ]));
     }
 }

@@ -35,9 +35,11 @@ class CreateClassroomTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Aula {$this->defaultData['name']} creado con éxito."]);
 
-        $this->assertDatabaseHas('classrooms', $this->withData([
-            'branch_office_id' => $this->branchOffice->id
-        ]));
+        $this->assertDatabaseHas('classrooms', [
+            'branch_office_id' => $this->branchOffice->id,
+            'name' => 'aula 100',
+            'building' => 'edificio j'
+        ]);
     }
 
     /** @test */
@@ -49,9 +51,11 @@ class CreateClassroomTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
-        $this->assertDatabaseMissing('classrooms', $this->withData([
-            'branch_office_id' => $this->branchOffice->id
-        ]));
+        $this->assertDatabaseMissing('classrooms', [
+            'branch_office_id' => $this->branchOffice->id,
+            'name' => 'aula 100',
+            'building' => 'edificio j'
+        ]);
     }
 
     /** @test */

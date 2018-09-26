@@ -14,6 +14,7 @@ class CreateResourceTest extends TestCase
     protected $defaultData = [
         'name' => 'Inscripcion',
         'price' => 200,
+        'necessary' => \App\Resource::NECESSARY
     ];
 
     private $admin;
@@ -35,7 +36,9 @@ class CreateResourceTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Recurso {$this->defaultData['name']} creado con éxito."]);
 
-        $this->assertDatabaseHas('resources', $this->withData());
+        $this->assertDatabaseHas('resources', $this->withData([
+            'name' => 'inscripcion',
+        ]));
     }
 
     /** @test */
@@ -47,7 +50,9 @@ class CreateResourceTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
-        $this->assertDatabaseMissing('resources', $this->withData());
+        $this->assertDatabaseMissing('resources', $this->withData([
+            'name' => 'inscripcion',
+        ]));
     }
 
     /** @test */

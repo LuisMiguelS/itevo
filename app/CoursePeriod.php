@@ -48,7 +48,7 @@ class CoursePeriod extends Model
      */
     public function students()
     {
-        return $this->belongsToMany(Student::class);
+        return $this->morphedByMany(Student::class, 'coursable');
     }
 
     /**
@@ -72,7 +72,7 @@ class CoursePeriod extends Model
      */
     public function resources()
     {
-        return $this->belongsToMany(Resource::class);
+        return $this->morphedByMany(Resource::class, 'coursable');
     }
 
     /**
@@ -113,7 +113,7 @@ class CoursePeriod extends Model
      */
     public function schedules()
     {
-        return $this->belongsToMany(Schedule::class);
+        return $this->morphedByMany(Schedule::class, 'coursable');
     }
 
     public function addSchedules($request)

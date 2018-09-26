@@ -42,7 +42,9 @@ class CreateCoursesTest extends TestCase
            ->assertStatus(Response::HTTP_FOUND)
            ->assertSessionHas(['flash_success'=> "Curso {$this->defaultData['name']} creado con éxito."]);
 
-       $this->assertDatabaseHas('courses', $this->withData());
+       $this->assertDatabaseHas('courses', [
+           'name' => 'curso de arte',
+       ]);
     }
 
     /** @test */

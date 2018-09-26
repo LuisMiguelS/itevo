@@ -105,7 +105,7 @@
     </div>
     <div class="col-md-6">
         <div class="form-group {{ $errors->has('ends_at') ? 'has-error' : '' }}" >
-            <label  class="control-label">Hora de finalizacion <span class="text-danger">*</span></label>
+            <label  class="control-label">Fecha de finalizacion <span class="text-danger">*</span></label>
 
             <input id="ends_at"
                    type="date"

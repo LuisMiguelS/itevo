@@ -32,7 +32,7 @@ class DeleteuserTestTest extends TestCase
 
         $this->assertSoftDeleted('users', [
             'id' => $this->user->id,
-            'name' => $this->user->name,
+            'name' => strtolower($this->user->name),
         ]);
     }
 
@@ -47,7 +47,7 @@ class DeleteuserTestTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,
-            'name' => $this->user->name,
+            'name' => strtolower($this->user->name),
         ]);
     }
 
@@ -62,7 +62,7 @@ class DeleteuserTestTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,
-            'name' => $this->user->name,
+            'name' => strtolower($this->user->name),
         ]);
     }
 }

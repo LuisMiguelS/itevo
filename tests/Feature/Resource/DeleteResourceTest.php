@@ -38,7 +38,7 @@ class DeleteResourceTest extends TestCase
 
         $this->assertSoftDeleted('resources', [
             'id' => $this->resource->id,
-            'name' => $this->resource->name,
+            'name' => strtolower($this->resource->name),
         ]);
     }
 
@@ -56,7 +56,7 @@ class DeleteResourceTest extends TestCase
 
         $this->assertDatabaseHas('resources', [
             'id' => $this->resource->id,
-            'name' => $this->resource->name,
+            'name' => strtolower($this->resource->name),
         ]);
     }
 
@@ -71,7 +71,7 @@ class DeleteResourceTest extends TestCase
 
         $this->assertDatabaseHas('resources', [
             'id' => $this->resource->id,
-            'name' => $this->resource->name,
+            'name' => strtolower($this->resource->name),
         ]);
     }
 
@@ -86,7 +86,7 @@ class DeleteResourceTest extends TestCase
 
         $this->assertDatabaseHas('resources', [
             'id' => $this->resource->id,
-            'name' => $this->resource->name,
+            'name' => strtolower($this->resource->name),
         ]);
     }
 }

@@ -66,9 +66,10 @@ class InscriptionTest extends TestCase
                 'cash_received' => 500,
             ])->assertStatus(Response::HTTP_CREATED);
 
-        $this->assertDatabaseHas('course_period_student', [
+        $this->assertDatabaseHas('coursables', [
             'course_period_id' => $this->coursePeriod->id,
-            'student_id' => $this->student->id,
+            'coursable_type' => 'App\Student',
+            'coursable_id' => $this->student->id,
         ]);
 
         $this->assertDatabaseHas('invoices', [

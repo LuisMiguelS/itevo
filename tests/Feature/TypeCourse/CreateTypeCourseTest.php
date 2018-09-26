@@ -12,7 +12,7 @@ class CreateTypeCourseTest extends TestCase
     use RefreshDatabase;
 
     protected $defaultData = [
-        'name' => 'Maestria',
+        'name' => 'maestria',
     ];
 
     private $admin;
@@ -32,7 +32,7 @@ class CreateTypeCourseTest extends TestCase
         $this->actingAs($this->admin)
             ->post(route('tenant.typeCourses.store', $this->branchOffice), $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
-            ->assertSessionHas(['flash_success' => "Tipo de curso {$this->defaultData['name']} creado con éxito."]);
+            ->assertSessionHas(['flash_success' => "Tipo de curso Maestria creado con éxito."]);
 
         $this->assertDatabaseHas('type_courses', $this->withData());
     }

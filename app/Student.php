@@ -88,7 +88,7 @@ class Student extends Model
      */
     public function coursePeriod()
     {
-        return $this->belongsToMany(CoursePeriod::class);
+        return $this->morphToMany(CoursePeriod::class, 'coursable');
     }
 
     /**

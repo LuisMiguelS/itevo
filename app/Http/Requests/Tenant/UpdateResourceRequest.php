@@ -37,6 +37,10 @@ class UpdateResourceRequest extends FormRequest
                 'required',
                 'numeric',
                 new PositiveNumber
+            ],
+            'necessary' => [
+                'required',
+                'in:'. Resource::NECESSARY .','. Resource::UNNECESSARY,
             ]
         ];
     }
@@ -45,7 +49,8 @@ class UpdateResourceRequest extends FormRequest
     {
         return [
             'name' => 'nombre',
-            'price' => 'precio'
+            'price' => 'precio',
+            'necessary' => 'indispensable'
         ];
     }
 

@@ -14,6 +14,7 @@ class UpdateResourceTest extends TestCase
     protected $defaultData = [
         'name' => 'Diplomado',
         'price' => 200,
+        'necessary' => \App\Resource::NECESSARY
     ];
 
     private $admin;
@@ -42,7 +43,9 @@ class UpdateResourceTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Recurso {$this->defaultData['name']} actualizado con éxito."]);
 
-        $this->assertDatabaseHas('resources', $this->withData());
+        $this->assertDatabaseHas('resources', $this->withData([
+            'name' => strtolower('Diplomado'),
+        ]));
     }
 
 
@@ -60,7 +63,7 @@ class UpdateResourceTest extends TestCase
 
         $this->assertDatabaseHas('resources', [
             'id' => $this->resource->id,
-            'name' => $this->resource->name,
+            'name' => strtolower($this->resource->name),
         ]);
     }
 
@@ -73,7 +76,9 @@ class UpdateResourceTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
-        $this->assertDatabaseMissing('resources', $this->withData());
+        $this->assertDatabaseMissing('resources', $this->withData([
+            'name' => strtolower('Diplomado'),
+        ]));
     }
 
     /** @test */
@@ -85,7 +90,9 @@ class UpdateResourceTest extends TestCase
             ->put($this->resource->url->update, $this->withData())
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
-        $this->assertDatabaseMissing('resources', $this->withData());
+        $this->assertDatabaseMissing('resources', $this->withData([
+            'name' => strtolower('Diplomado'),
+        ]));
     }
 
     /** @test */
@@ -98,6 +105,8 @@ class UpdateResourceTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasErrors(['name']);
 
-        $this->assertDatabaseMissing('resources', $this->withData());
+        $this->assertDatabaseMissing('resources', $this->withData([
+            'name' => strtolower('Diplomado'),
+        ]));
     }
 }

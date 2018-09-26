@@ -39,7 +39,7 @@ class DeleteBranchOfficeTest extends TestCase
 
         $this->assertSoftDeleted('branch_offices', [
             'id' => $this->branchOffice->id,
-            'name' => $this->branchOffice->name,
+            'name' => strtolower($this->branchOffice->name),
         ]);
     }
 
@@ -54,7 +54,7 @@ class DeleteBranchOfficeTest extends TestCase
 
         $this->assertDatabaseHas('branch_offices', [
             'id' => $this->branchOffice->id,
-            'name' => $this->branchOffice->name,
+            'name' => strtolower($this->branchOffice->name),
         ]);
     }
 
@@ -69,7 +69,7 @@ class DeleteBranchOfficeTest extends TestCase
 
         $this->assertDatabaseHas('branch_offices', [
             'id' => $this->branchOffice->id,
-            'name' => $this->branchOffice->name,
+            'name' => strtolower($this->branchOffice->name),
         ]);
     }
 }

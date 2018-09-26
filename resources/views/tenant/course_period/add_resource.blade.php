@@ -28,7 +28,7 @@
                                      id="resource_{{ $resource->id }}"
                                      value="{{ $resource->id }}"
                                       {{ old("resources.{$resource->id}") || in_array($resource->id, $coursePeriod->resources()->pluck('id', 'id')->toArray()) ? 'checked' : '' }}>
-                              <label class="custom-control-label" for="resource_{{ $resource->id }}">{{ $resource->name }}</label>
+                              <label class="custom-control-label" for="resource_{{ $resource->id }}">{{ $resource->name }} @if($resource->necessary) <span class='text-danger' style='font-size: large'>*</span> @endif</label>
                           </div>
                         @endforeach
                     </div>

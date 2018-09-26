@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Tenant;
 
-use App\BranchOffice;
 use App\Rules\PositiveNumber;
 use Illuminate\Validation\Rule;
+use App\{BranchOffice, Resource};
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreResourceRequest extends FormRequest
@@ -37,6 +37,10 @@ class StoreResourceRequest extends FormRequest
                 'required',
                 'numeric',
                 new PositiveNumber
+            ],
+            'necessary' => [
+                'required',
+                'in:'. Resource::NECESSARY .','. Resource::UNNECESSARY,
             ]
         ];
     }
@@ -45,7 +49,8 @@ class StoreResourceRequest extends FormRequest
     {
         return [
             'name' => 'nombre',
-            'price' => 'precio'
+            'price' => 'precio',
+            'necessary' => 'indispensable'
         ];
     }
 

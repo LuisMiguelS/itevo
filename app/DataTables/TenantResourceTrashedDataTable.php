@@ -19,6 +19,12 @@ class TenantResourceTrashedDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
+            ->editColumn('name', function (Resource $resource) {
+                if ($resource->necessary) {
+                    return "{$resource->name} <span class='text-danger' style='font-size: large'>*</span>";
+                }
+                return $resource->name;
+            })
             ->editColumn('price', function (Resource $resource){
                 return number_format($resource->price,2,'.',',');
             })
@@ -29,7 +35,7 @@ class TenantResourceTrashedDataTable extends DataTable
             ->addColumn('action', function (Resource $resource) {
                 return view('tenant.resource._actions', compact('resource'));
             })
-            ->rawColumns(['Fechas', 'action']);
+            ->rawColumns(['Fechas', 'action', 'name']);
     }
 
     /**

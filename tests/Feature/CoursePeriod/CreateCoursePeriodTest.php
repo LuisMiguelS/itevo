@@ -14,6 +14,8 @@ class CreateCoursePeriodTest extends TestCase
 
     protected $defaultData = [
         'price' => 400.10,
+        'start_at' => '2018-09-26 02:31:43',
+        'ends_at' => '2018-10-26 04:31:43'
     ];
 
     /**
@@ -51,7 +53,10 @@ class CreateCoursePeriodTest extends TestCase
         parent::setUp();
         $this->admin = $this->createAdmin();
         $this->user = factory(User::class)->create();
-        $this->period = factory(Period::class)->create();
+        $this->period = factory(Period::class)->create([
+            'start_at' => '2018-09-26 00:31:43',
+            'ends_at' => '2018-11-26 02:30:00',
+        ]);
         $this->course = factory(Course::class)->create();
         $this->classroom = factory(Classroom::class)->create();
         $this->teacher = factory(Teacher::class)->create();
@@ -69,8 +74,6 @@ class CreateCoursePeriodTest extends TestCase
                 'teacher_id' => $this->teacher->id,
                 'classroom_id' => $this->classroom->id,
                 'course_id' => $this->course->id,
-                'start_at' => Carbon::now()->toDateTimeString(),
-                'ends_at' => Carbon::now()->addMonth()->toDateTimeString()
 
             ]))->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Curso activado correctamente."]);
@@ -80,8 +83,6 @@ class CreateCoursePeriodTest extends TestCase
             'teacher_id' => $this->teacher->id,
             'classroom_id' => $this->classroom->id,
             'course_id' => $this->course->id,
-            'start_at' => Carbon::now()->toDateTimeString(),
-            'ends_at' => Carbon::now()->addMonth()->toDateTimeString()
         ]));
     }
 
@@ -114,8 +115,6 @@ class CreateCoursePeriodTest extends TestCase
                 'teacher_id' => $this->teacher->id,
                 'classroom_id' => $this->classroom->id,
                 'course_id' => $this->course->id,
-                'start_at' => Carbon::now()->toDateTimeString(),
-                'ends_at' => Carbon::now()->addMonth()->toDateTimeString()
             ]))
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
@@ -161,8 +160,6 @@ class CreateCoursePeriodTest extends TestCase
                 'teacher_id' => $this->teacher->id,
                 'classroom_id' => $this->classroom->id,
                 'course_id' => $this->course->id,
-                'start_at' => Carbon::now()->subDay()->toDateTimeString(),
-                'ends_at' => Carbon::now()->addMonth()->toDateTimeString()
 
             ]))->assertStatus(Response::HTTP_BAD_REQUEST);
 

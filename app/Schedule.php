@@ -48,7 +48,7 @@ class Schedule extends Model
      */
     public function coursePeriod()
     {
-        return $this->belongsToMany(CoursePeriod::class);
+        return $this->morphedByMany(CoursePeriod::class, 'coursable');
     }
 
     /**

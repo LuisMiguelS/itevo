@@ -12,7 +12,7 @@ class UpdateTypeCourseTest extends TestCase
     use RefreshDatabase;
 
     protected $defaultData = [
-        'name' => 'Diplomado',
+        'name' => 'diplomado',
     ];
 
     private $admin;
@@ -39,7 +39,7 @@ class UpdateTypeCourseTest extends TestCase
         $this->actingAs($this->admin)
             ->put($this->type_course->url->update, $this->withData())
             ->assertStatus(Response::HTTP_FOUND)
-            ->assertSessionHas(['flash_success' => "Tipo de curso {$this->defaultData['name']} actualizado con éxito."]);
+            ->assertSessionHas(['flash_success' => "Tipo de curso Diplomado actualizado con éxito."]);
 
         $this->assertDatabaseHas('type_courses', $this->withData());
     }
@@ -59,7 +59,7 @@ class UpdateTypeCourseTest extends TestCase
 
         $this->assertDatabaseHas('type_courses', [
             'id' => $this->type_course->id,
-            'name' => $this->type_course->name,
+            'name' => strtolower($this->type_course->name),
         ]);
     }
 

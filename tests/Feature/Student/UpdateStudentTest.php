@@ -44,7 +44,9 @@ class UpdateStudentTest extends TestCase
             ->assertSessionHas(['flash_success' => "Estudiante {$this->defaultData['name']} {$this->defaultData['last_name']} actualizado con éxito."]);
 
         $this->assertDatabaseHas('students', $this->withData([
-            'birthdate' => new Carbon($this->defaultData['birthdate'])
+            'birthdate' => new Carbon($this->defaultData['birthdate']),
+            'name' => 'cristian',
+            'last_name' => 'gomez',
         ]));
     }
 
@@ -62,8 +64,8 @@ class UpdateStudentTest extends TestCase
 
         $this->assertDatabaseHas('students', [
             'id' =>  $this->student->id,
-            'name' =>  $this->student->name,
-            'last_name' =>  $this->student->last_name
+            'name' => strtolower($this->student->name),
+            'last_name' => strtolower($this->student->last_name)
         ]);
     }
 
@@ -76,7 +78,10 @@ class UpdateStudentTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
-        $this->assertDatabaseMissing('students', $this->withData());
+        $this->assertDatabaseMissing('students', $this->withData([
+            'name' => 'cristian',
+            'last_name' => 'gomez',
+        ]));
     }
 
     /** @test */
@@ -88,7 +93,10 @@ class UpdateStudentTest extends TestCase
             ->put($this->student->url->update, $this->withData())
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
-        $this->assertDatabaseMissing('students', $this->withData());
+        $this->assertDatabaseMissing('students', $this->withData([
+            'name' => 'cristian',
+            'last_name' => 'gomez',
+        ]));
     }
 
     /** @test */
@@ -103,7 +111,9 @@ class UpdateStudentTest extends TestCase
 
         $this->assertDatabaseHas('students', [
             'id' => $this->student->id,
-            'id_card' => $this->student->id_card
+            'id_card' => $this->student->id_card,
+            'name' => strtolower($this->student->name),
+            'last_name' => strtolower($this->student->last_name),
         ]);
     }
 
@@ -122,7 +132,9 @@ class UpdateStudentTest extends TestCase
             ->assertSessionHasErrors(['id_card']);
 
         $this->assertDatabaseMissing('students', $this->withData([
-            'id_card' => $student->id_card
+            'id_card' => $student->id_card,
+            'name' => strtolower($student->name),
+            'last_name' => strtolower($student->last_name),
         ]));
     }
 }

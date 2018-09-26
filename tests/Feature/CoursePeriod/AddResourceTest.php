@@ -42,14 +42,16 @@ class AddResourceTest extends TestCase
                 'resources' => [$resources[0]->id, $resources[1]->id]
             ])->assertStatus(Response::HTTP_FOUND);
 
-        $this->assertDatabaseHas('course_period_resource', [
+        $this->assertDatabaseHas('coursables', [
            'course_period_id' => $this->coursePeriod->id,
-           'resource_id' =>  $resources[0]->id
+           'coursable_type' => 'App\Resource',
+           'coursable_id' =>  $resources[0]->id
         ]);
 
-        $this->assertDatabaseHas('course_period_resource', [
+        $this->assertDatabaseHas('coursables', [
             'course_period_id' => $this->coursePeriod->id,
-            'resource_id' =>  $resources[1]->id
+            'coursable_type' => 'App\Resource',
+            'coursable_id' =>  $resources[1]->id
         ]);
     }
 
@@ -66,9 +68,10 @@ class AddResourceTest extends TestCase
 
         $this->coursePeriod->addResources([$diplomado->id]);
 
-        $this->assertDatabaseHas('course_period_resource', [
+        $this->assertDatabaseHas('coursables', [
             'course_period_id' => $this->coursePeriod->id,
-            'resource_id' =>  $diplomado->id
+            'coursable_type' => 'App\Resource',
+            'coursable_id' => $diplomado->id,
         ]);
 
         $this->actingAs($this->admin)
@@ -80,14 +83,16 @@ class AddResourceTest extends TestCase
                 'resources' => [$graduacion->id]
             ])->assertStatus(Response::HTTP_FOUND);
 
-        $this->assertDatabaseMissing('course_period_resource', [
+        $this->assertDatabaseMissing('coursables', [
             'course_period_id' => $this->coursePeriod->id,
-            'resource_id' =>  $diplomado->id
+            'coursable_type' => 'App\Resource',
+            'coursable_id' => $diplomado->id
         ]);
 
-        $this->assertDatabaseHas('course_period_resource', [
+        $this->assertDatabaseHas('coursables', [
             'course_period_id' => $this->coursePeriod->id,
-            'resource_id' =>  $graduacion->id
+            'coursable_type' => 'App\Resource',
+            'coursable_id' => $graduacion->id
         ]);
     }
 
@@ -108,6 +113,6 @@ class AddResourceTest extends TestCase
                 'resources' => [$trash, $array_trash]
             ])->assertStatus(Response::HTTP_NOT_FOUND);
 
-        $this->assertDatabaseEmpty('course_period_resource');
+        $this->assertDatabaseEmpty('coursables');
     }
 }

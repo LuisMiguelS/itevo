@@ -38,7 +38,7 @@ class DeleteClassroomTest extends TestCase
 
         $this->assertSoftDeleted('classrooms', [
             'id' => $this->classroom->id,
-            'name' => $this->classroom->name,
+            'name' => strtolower($this->classroom->name),
         ]);
     }
 
@@ -56,7 +56,7 @@ class DeleteClassroomTest extends TestCase
 
         $this->assertDatabaseHas('classrooms', [
             'id' => $this->classroom->id,
-            'name' => $this->classroom->name,
+            'name' => strtolower($this->classroom->name),
         ]);
     }
 
@@ -71,7 +71,7 @@ class DeleteClassroomTest extends TestCase
 
         $this->assertDatabaseHas('classrooms', [
             'id' => $this->classroom->id,
-            'name' => $this->classroom->name,
+            'name' => strtolower($this->classroom->name),
         ]);
     }
 
@@ -86,7 +86,7 @@ class DeleteClassroomTest extends TestCase
 
         $this->assertDatabaseHas('classrooms', [
             'id' => $this->classroom->id,
-            'name' => $this->classroom->name,
+            'name' => strtolower($this->classroom->name),
         ]);
     }
 
@@ -104,7 +104,7 @@ class DeleteClassroomTest extends TestCase
 
         $this->assertDatabaseMissing('classrooms', [
             'id' => $classroom->id,
-            'name' => $classroom->name,
+            'name' => strtolower($this->classroom->name),
         ]);
     }
 
@@ -119,7 +119,7 @@ class DeleteClassroomTest extends TestCase
 
         $this->assertDatabaseHas('classrooms', [
             'id' => $this->classroom->id,
-            'name' => $this->classroom->name,
+            'name' => strtolower($this->classroom->name),
         ]);
     }
 

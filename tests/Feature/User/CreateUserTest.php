@@ -12,7 +12,7 @@ class CreateUserTest extends TestCase
     use RefreshDatabase;
 
     protected $defaultData = [
-        'name' => 'Cristian Gomez',
+        'name' => 'cristian gomez',
         'email' => 'cristiangomeze@hotmail.com',
         'password' => 'secret'
     ];
@@ -37,7 +37,7 @@ class CreateUserTest extends TestCase
                 'branchOffices' => [$this->branchOffice->id]
             ]))
             ->assertStatus(Response::HTTP_FOUND)
-            ->assertSessionHas(['flash_success' => "Usuario {$this->defaultData['name']} creado con éxito."]);
+            ->assertSessionHas(['flash_success' => "Usuario Cristian Gomez creado con éxito."]);
 
         $this->assertCredentials($this->withData());
     }

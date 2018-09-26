@@ -41,9 +41,9 @@ class UpdateBranchOfficeTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Sucursal {$this->defaultData['name']} actualizado con exito."]);
 
-        $this->assertDatabaseHas('branch_offices', $this->withData([
-            'id' => $this->branchOffice->id
-        ]));
+        $this->assertDatabaseHas('branch_offices', [
+            'id' => $this->branchOffice->id,
+        ]);
     }
 
     /** @test */

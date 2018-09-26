@@ -35,7 +35,7 @@ class DeleteTeacherTest extends TestCase
 
         $this->assertSoftDeleted('teachers', [
             'id' => $this->teacher->id,
-            'name' => $this->teacher->name,
+            'name' => strtolower($this->teacher->name),
         ]);
     }
 
@@ -53,7 +53,7 @@ class DeleteTeacherTest extends TestCase
 
         $this->assertDatabaseHas('teachers', [
             'id' => $this->teacher->id,
-            'name' => $this->teacher->name,
+            'name' => strtolower($this->teacher->name),
         ]);
     }
 
@@ -68,7 +68,7 @@ class DeleteTeacherTest extends TestCase
 
         $this->assertDatabaseHas('teachers', [
             'id' => $this->teacher->id,
-            'name' => $this->teacher->name,
+            'name' => strtolower($this->teacher->name),
         ]);
     }
 
@@ -83,7 +83,7 @@ class DeleteTeacherTest extends TestCase
 
         $this->assertDatabaseHas('teachers', [
             'id' => $this->teacher->id,
-            'name' => $this->teacher->name,
+            'name' => strtolower($this->teacher->name),
         ]);
     }
 }

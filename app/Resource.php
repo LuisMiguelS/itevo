@@ -15,8 +15,8 @@ class Resource extends Model
 
     protected $hidden = ['url'];
 
-    const NECESSARY = true;
-    const UNNECESSARY = false;
+    const NECESSARY = 1;
+    const UNNECESSARY = 0;
 
     protected $appends = ['url'];
 
@@ -50,7 +50,7 @@ class Resource extends Model
      */
     public function coursePeriod()
     {
-        return $this->belongsToMany(CoursePeriod::class);
+        return $this->morphToMany(CoursePeriod::class, 'coursable');
     }
 
     /**

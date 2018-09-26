@@ -41,14 +41,16 @@ class AddScheduleTest extends TestCase
                 'schedules' => [$schedules[0]->id, $schedules[1]->id]
             ])->assertStatus(Response::HTTP_FOUND);
 
-        $this->assertDatabaseHas('course_period_schedule', [
+        $this->assertDatabaseHas('coursables', [
             'course_period_id' => $this->coursePeriod->id,
-            'schedule_id' =>  $schedules[0]->id
+            'coursable_type' => 'App\Schedule',
+            'coursable_id' => $schedules[0]->id
         ]);
 
-        $this->assertDatabaseHas('course_period_schedule', [
+        $this->assertDatabaseHas('coursables', [
             'course_period_id' => $this->coursePeriod->id,
-            'schedule_id' =>  $schedules[1]->id
+            'coursable_type' => 'App\Schedule',
+            'coursable_id' => $schedules[1]->id
         ]);
     }
 
@@ -72,24 +74,28 @@ class AddScheduleTest extends TestCase
 
         $this->coursePeriod->addSchedules([$horario_1->id, $horario_2->id]);
 
-        $this->assertDatabaseHas('course_period_schedule', [
+        $this->assertDatabaseHas('coursables', [
             'course_period_id' => $curso_programacion->id,
-            'schedule_id' =>  $horario_1->id
+            'coursable_type' => 'App\Schedule',
+            'coursable_id' =>  $horario_1->id
         ]);
 
-        $this->assertDatabaseMissing('course_period_schedule', [
+        $this->assertDatabaseMissing('coursables', [
             'course_period_id' => $curso_programacion->id,
-            'schedule_id' =>  $horario_2->id
+            'coursable_type' => 'App\Schedule',
+            'coursable_id' =>  $horario_2->id
         ]);
 
-        $this->assertDatabaseMissing('course_period_schedule', [
+        $this->assertDatabaseMissing('coursables', [
             'course_period_id' => $this->coursePeriod->id,
-            'schedule_id' =>  $horario_1->id
+            'coursable_type' => 'App\Schedule',
+            'coursable_id' =>  $horario_1->id
         ]);
 
-        $this->assertDatabaseHas('course_period_schedule', [
+        $this->assertDatabaseHas('coursables', [
             'course_period_id' => $this->coursePeriod->id,
-            'schedule_id' =>  $horario_2->id
+            'coursable_type' => 'App\Schedule',
+            'coursable_id' =>  $horario_2->id
         ]);
     }
 }

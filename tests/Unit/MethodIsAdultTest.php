@@ -4,9 +4,12 @@ namespace Tests\Unit;
 
 use Carbon\Carbon;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class MethodIsAdultTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     function it_is_an_adult()
     {

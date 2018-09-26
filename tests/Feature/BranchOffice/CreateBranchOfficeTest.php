@@ -35,7 +35,10 @@ class CreateBranchOfficeTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Sucursal {$this->defaultData['name']} creado con exito."]);
 
-        $this->assertDatabaseHas('branch_offices', $this->withData());
+        $this->assertDatabaseHas('branch_offices', [
+            'name' => 'itevo la vega',
+            'slug' => 'itevo-la-vega',
+        ]);
     }
 
     /** @test */

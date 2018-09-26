@@ -43,9 +43,10 @@ class UpdateCourseTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(['flash_success' => "Curso {$this->defaultData['name']} actualizado con éxito."]);
 
-        $this->assertDatabaseHas('courses', $this->withData([
+        $this->assertDatabaseHas('courses', [
+            'name' => 'diplomado',
             'type_course_id' => $this->course->type_course_id
-        ]));
+        ]);
     }
 
     /** @test */
@@ -64,7 +65,7 @@ class UpdateCourseTest extends TestCase
 
         $this->assertDatabaseHas('courses', [
             'id' => $this->course->id,
-            'name' => $this->course->name,
+            'name' => strtolower($this->course->name),
         ]);
     }
 
@@ -79,9 +80,10 @@ class UpdateCourseTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect('/login');
 
-        $this->assertDatabaseMissing('courses', $this->withData([
+        $this->assertDatabaseMissing('courses', [
+            'name' => 'diplomado',
             'type_course_id' => $this->course->type_course_id
-        ]));
+        ]);
     }
 
     /** @test */
@@ -95,9 +97,10 @@ class UpdateCourseTest extends TestCase
             ]))
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
-        $this->assertDatabaseMissing('courses', $this->withData([
+        $this->assertDatabaseMissing('courses', [
+            'name' => 'diplomado',
             'type_course_id' => $this->course->type_course_id
-        ]));
+        ]);
     }
 
     /** @test */
@@ -110,8 +113,9 @@ class UpdateCourseTest extends TestCase
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasErrors(['name', 'type_course_id']);
 
-        $this->assertDatabaseMissing('courses', $this->withData([
+        $this->assertDatabaseMissing('courses', [
+            'name' => 'diplomado',
             'type_course_id' => $this->course->type_course_id
-        ]));
+        ]);
     }
 }
