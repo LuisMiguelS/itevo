@@ -131,6 +131,10 @@
                 <li><a href="{{ route('tenant.accounts_receivable.index', $branchOffice) }}"><i class="fa fa-money"></i> <span>Cuentas x Cobrar</span></a></li>
             @endif
 
+            @if(auth()->user()->can('tenant-settings', \App\BranchOffice::class))
+                <li><a href="{{ route('tenant.settings.index', $branchOffice) }}"><i class="fa fa-cog"></i> <span> Configuraciónes</span></a></li>
+            @endif
+
 
             <li class="header">Accesos rapido</li>
             {{  new App\Http\ViewComponents\TenantQuickAccessBtn($branchOffice) }}

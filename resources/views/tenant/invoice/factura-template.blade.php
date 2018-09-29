@@ -101,9 +101,8 @@
                     <tr>
                         <td>
                             {{ $branchOffice->name }}, Inc. <br>
-                            1355 Market St, Suite 900<br />
-                            San Francisco, CA 94103<br />
-                            Teléfono: (123) 456-7890
+                            {{ optional($branchOffice->settings)['phone'] }} <br>
+                            Teléfono: {{ optional($branchOffice->settings)['address'] }}
                         </td>
 
                         <td>

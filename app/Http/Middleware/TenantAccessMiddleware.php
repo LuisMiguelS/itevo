@@ -29,7 +29,7 @@ class TenantAccessMiddleware
     private function thisUserIsAuthorized($request): bool
     {
         return optional(auth()->user())->isAssignedTo($this->getInstaceBranchOffice($request->branchOffice))
-            || optional(auth()->user())->isAdmin();
+            || optional(auth()->user())->isSuperAdmin();
     }
 
     /**

@@ -142,7 +142,9 @@ class UserController extends Controller
      */
     protected function canAlterTo(User $user): void
     {
-        if (! auth()->user()->isAdmin()) {
+        abort_if(auth()->id() === $user->id,403);
+
+        if (! auth()->user()->isSuperAdmin()) {
             abort_if($user->isAn(User::ROLE_ADMIN) || $user->isAn(User::ROLE_TENANT_ADMIN), 403);
         }
     }

@@ -17,6 +17,8 @@ class InscriptionController extends Controller
     {
         $this->authorize('tenant-store', \App\Invoice::class);
 
+        abort_unless($branchOffice->currentPromotion(), 400, 'No hay una promocion actual');
+
         return view('tenant.inscription.index')
             ->with(['branchOffice' => $branchOffice]);
     }
@@ -39,6 +41,7 @@ class InscriptionController extends Controller
             $branchOffice->currentPromotion()
             ->currentPeriod()
             ->coursePeriods()
+            ->withCount('students')
             ->with('teacher', 'course', 'classroom', 'schedules', 'resources')
             ->get()
         ], 200);

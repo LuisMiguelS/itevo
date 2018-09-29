@@ -24,7 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $branchOffices = BranchOffice::unless(auth()->user()->isAdmin(), function ($query) {
+        $branchOffices = BranchOffice::unless(auth()->user()->isSuperAdmin(), function ($query) {
             $query->whereHas('users', function ($q) {
                 $q->where('user_id', auth()->id());
             });

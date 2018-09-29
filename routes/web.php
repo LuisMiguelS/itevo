@@ -12,6 +12,7 @@
 */
 
 use App\Http\Controllers\{BranchOfficeController,
+    SettingBranchOfficeController,
     Tenant\ClassRoomController,
     Tenant\CourseController,
     Tenant\TypeCourseController};
@@ -46,6 +47,9 @@ Route::resource('roles', 'RoleController');
 Route::prefix('{branchOffice}')->middleware(['auth', 'tenantAccess'])->name('tenant.')->group(function () {
 
     Route::get('dashboard', [BranchOfficeController::class, 'dashboard'])->name('dashboard');
+
+    Route::get('settings', [SettingBranchOfficeController::class, 'index'])->name('settings.index');
+    Route::post('settings', [SettingBranchOfficeController::class, 'settings'])->name('settings.store');
 
     /*
      * Classrooms

@@ -21,7 +21,8 @@ class TenantCoursePeriodDataTable extends DataTable
             })
             ->editColumn('course', function (CoursePeriod $coursePeriod) {
                 return "{$coursePeriod->course->name} ({$coursePeriod->course->typeCourse->name}) <br>
-                        <small><b>Profesor:</b> {$coursePeriod->teacher->full_name}</small>";
+                        <small><b>Profesor:</b> {$coursePeriod->teacher->full_name}</small> <br>
+                        <small><b>Estudiantes Inscritos:</b> {$coursePeriod->students_count}</small> <br>";
             })
             ->editColumn('classroom.name', function (CoursePeriod $coursePeriod) {
                 return "{$coursePeriod->classroom->name} ({$coursePeriod->classroom->building})";
@@ -65,6 +66,7 @@ class TenantCoursePeriodDataTable extends DataTable
             ->currentPromotion()
             ->currentPeriod()
             ->coursePeriods()
+            ->withCount('students')
             ->with('teacher', 'course', 'classroom')
             ->get();
     }

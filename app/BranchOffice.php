@@ -13,15 +13,19 @@ class BranchOffice extends Model
 {
     use SoftDeletes, HasSlug, DatesTranslator;
 
-    protected $fillable = [
-        'name', 'slug'
-    ];
+    protected $guarded = [];
 
     protected $hidden = [
         'url'
     ];
 
-    protected $appends = ['url'];
+    protected $appends = [
+        'url'
+    ];
+
+    protected $casts = [
+        'settings' => 'array'
+    ];
 
     /**
      * @param $name

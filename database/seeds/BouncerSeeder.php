@@ -112,6 +112,11 @@ class BouncerSeeder extends Seeder
             'name' => 'tenant-view',
             'title' => 'Ver dashboard'
         ]);
+
+        Bouncer::ability()->createForModel(BranchOffice::class, [
+            'name' => 'tenant-settings',
+            'title' => 'configuraciónes'
+        ]);
     }
 
     /*
