@@ -1,15 +1,13 @@
 @csrf
 
-<div class="form-group row">
-    <label for="name" class="col-sm-4 col-form-label text-md-right">Nombre</label>
+<div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
+    <label for="name" class="col-sm-4 control-label">Nombre</label>
 
-    <div class="col-md-6">
+    <div class="col-md-8">
         <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name', $branchOffice->name) }}" required autofocus>
 
         @if ($errors->has('name'))
-            <span class="invalid-feedback">
-                <strong>{{ $errors->first('name') }}</strong>
-            </span>
+            <span class="help-block">{{ $errors->first('name') }}</span>
         @endif
     </div>
 </div>

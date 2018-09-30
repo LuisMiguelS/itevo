@@ -24,7 +24,9 @@ trait TestHelpers
 
     protected function createAdmin()
     {
-        return tap(factory(\App\User::class)->create(), function ($user) {
+        return tap(factory(\App\User::class)->create([
+            'email' => 'testing_email@example.com'
+        ]), function ($user) {
             $user->assign(\App\User::ROLE_ADMIN);
         });
     }

@@ -1,40 +1,40 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
+    <section class="content-header">
+        <h1 style="text-align: center">Listado de habilidades</h1>
+    </section>
 
-                <div class="card border-0 shadow-sm">
-                    <div class="card-header border-0 font-weight-bold bg-white">
-                        Todas las habilidades
-                    </div>
-                    <div class="card-body">
-                        @if($abilities->count())
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Habilidad</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($abilities  as $abilitie)
-                                    <tr>
-                                        <th>{{ $abilitie->id }}</th>
-                                        <td>{{ $abilitie->title }}</td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                            {{ $abilities->links() }}
-                        @else
-                            No hay Habilidades registradas
-                        @endif
-                    </div>
-                </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                @box
+                @slot('title', ' Todas las habilidades')
 
+                @slot('body_class', 'no-padding')
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Habilidad</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @forelse($abilities  as $abilitie)
+                        <tr>
+                            <th>{{ $abilitie->id }}</th>
+                            <td>{{ $abilitie->title }}</td>
+                        </tr>
+                    @empty
+                        <th colspan="2"> No hay habilidades registradas</th>
+                    @endforelse
+                    </tbody>
+                </table>
+
+                {{ $abilities->links() }}
+                @endbox
             </div>
         </div>
-    </div>
+    </section>
 @endsection

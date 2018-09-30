@@ -1,4 +1,4 @@
-let mix = require('laravel-mix');
+const mix = require('laravel-mix');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,12 +11,7 @@ let mix = require('laravel-mix');
  |
  */
 
-// App
-mix.js('resources/assets/js/app.js', 'public/js')
-    .sass('resources/assets/sass/app.scss', 'public/css')
-    .version();
-
 // Tenant
-mix.js('resources/assets/tenant/js/app.js', 'public/js/tenant.js')
-    .sass('resources/assets/tenant/sass/app.scss', 'public/css/tenant.css')
+mix.js('resources/js/app.js', 'public/js/tenant.js')
+    .sass('resources/sass/app.scss', 'public/css/tenant.css')
     .version();

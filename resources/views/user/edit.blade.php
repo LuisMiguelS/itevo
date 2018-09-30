@@ -1,35 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
+    <section class="content-header">
+        <h1 style="text-align: center">Edición usuario</h1>
+    </section>
 
-                <div class="card shadow-sm border-0">
-                    <div class="card-header border-0 bg-white">
-                        <span class="font-weight-bold">Editar</span>
-                        {{ $user->name }}</div>
-                    <div class="card-body">
+    <section class="content">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                @box
+                @slot('title', "Editar:  {$user->name}")
 
-                        <form action="{{ route('users.update', $user) }}" method="POST">
-                            @csrf
-                            @method('PUT')
+                <form class="form-horizontal" action="{{ route('users.update', $user) }}" method="PUT">
+                    @method('PUT')
+                    @include('user._fields')
 
-                            @include('user._fields')
-
-                            <div class="form-group row mb-0">
-                                <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        Actualizar
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-
+                    <div class="col-sm-8 col-sm-offset-4">
+                        <button type="submit" class="btn btn-primary">
+                            Actualizar
+                        </button>
                     </div>
-                </div>
-
+                </form>
+                @endbox
             </div>
         </div>
-    </div>
+    </section>
 @endsection

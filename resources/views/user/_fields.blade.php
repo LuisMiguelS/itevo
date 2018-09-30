@@ -1,98 +1,90 @@
 @csrf
 
-<div class="form-group row">
-    <label for="name" class="col-sm-4 col-form-label text-md-right">Nombre</label>
+<div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
+    <label class="col-sm-4 control-label">Nombre</label>
 
-    <div class="col-md-6">
+    <div class="col-md-8">
         <input id="name"
                type="text"
-               class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
+               class="form-control"
                name="name"
                value="{{ old('name', $user->name) }}"
                required
                autofocus>
 
         @if ($errors->has('name'))
-            <span class="invalid-feedback">
-                <strong>{{ $errors->first('name') }}</strong>
-            </span>
+            <span class="help-block">{{ $errors->first('name') }}</span>
         @endif
     </div>
 </div>
 
-<div class="form-group row">
-    <label for="name" class="col-sm-4 col-form-label text-md-right">Correo Electrónico</label>
+<div class="form-group  {{ $errors->has('email') ? 'has-error' : '' }}">
+    <label class="col-sm-4 control-label">Correo Electrónico</label>
 
-    <div class="col-md-6">
+    <div class="col-md-8">
         <input id="email"
                type="email"
-               class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"
+               class="form-control"
                name="email"
                value="{{ old('email', $user->email) }}"
                required>
-
         @if ($errors->has('email'))
-            <span class="invalid-feedback">
-                <strong>{{ $errors->first('email') }}</strong>
-            </span>
+            <span class="help-block">{{ $errors->first('email') }}</span>
         @endif
     </div>
 </div>
 
 @if(request()->route()->getActionMethod() === "create")
-<div class="form-group row">
-    <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+<div class="form-group {{ $errors->has('password')  ? 'has-error' : '' }}">
+    <label for="password" class="col-sm-4 control-label">{{ __('Password') }}</label>
 
-    <div class="col-md-6">
+    <div class="col-sm-8">
         <input id="password"
                type="password"
-               class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
+               class="form-control"
                name="password"
                required>
 
         @if ($errors->has('password'))
-            <span class="invalid-feedback">
-                <strong>{{ $errors->first('password') }}</strong>
-            </span>
+            <span class="help-block">{{ $errors->first('password') }}</span>
         @endif
     </div>
 </div>
 
-<div class="form-group row">
-    <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+<div class="form-group">
+    <label for="password-confirm" class="col-sm-4 control-label">{{ __('Confirm Password') }}</label>
 
-    <div class="col-md-6">
+    <div class="col-sm-8">
         <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
     </div>
 </div>
 @endif
 
 @if(auth()->user()->isAn(\App\User::ROLE_ADMIN) || auth()->user()->isAn(\App\User::ROLE_TENANT_ADMIN))
-    <div class="form-group row">
-        <label for="role" class="col-md-4 col-form-label text-md-right">Rol</label>
-        <div class="col-md-6">
-            <select class="form-control {{ $errors->has('role') ? ' is-invalid' : '' }}" id="role" name="role">
+    <div class="form-group {{ $errors->has('role')  ? 'has-error' : '' }}">
+        <label for="role" class="col-sm-4 control-label">Rol</label>
+        <div class="col-sm-8">
+            <select class="form-control" id="role" name="role">
                 @foreach($roles as $role)
                     <option value="{{ old('role', $role->name) }}" {{ in_array($role->id, $user->roles()->pluck('id', 'id')->toArray()) ? 'selected' : ''  }}>{{ $role->title }}</option>
                 @endforeach
             </select>
+
             @if ($errors->has('role'))
-                <span class="invalid-feedback">
-                    <strong>{{ $errors->first('role') }}</strong>
-                </span>
+                <span class="help-block">{{ $errors->first('role') }}</span>
             @endif
         </div>
     </div>
 @endif
 
-<div class="form-group row">
-    <label for="abilities" class="col-sm-4 col-form-label text-md-right">Sucursal</label>
-    <div class="col-md-6">
+<div class="form-group {{ $errors->has('branchOffices')  ? 'has-error' : '' }}">
+    <label for="abilities" class="col-sm-4 control-label">Sucursal</label>
+    <div class="col-sm-8">
         @if($branchOffices->count())
             @foreach($branchOffices as $branchOffice)
                 <div class="custom-control custom-checkbox">
                     <input name="branchOffices[{{ $branchOffice->id }}]"
-                           class="custom-control-input {{ $errors->has('branchOffices') ? ' is-invalid' : '' }}"
+                           class="custom-control-input"
                            type="checkbox"
                            id="branchOffices{{ $branchOffice->id }}"
                            value="{{ $branchOffice->id }}"
@@ -100,11 +92,9 @@
                     <label class="custom-control-label" for="branchOffices{{ $branchOffice->id }}">{{ $branchOffice->name }}</label>
                 </div>
             @endforeach
+
             @if ($errors->has('branchOffices'))
-                <br>
-                <small style="color: #dc3545; font-size: 12px !important;">
-                    <strong>{{ $errors->first('branchOffices') }}</strong>
-                </small>
+                <span class="help-block">{{ $errors->first('branchOffices') }}</span>
             @endif
         @else
             <div class="alert alert-primary" role="alert">

@@ -1,33 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
-  <div class="container">
-      <div class="row justify-content-center">
-          <div class="col-md-8">
+    <section class="content-header">
+        <h1 style="text-align: center">Crear Sucursal</h1>
+    </section>
 
-              <div class="card shadow-sm border-0">
-                  <div class="card-header border-0 font-weight-bold bg-white">Crear Sucursal</div>
-                  <div class="card-body">
-                      @include('partials._alert')
+    <section class="content">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                @box
+                @slot('title', 'Creación de sucursal')
 
-                      <form action="{{ route('branchOffices.store') }}" method="POST">
-                          @csrf
+                <form class="form-horizontal" action="{{ route('branchOffices.store') }}" method="POST">
+                    @include('branch_office._fields')
 
-                          @include('branch_office._fields')
-
-                          <div class="form-group row mb-0">
-                              <div class="col-md-8 offset-md-4">
-                                  <button type="submit" class="btn btn-primary">
-                                      Crear
-                                  </button>
-                              </div>
-                          </div>
-                      </form>
-
-                  </div>
-              </div>
-
-          </div>
-      </div>
-  </div>
+                    <div class="row">
+                       <div class="col-sm-8 col-sm-offset-4">
+                           <button type="submit" class="btn btn-primary">
+                               Crear
+                           </button>
+                       </div>
+                    </div>
+                </form>
+                @endbox
+            </div>
+        </div>
+    </section>
 @endsection

@@ -1,29 +1,27 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-header border-0 font-weight-bold bg-white">Crear Role</div>
-                    <div class="card-body">
-                        @include('partials._alert')
-                        <form action="{{ route('roles.store') }}" method="POST">
-                            @csrf
+    <section class="content-header">
+        <h1 style="text-align: center">Crear Roles</h1>
+    </section>
 
-                            @include('role._fields')
+    <section class="content">
+        <div class="row">
+            <div class="col-sm-12">
+                @box
+                @slot('title', 'Creación de Role')
 
-                            <div class="form-group row mb-0">
-                                <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        Crear
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                <form class="form-horizontal" action="{{ route('roles.store') }}" method="POST">
+                    @include('role._fields')
+
+                    <div class="col-sm-10 col-sm-offset-2">
+                        <button type="submit" class="btn btn-primary">
+                            Crear
+                        </button>
                     </div>
-                </div>
+                </form>
+                @endbox
             </div>
         </div>
-    </div>
+    </section>
 @endsection

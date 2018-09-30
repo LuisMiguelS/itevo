@@ -11,87 +11,109 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ mix('js/app.js') }}" defer></script>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+    <script src="{{ mix('js/tenant.js') }}" defer></script>
+    @stack('scripts')
 
     <!-- Styles -->
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/tenant.css') }}" rel="stylesheet">
 </head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<body class="hold-transition skin-blue layout-top-nav">
+    <div class="wrapper" id="app">
+        <header class="main-header">
+            <nav class="navbar navbar-static-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <a class="navbar-brand"><strong>{{ config('app.name') }}</strong></a>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                    </div>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-                        @if (auth()->check())
-                            <li><a class="nav-link" href="{{ route('home') }}">Home</a></li>
-
-                            @if(auth()->user()->isSuperAdmin())
-                                <li class="nav-item"><a class="nav-link" href="{{ route('branchOffices.index') }}">Sucursales</a></li>
+                    <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            @if (auth()->check())
+                                <li><a href="{{ route('home') }}">Home</a></li>
+                                @if(auth()->user()->isSuperAdmin())
+                                    <li><a  href="{{ route('branchOffices.index') }}">Sucursales</a></li>
+                                @endif
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Administración de Usuario<span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        @can('view', \App\User::class)
+                                            <li><a href="{{ route('users.index') }}">Usuarios</a></li>
+                                        @endcan
+                                        <li class="divider"></li>
+                                        @can('view', \Silber\Bouncer\Database\Role::class)
+                                            <li><a  href="{{ route('roles.index') }}">Roles</a></li>
+                                        @endcan
+                                        <li class="divider"></li>
+                                        <li><a href="{{ route('abilities.index') }}">Habilidades</a></li>
+                                    </ul>
+                                </li>
                             @endif
+                        </ul>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                    <!-- Navbar Right Menu -->
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown user user-menu">
+                                <!-- Menu Toggle Button -->
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <!-- The user image in the navbar-->
 
-                            @can('view', \App\User::class)
-                                <li><a class="nav-link" href="{{ route('users.index') }}">Usuarios</a></li>
-                            @endcan
-
-                            @can('view', \Silber\Bouncer\Database\Role::class)
-                                <li><a class="nav-link" href="{{ route('roles.index') }}">Roles</a></li>
-                            @endcan
-
-                            <li><a class="nav-link" href="{{ route('abilities.index') }}">Habilidades</a></li>
-
-                        @endif
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            {{--<li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                            </li>--}}
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                    <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                                    <span class="hidden-xs"> {{ Auth::user()->name }}</span>
                                 </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
+                                <ul class="dropdown-menu">
+                                    <!-- The user image in the menu -->
+                                    <li class="user-header">
+                                        <img src="{{ asset('img/logo-itevo.png') }}">
+                                        <p>
+                                            {{ Auth::user()->name }} <br>
+                                            {{ Auth::user()->email }}
+                                            <small>Miembro desde {{ Auth::user()->created_at->diffForHumans() }}</small>
+                                        </p>
+                                    </li>
+                                    <!-- Menu Footer-->
+                                    <li class="user-footer">
+                                        <div class="pull-right">
+                                            <a class="btn btn-default btn-fla" href="{{ route('logout') }}"
+                                               onclick="event.preventDefault();
+                                               document.getElementById('logout-form').submit();">
+                                               Cerrar Sesión
+                                               <i class="fas fa-sign-out-alt"></i>
+                                            </a>
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                @csrf
+                                            </form>
+                                        </div>
+                                    </li>
+                                </ul>
                             </li>
-                        @endguest
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </header>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+        <div class="content-wrapper">
+            <div class="container">
+                @yield('content')
+            </div>
+        </div>
+
+        <footer class="main-footer">
+            <div class="container">
+                <div class="pull-right hidden-xs">
+                     {{--Desarrollado por ...--}}
+                </div>
+                <strong>Copyright &copy; {{ date('Y') }}
+                    {{ config('app.name', 'Laravel') }}.
+                </strong>
+                Todos los derechos reservados.
+            </div>
+        </footer>
     </div>
 </body>
 </html>
