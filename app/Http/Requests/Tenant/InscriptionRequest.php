@@ -54,11 +54,12 @@ class InscriptionRequest extends FormRequest
             $invoice = tap($student->invoices()->create(), function ($invoice) use ($student) {
                 collect(request('course_period'))->unique('id')->each(function ($course_period) use ($student, $invoice) {
                     $active_course = CoursePeriod::findOrFail($course_period['id']);
-                    try{
-                        $active_course->students()->attach($student->id);
-                    }catch (\Exception $e) {
-                        throw new HttpException(400, 'No puede registrar un estudiante que ya ha sido registrado en el curso');
-                    }
+
+                    abort_if($active_course->students()->where('course_period_id', $student->id)->count() > 1,
+                        400,
+                        "No puede registrar un estudiante que ya ha sido registrado en el curso");
+
+                    $active_course->students()->attach($student->id);
                     $invoice->coursePeriod()->attach($active_course->id,  ['price' => $active_course->price]);
                 });
 
@@ -67,6 +68,7 @@ class InscriptionRequest extends FormRequest
                     $invoice->resources()->attach($resource->id,  ['price' => $resource->price]);
                 });
             });
+
 
             $invoice->payments()->create([
                 'description' => "Abono inicial a factura #{$invoice->id}",

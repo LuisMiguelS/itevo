@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Blade;
+use Bouncer;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\ServiceProvider;
 
@@ -17,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Carbon::setLocale(config('app.locale'));
         Blade::component('partials._box_tenant', 'box');
+        Bouncer::cache();
     }
 
     /**

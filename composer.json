@@ -14,7 +14,7 @@
         "jenssegers/date": "^3.4",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
-        "silber/bouncer": "v1.0.0-rc.2",
+        "silber/bouncer": "v1.0.0-rc.4",
         "spatie/laravel-sluggable": "^2.1",
         "yajra/laravel-datatables-buttons": "^4.2",
         "yajra/laravel-datatables-html": "^3.8",

@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\CoursePeriod;
+use App\Promotion;
 use Yajra\DataTables\Services\DataTable;
 
 class TenantCoursePeriodDataTable extends DataTable
@@ -58,16 +59,18 @@ class TenantCoursePeriodDataTable extends DataTable
      */
     public function query()
     {
-        if (request()->branchOffice->currentPromotion() == null
-            || request()->branchOffice->currentPromotion()->currentPeriod() == null) {
-            return [];
-        }
-        return request()->branchOffice
-            ->currentPromotion()
-            ->currentPeriod()
-            ->coursePeriods()
-            ->withCount('students')
-            ->with('teacher', 'course', 'classroom')
+        return CoursePeriod::with('teacher', 'course', 'classroom', 'schedules')
+            ->whereHas('period', function ($queryPeriod) {
+                $queryPeriod->where([
+                    ['id', request()->period->id],
+                    ['status', \App\Period::STATUS_CURRENT]
+                ])->whereHas('promotion', function ($queryPromotion) {
+                    $queryPromotion->where('status', \App\Promotion::STATUS_CURRENT)
+                        ->whereHas('branchOffice', function ($queryBranchOffice) {
+                            $queryBranchOffice->where('id', request()->branchOffice->id);
+                        });
+                });
+            })
             ->get();
     }
 

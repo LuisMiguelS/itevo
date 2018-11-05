@@ -32,7 +32,6 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-
     const ROLE_ADMIN = 'admin';
     const ROLE_TENANT_ADMIN = 'tenant admin';
 

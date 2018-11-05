@@ -19,6 +19,13 @@ class TenantTeacherTrashedDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
+            ->editColumn('name', function (Teacher $teacher) {
+                return "<strong>{$teacher->full_name}</strong> 
+                <br> 
+                <small>Telefono: {$teacher->phone}</small>
+                <br>
+                <small>Cedula: {$teacher->id_card}</small>";
+            })
             ->addColumn('Fechas', function (Teacher $teacher) {
                 return "<p><b>Creación:</b> {$teacher->created_at->format('d/m/Y')}</p>
                         <p><b>Actualización:</b> {$teacher->updated_at->format('d/m/Y')}</p>";
@@ -26,7 +33,7 @@ class TenantTeacherTrashedDataTable extends DataTable
             ->addColumn('action', function (Teacher $teacher) {
                 return view('tenant.teacher._actions', compact('teacher'));
             })
-            ->rawColumns(['action', 'Fechas']);
+            ->rawColumns(['action', 'Fechas', 'name']);
     }
 
     /**
@@ -64,11 +71,11 @@ class TenantTeacherTrashedDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id' => ['title' => 'Identificador', 'visible' => false, 'exportable' => false, 'printable' => false,],
-            'name' => ['title' => 'Nombre(s)'],
-            'last_name' => ['title' => 'Apellido(s)'],
-            'id_card' => ['title' => 'Cedula'],
-            'phone' => ['title' => 'Teléfono'],
+            'id' => ['visible' => false, 'exportable' => false, 'printable' => false],
+            'name' => ['title' => 'Profesor'],
+            'last_name' => ['visible' => false, 'exportable' => false, 'printable' => false],
+            'id_card' => ['title' => 'Cedula', 'visible' => false, 'exportable' => false, 'printable' => false],
+            'phone' => ['title' => 'Teléfono', 'visible' => false, 'exportable' => false, 'printable' => false],
             'Fechas'
         ];
     }

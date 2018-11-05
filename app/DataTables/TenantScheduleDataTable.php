@@ -23,7 +23,7 @@ class TenantScheduleDataTable extends DataTable
     {
         return datatables($query)
             ->addColumn('Horarios', function (Schedule $schedule) {
-                return "<p> {$schedule->start_at->format('h:i:s A')} - {$schedule->ends_at->format('h:i:s A')} </p>";
+                return "<p>{$schedule->weekday} {$schedule->start_at->format('h:i:s A')} - {$schedule->ends_at->format('h:i:s A')} </p>";
             })
             ->addColumn('Fechas', function (Schedule $schedule) {
                 return "<p><b>Creación:</b> {$schedule->created_at->format('d/m/Y')}</p>

@@ -25,13 +25,11 @@ class TenantStudentDataTable extends DataTable
     {
         return datatables($query)
             ->addColumn('Estudiante', function (Student $student) {
-                return $student->full_name;
-            })
-            ->editColumn('id_card', function (Student $student) {
-                if ($student->id_card) {
-                    return $student->id_card;
-                }
-                return '<span class="label label-info">Sin especificar</span>';
+                return "<strong>{$student->full_name}</strong>
+                        <br>
+                        <small>Cedula: {{$student->id_card}</small>
+                        <br>
+                        <small>Teléfono: {{$student->phone}</small>";
             })
             ->editColumn('tutor_id_card', function (Student $student) {
                 if ($student->tutor_id_card) {
@@ -53,7 +51,7 @@ class TenantStudentDataTable extends DataTable
             ->addColumn('action', function (Student $student) {
                 return view('tenant.student._actions', compact('student'));
             })
-            ->rawColumns(['action', 'Fechas', 'id_card', 'tutor_id_card', 'signed_up']);
+            ->rawColumns(['action', 'Fechas', 'id_card', 'tutor_id_card', 'signed_up', 'Estudiante']);
     }
 
     /**
@@ -90,10 +88,10 @@ class TenantStudentDataTable extends DataTable
         return [
             'id' => ['title' => 'Identificador', 'visible' => false, 'exportable' => false, 'printable' => false,],
             'name' => ['visible' => false, 'exportable' => false, 'printable' => false,],
-            'last_name' => ['visible' => false, 'exportable' => false, 'printable' => false,],
+            'last_name' => ['visible' => false, 'exportable' => false, 'printable' => false],
             'Estudiante',
-            'id_card' => ['title' => 'Cédula'],
-            'phone' => ['title' => 'Teléfono'],
+            'id_card' => ['title' => 'Cédula', 'visible' => false, 'exportable' => false, 'printable' => false,],
+            'phone' => ['title' => 'Teléfono', 'visible' => false, 'exportable' => false, 'printable' => false,],
             'tutor_id_card' => ['title' => 'Cédula del tutor'],
             'signed_up' => ['title' => 'Inscrito'],
             'Fechas'
