@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
+use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 use App\Http\Requests\Tenant\{StoreCoursePeriodRequest, UpdateCoursePeriodRequest};
 use App\{BranchOffice, CoursePeriod, DataTables\TenantCoursePeriodDataTable, Period};
 
@@ -28,7 +29,8 @@ class CoursePeriodController extends Controller
 
         $breadcrumbs = 'coursePeriod';
 
-        $title = "Todos los cursos activos del periodo {$period->period_no} de la promocion no. {$period->promotion->promotion_no}";
+        $title = "Todos los cursos activos del periodo {$period->period_no} de la promocion no. {$period->promotion->promotion_no} 
+                <a class='btn btn-default' href='".route('tenant.periods.course-period.schedules.show', ['branchOffice' => $branchOffice, 'period' => $period])."' target='_blank'>Horario</a>";
 
         return $dataTable->render('datatables.tenant', compact('branchOffice', 'period', 'breadcrumbs', 'title'));
     }
@@ -77,16 +79,29 @@ class CoursePeriodController extends Controller
             ->with(['flash_success' => $request->createCoursePromotion($period)]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\BranchOffice $branchOffice
-     * @param \App\Period $period
-     * @return void
-     */
+
     public function show(BranchOffice $branchOffice, Period $period)
     {
-        dd("Horario");
+        $horario = \App\Schedule::with(['coursePeriods' => function ($query) use ($branchOffice, $period) {
+            $query->with('teacher', 'course', 'classroom')
+                ->whereHas('period', function ($queryPeriod) use ($branchOffice, $period) {
+                   $queryPeriod->where([
+                       ['id', $period->id],
+                       ['status', \App\Period::STATUS_CURRENT]
+                   ])->whereHas('promotion', function ($queryPromotion)  use ($branchOffice) {
+                       $queryPromotion->where('status', \App\Promotion::STATUS_CURRENT)
+                           ->whereHas('branchOffice', function ($queryBranchOffice)  use ($branchOffice) {
+                               $queryBranchOffice->where('id', $branchOffice->id);
+                           });
+                   });
+                });
+        }])
+            ->get()
+            ->groupBy('weekday');
+
+        return PDF::loadView('tenant.course_period.schedule_templete', compact('horario'))
+            ->setPaper('A4')
+            ->stream("HORARIO");
     }
 
     /**

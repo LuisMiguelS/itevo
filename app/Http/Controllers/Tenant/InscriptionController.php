@@ -39,11 +39,13 @@ class InscriptionController extends Controller
     {
         return response()->json(['data' =>
             $branchOffice->currentPromotion()
-            ->currentPeriod()
-            ->coursePeriods()
-            ->withCount('students')
-            ->with('teacher', 'course', 'classroom', 'schedules', 'resources')
-            ->get()
+                ->currentPeriod()
+                ->coursePeriods()
+                ->has('resources')
+                ->has('schedules')
+                ->withCount('students')
+                ->with('teacher', 'course', 'classroom', 'schedules', 'resources')
+                ->get()
         ], 200);
     }
 }

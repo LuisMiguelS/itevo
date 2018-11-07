@@ -118,7 +118,7 @@ Route::prefix('{branchOffice}')->middleware(['auth', 'tenantAccess'])->name('ten
 
     Route::get('periods/{period}/course-period/{coursePeriod}/schedules', 'Tenant\CoursePeriodController@schedule')
         ->name('periods.course-period.schedules.index');
-    Route::get('periods/{period}/course-period/{coursePeriod}/schedules/show', 'Tenant\CoursePeriodController@show')
+    Route::get('periods/{period}/course-period/schedules/show', 'Tenant\CoursePeriodController@show')
         ->name('periods.course-period.schedules.show');
     Route::post('periods/{period}/course-period/{coursePeriod}/schedules', 'Tenant\CoursePeriodController@addSchedule')
         ->name('periods.course-period.schedules');

@@ -46,9 +46,9 @@ class Schedule extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function coursePeriod()
+    public function coursePeriods()
     {
-        return $this->morphedByMany(CoursePeriod::class, 'coursable');
+        return $this->morphToMany(CoursePeriod::class, 'coursable');
     }
 
     /**
