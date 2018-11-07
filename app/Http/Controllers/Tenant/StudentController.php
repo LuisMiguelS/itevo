@@ -94,12 +94,27 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Student  $student
-     * @return \Illuminate\Http\Response
+     * @param \App\BranchOffice $branchOffice
+     * @param  \App\Student $student
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function show(Student $student)
+    public function show(BranchOffice $branchOffice, Student $student)
     {
-        //
+        $this->authorize('tenant-view', Student::class);
+
+        abort_unless($student->isRegisteredIn($branchOffice), 403);
+
+        $studentInfo = $student->invoices()
+            ->with(['coursePeriod' => function ($query) {
+                $query->with(['teacher', 'course' => function ($queryCourse) {
+                    $queryCourse->with('typeCourse');
+                }]);
+            }, 'resources'])
+            ->orderByDesc('created_at')
+            ->paginate();
+
+        return view('tenant.student.show', compact('branchOffice', 'student', 'studentInfo'));
     }
 
     /**

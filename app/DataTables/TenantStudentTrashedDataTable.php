@@ -22,9 +22,9 @@ class TenantStudentTrashedDataTable extends DataTable
             ->addColumn('Estudiante', function (Student $student) {
                 return "<strong>{$student->full_name}</strong>
                         <br>
-                        <small>Cedula: {{$student->id_card}</small>
+                        <small>Cedula: {$student->id_card}</small>
                         <br>
-                        <small>Teléfono: {{$student->phone}</small>";
+                        <small>Teléfono: {$student->phone}</small>";
             })
             ->editColumn('id_card', function (Student $student) {
                 if ($student->id_card) {

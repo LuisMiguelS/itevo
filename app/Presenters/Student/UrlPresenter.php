@@ -96,4 +96,12 @@ class UrlPresenter
             'id' => $this->student->id
         ]);
     }
+
+    public function show()
+    {
+        return route('tenant.students.show', [
+            'branchOffice' => $this->branchOffice,
+            'id' => $this->student->id
+        ]);
+    }
 }

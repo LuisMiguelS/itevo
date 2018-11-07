@@ -30,6 +30,11 @@
         </form>
     @endcan
 @else
+
+    <a href="{{ $student->url->show }}" target="_blank" class="btn btn-default btn-xs">
+        <i class="fa fa-eye" aria-hidden="true"></i>
+    </a>
+
     @can('tenant-update', $student)
         <a href="{{ $student->url->edit }}" class="btn btn-default btn-xs">
             <i class="fa fa-pencil" aria-hidden="true"></i>

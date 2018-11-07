@@ -80,12 +80,13 @@ class CoursePeriodController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\CoursePeriod  $coursePromotion
-     * @return \Illuminate\Http\Response
+     * @param \App\BranchOffice $branchOffice
+     * @param \App\Period $period
+     * @return void
      */
-    public function show(CoursePeriod $coursePromotion)
+    public function show(BranchOffice $branchOffice, Period $period)
     {
-        //
+        dd("Horario");
     }
 
     /**
