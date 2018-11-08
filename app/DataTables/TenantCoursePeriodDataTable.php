@@ -3,7 +3,6 @@
 namespace App\DataTables;
 
 use App\CoursePeriod;
-use App\Promotion;
 use Yajra\DataTables\Services\DataTable;
 
 class TenantCoursePeriodDataTable extends DataTable
@@ -60,6 +59,7 @@ class TenantCoursePeriodDataTable extends DataTable
     public function query()
     {
         return CoursePeriod::with('teacher', 'course', 'classroom', 'schedules')
+            ->withCount('students')
             ->whereHas('period', function ($queryPeriod) {
                 $queryPeriod->where([
                     ['id', request()->period->id],

@@ -9,7 +9,7 @@
                 @slot('title', "Informacion de: {$student->name}")
                 <p><strong>Nombre completo:</strong> {{ $student->full_name }}</p>
                 <p><strong>Cedula:</strong> {{ $student->id_card }}</p>
-                <p><strong>Cedula:</strong> {!! $student->tutor_id_card ?? '<span class="label label-info">Sin especificar</span>'  !!}</p>
+                <p><strong>Cedula del tutor:</strong> {!! $student->tutor_id_card ?? '<span class="label label-info">Sin especificar</span>'  !!}</p>
                 <p><strong>Telefono:</strong> {{ $student->phone }}</p>
                 <p><strong>Fecha de nacimiento:</strong> {{ $student->birthdate->format('d/m/Y') }}</p>
                 <p><strong>Inscrito :</strong> {!! (new \Carbon\Carbon($student->signed_up))->format('d/m/Y') ?? '<span class="label label-info">Sin inscribir</span>'!!}</p>

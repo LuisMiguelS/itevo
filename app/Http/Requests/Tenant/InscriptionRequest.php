@@ -55,6 +55,10 @@ class InscriptionRequest extends FormRequest
                 collect(request('course_period'))->unique('id')->each(function ($course_period) use ($student, $invoice) {
                     $active_course = CoursePeriod::findOrFail($course_period['id']);
 
+                    abort_if($active_course->students()->count() >= 30,
+                        400,
+                        "Se ha superado la capacidad del curso.");
+
                     abort_if($active_course->students()->where('course_period_id', $student->id)->count() > 1,
                         400,
                         "No puede registrar un estudiante que ya ha sido registrado en el curso");

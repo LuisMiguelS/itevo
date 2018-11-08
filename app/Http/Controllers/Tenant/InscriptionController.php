@@ -45,6 +45,7 @@ class InscriptionController extends Controller
                 ->has('schedules')
                 ->withCount('students')
                 ->with('teacher', 'course', 'classroom', 'schedules', 'resources')
+                ->whereRaw("start_at > DATE_SUB(NOW(), INTERVAL 7 DAY)")
                 ->get()
         ], 200);
     }
