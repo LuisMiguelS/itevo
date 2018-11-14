@@ -175,6 +175,7 @@ Route::prefix('{branchOffice}')->middleware(['auth', 'tenantAccess'])->name('ten
     Route::get('accounts/receivable', 'Tenant\AccountsReceivableController@index')->name('accounts_receivable.index');
     Route::post('accounts/receivable', 'Tenant\AccountsReceivableController@store')->name('accounts_receivable.store');
     Route::get('accounts/receivable/students', 'Tenant\AccountsReceivableController@students')->name('accounts_receivable.students');
+    Route::get('accounts/receivable/invoices/{invoice}', 'Tenant\AccountsReceivableController@breakdownPendingPayment')->name('accounts_receivable.breakdown_pending_payment');
 });
 
 

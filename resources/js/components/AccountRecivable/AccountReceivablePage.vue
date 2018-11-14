@@ -42,6 +42,8 @@
 
                     <h3>Recursos: {{ totalResource | currency }}</h3>
 
+                    <h3>Monto pendiente: {{ minPayment | currency }}</h3>
+
                     <h3>Total: {{ total | currency }}</h3>
 
                     <div class="form-group">
@@ -53,7 +55,7 @@
                                 currency="$"
                                 separator=","
                                 v-bind:minus="false"
-                                v-bind:min="totalResource"
+                                v-bind:min="payDebt"
                                 v-bind:max="total"
                                 v-model="payment"></vue-numeric>
                     </div>
@@ -80,6 +82,14 @@
             </div>
 
         </div>
+
+        <div class="col-md-12">
+            <breakdown-pending-payment
+                    :branch_office_slug="branchOffice.slug"
+                    :invoice="invoice"
+                    v-on:breakdown-pending-payment="setBreakdownPendingPayment"
+                    v-if="invoice"></breakdown-pending-payment>
+        </div>
     </main>
 </template>
 
@@ -87,6 +97,7 @@
     import ErrorAccountRecivable from './ErrorAccountRecivable';
     import Debts from './debt';
     import Resources from './Resources';
+    import BreakdownPendingPayment from './BreakdownPendingPayment';
 
     export default {
         name: "accounts_receivable",
@@ -94,7 +105,8 @@
         components: {
             ErrorAccountRecivable,
             Debts,
-            Resources
+            Resources,
+            BreakdownPendingPayment
         },
         data() {
             return {
@@ -105,6 +117,7 @@
                 resources: [],
                 invoice: null,
                 errors: false,
+                BreakdownPendingPayment: []
             }
         },
         mounted(){
@@ -116,8 +129,8 @@
                     this.students = response.data.data;
                 });
             },
-            fullName ({ name, last_name }) {
-                return `${name} ${last_name}`;
+            fullName ({ full_name }) {
+                return full_name;
             },
             getInvoice(invoice){
                 this.invoice = invoice;
@@ -148,9 +161,13 @@
                 this.resources = [];
                 this.invoice = null;
                 this.errors = false;
+                this.BreakdownPendingPayment = [];
             },
             changeResources(newResources) {
                 this.resources = newResources;
+            },
+            setBreakdownPendingPayment(items) {
+                this.BreakdownPendingPayment = items
             }
         },
         computed: {
@@ -175,6 +192,20 @@
                     return true;
                 }
                 return false;
+            },
+            minPayment() {
+                let min = this.BreakdownPendingPayment.filter(function (item) {
+                    return item.is_current_week === true;
+                });
+
+                if (min.length > 0) {
+                    return min[0].pending
+                }
+
+                return 0;
+            },
+            payDebt() {
+                return this.totalResource + this.minPayment;
             }
         }
     }
