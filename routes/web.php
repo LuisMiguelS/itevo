@@ -111,6 +111,7 @@ Route::prefix('{branchOffice}')->middleware(['auth', 'tenantAccess'])->name('ten
     /*
      * Course-Period
      */
+    Route::get('courses/record', 'Tenant\CourseRecordController@index')->name('courses.record');
     Route::get('periods/{period}/course-period/{coursePeriod}/resources', 'Tenant\CoursePeriodController@resource')
         ->name('periods.course-period.resources.index');
     Route::post('periods/{period}/course-period/{coursePeriod}/resources', 'Tenant\CoursePeriodController@addResource')

@@ -32,6 +32,9 @@
                         @can('tenant-view', \App\Course::class)
                             <li><a href="{{ route('tenant.courses.index', $branchOffice) }}"><i class="fa fa-circle-o"></i> Todos los cursos</a></li>
                         @endcan
+                        @can('tenant-view', \App\CoursePeriod::class)
+                            <li><a href="{{ route('tenant.courses.record', $branchOffice) }}"><i class="fa fa-circle-o"></i> Cursos impartidos (Historial)</a></li>
+                        @endcan
                         <li class="treeview">
                             <a href="#"><i class="fa fa-circle-o"></i> Tipo de cursos<span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                             <ul class="treeview-menu">
