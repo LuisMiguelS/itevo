@@ -31,7 +31,7 @@
         <tr>
             @isset($horario[\App\Schedule::WEEKDAY['monday']])
                 <td>
-                @foreach($horario[\App\Schedule::WEEKDAY['monday']] as $schedule)
+                @foreach($horario[\App\Schedule::WEEKDAY['monday']]->sortBy('start_at') as $schedule)
                     @foreach($schedule->coursePeriods as $coursePeriod)
                         {{ $coursePeriod->course->name }}   {{ $coursePeriod->course->typeCourse->name }}
                         <br>
@@ -40,15 +40,17 @@
                         {{ $coursePeriod->classroom->building }}:  {{ $coursePeriod->classroom->name }}
                     @endforeach
                     <br>
-                    {{ $schedule->start_at->format('h:i:s A') }} - {{ $schedule->start_at->format('h:i:s A') }}
+                    {{ $schedule->start_at->format('h:i:s A') }} - {{ $schedule->ends_at->format('h:i:s A') }}
                     <hr>
                 @endforeach
                 </td>
+            @else
+                <td></td>
             @endisset
 
             @isset($horario[\App\Schedule::WEEKDAY['tuesday']])
                 <td>
-                    @foreach($horario[\App\Schedule::WEEKDAY['tuesday']] as $schedule)
+                    @foreach($horario[\App\Schedule::WEEKDAY['tuesday']]->sortBy('start_at') as $schedule)
                         @foreach($schedule->coursePeriods as $coursePeriod)
                             {{ $coursePeriod->course->name }}   {{ $coursePeriod->course->typeCourse->name }}
                             <br>
@@ -57,15 +59,17 @@
                             {{ $coursePeriod->classroom->building }}:  {{ $coursePeriod->classroom->name }}
                         @endforeach
                         <br>
-                        {{ $schedule->start_at->format('h:i:s A') }} - {{ $schedule->start_at->format('h:i:s A') }}
+                        {{ $schedule->start_at->format('h:i:s A') }} - {{ $schedule->ends_at->format('h:i:s A') }}
                         <hr>
                     @endforeach
                 </td>
+            @else
+                <td></td>
             @endisset
 
             @isset($horario[\App\Schedule::WEEKDAY['wednesday']])
                 <td>
-                    @foreach($horario[\App\Schedule::WEEKDAY['wednesday']] as $schedule)
+                    @foreach($horario[\App\Schedule::WEEKDAY['wednesday']]->sortBy('start_at') as $schedule)
                         @foreach($schedule->coursePeriods as $coursePeriod)
                             {{ $coursePeriod->course->name }}   {{ $coursePeriod->course->typeCourse->name }}
                             <br>
@@ -74,15 +78,17 @@
                             {{ $coursePeriod->classroom->building }}:  {{ $coursePeriod->classroom->name }}
                         @endforeach
                         <br>
-                        {{ $schedule->start_at->format('h:i:s A') }} - {{ $schedule->start_at->format('h:i:s A') }}
+                        {{ $schedule->start_at->format('h:i:s A') }} - {{ $schedule->ends_at->format('h:i:s A') }}
                         <hr>
                     @endforeach
                 </td>
+            @else
+                <td></td>
             @endisset
 
             @isset($horario[\App\Schedule::WEEKDAY['thursday']])
                 <td>
-                    @foreach($horario[\App\Schedule::WEEKDAY['thursday']] as $schedule)
+                    @foreach($horario[\App\Schedule::WEEKDAY['thursday']]->sortBy('start_at') as $schedule)
                         @foreach($schedule->coursePeriods as $coursePeriod)
                             {{ $coursePeriod->course->name }}   {{ $coursePeriod->course->typeCourse->name }}
                             <br>
@@ -91,15 +97,17 @@
                             {{ $coursePeriod->classroom->building }}:  {{ $coursePeriod->classroom->name }}
                         @endforeach
                         <br>
-                        {{ $schedule->start_at->format('h:i:s A') }} - {{ $schedule->start_at->format('h:i:s A') }}
+                        {{ $schedule->start_at->format('h:i:s A') }} - {{ $schedule->ends_at->format('h:i:s A') }}
                         <hr>
                     @endforeach
                 </td>
+            @else
+                <td></td>
             @endisset
 
             @isset($horario[\App\Schedule::WEEKDAY['friday']])
                 <td>
-                    @foreach($horario[\App\Schedule::WEEKDAY['friday']] as $schedule)
+                    @foreach($horario[\App\Schedule::WEEKDAY['friday']]->sortBy('start_at') as $schedule)
                         @foreach($schedule->coursePeriods as $coursePeriod)
                             {{ $coursePeriod->course->name }}   {{ $coursePeriod->course->typeCourse->name }}
                             <br>
@@ -108,15 +116,17 @@
                             {{ $coursePeriod->classroom->building }}:  {{ $coursePeriod->classroom->name }}
                         @endforeach
                         <br>
-                        {{ $schedule->start_at->format('h:i:s A') }} - {{ $schedule->start_at->format('h:i:s A') }}
+                        {{ $schedule->start_at->format('h:i:s A') }} - {{ $schedule->ends_at->format('h:i:s A') }}
                         <hr>
                     @endforeach
                 </td>
+            @else
+                <td></td>
             @endisset
 
             @isset($horario[\App\Schedule::WEEKDAY['saturday']])
                 <td>
-                    @foreach($horario[\App\Schedule::WEEKDAY['saturday']] as $schedule)
+                    @foreach($horario[\App\Schedule::WEEKDAY['saturday']]->sortBy('start_at') as $schedule)
                         @foreach($schedule->coursePeriods as $coursePeriod)
                             {{ $coursePeriod->course->name }}   {{ $coursePeriod->course->typeCourse->name }}
                             <br>
@@ -125,15 +135,17 @@
                             {{ $coursePeriod->classroom->building }}:  {{ $coursePeriod->classroom->name }}
                         @endforeach
                         <br>
-                        {{ $schedule->start_at->format('h:i:s A') }} - {{ $schedule->start_at->format('h:i:s A') }}
+                        {{ $schedule->start_at->format('h:i:s A') }} - {{ $schedule->ends_at->format('h:i:s A') }}
                         <hr>
                     @endforeach
                 </td>
+            @else
+                <td></td>
             @endisset
 
             @isset($horario[\App\Schedule::WEEKDAY['sunday']])
                 <td>
-                    @foreach($horario[\App\Schedule::WEEKDAY['sunday']] as $schedule)
+                    @foreach($horario[\App\Schedule::WEEKDAY['sunday']]->sortBy('start_at') as $schedule)
                         @foreach($schedule->coursePeriods as $coursePeriod)
                             {{ $coursePeriod->course->name }}   {{ $coursePeriod->course->typeCourse->name }}
                             <br>
@@ -142,10 +154,12 @@
                             {{ $coursePeriod->classroom->building }}:  {{ $coursePeriod->classroom->name }}
                         @endforeach
                         <br>
-                        {{ $schedule->start_at->format('h:i:s A') }} - {{ $schedule->start_at->format('h:i:s A') }}
+                        {{ $schedule->start_at->format('h:i:s A') }} - {{ $schedule->ends_at->format('h:i:s A') }}
                         <hr>
                     @endforeach
                 </td>
+            @else
+                <td></td>
             @endisset
         </tr>
         </tbody>

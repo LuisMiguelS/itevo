@@ -32,7 +32,7 @@
 				<div class="icon">
 					<i class="fa fa-dollar"></i>
 				</div>
-				<a href="{{ route('tenant.invoice.index', $branchOffice) }}" class="small-box-footer">Ver detalle <i class="fa fa-arrow-circle-right"></i></a>
+				<a href="{{ route('tenant.balance_day.index', $branchOffice) }}" class="small-box-footer">Ver detalle <i class="fa fa-arrow-circle-right"></i></a>
 			</div>
 		</div>
 

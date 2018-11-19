@@ -176,6 +176,11 @@ Route::prefix('{branchOffice}')->middleware(['auth', 'tenantAccess'])->name('ten
     Route::post('accounts/receivable', 'Tenant\AccountsReceivableController@store')->name('accounts_receivable.store');
     Route::get('accounts/receivable/students', 'Tenant\AccountsReceivableController@students')->name('accounts_receivable.students');
     Route::get('accounts/receivable/invoices/{invoice}', 'Tenant\AccountsReceivableController@breakdownPendingPayment')->name('accounts_receivable.breakdown_pending_payment');
+
+    /*
+     *  Balance Day
+     */
+    Route::get('balance/day', 'Tenant\BalanceDayController@index')->name('balance_day.index');
 });
 
 

@@ -101,6 +101,7 @@ class CoursePeriodController extends Controller
 
         return PDF::loadView('tenant.course_period.schedule_templete', compact('horario'))
             ->setPaper('A4')
+            ->setOrientation('landscape')
             ->stream("HORARIO");
     }
 

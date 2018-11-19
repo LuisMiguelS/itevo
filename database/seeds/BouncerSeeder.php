@@ -115,7 +115,12 @@ class BouncerSeeder extends Seeder
 
         Bouncer::ability()->createForModel(BranchOffice::class, [
             'name' => 'tenant-settings',
-            'title' => 'configuraciónes'
+            'title' => 'Configuraciónes'
+        ]);
+
+        Bouncer::ability()->createForModel(BranchOffice::class, [
+            'name' => 'tenant-balance-day',
+            'title' => 'Ver cuadre del dia'
         ]);
     }
 
