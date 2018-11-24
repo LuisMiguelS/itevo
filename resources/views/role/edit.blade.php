@@ -11,7 +11,7 @@
                 @box
                 @slot('title', "Editar: {$role->name}")
 
-                <form class="form-horizontal" action="{{ route('roles.update', $role) }}" method="PUT">
+                <form class="form-horizontal" action="{{ route('roles.update', $role) }}" method="POST">
                     @method('PUT')
                     @include('role._fields')
 

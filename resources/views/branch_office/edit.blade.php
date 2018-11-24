@@ -7,7 +7,7 @@
                 @box
                 @slot('title', "Editar de {$branchOffice->name}")
 
-                <form class="form-horizontal" action="{{ $branchOffice->url->update }}" method="PUT">
+                <form class="form-horizontal" action="{{ $branchOffice->url->update }}" method="POST">
                     @method('PUT')
                     @include('branch_office._fields')
 
