@@ -15,8 +15,12 @@ class AllowedIpMiddleware
      */
     public function handle($request, Closure $next)
     {
+        if ($this->isNormalUser()) {
+            return $next($request);
+        }
+
         abort_unless(
-            $this->isNormalUser() && $this->allowedIp($request),
+            $this->allowedIp($request),
             403,
             "No tiene autorización para conectarse fuera de ". config('app.name')
         );
