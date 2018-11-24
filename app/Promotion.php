@@ -12,7 +12,7 @@ class Promotion extends Model
     use SoftDeletes, DatesTranslator;
 
     protected $fillable = [
-        'promotion_no', 'status'
+        'promotion_no', 'status', 'created_at'
     ];
 
     protected $hidden = [

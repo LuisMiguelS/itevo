@@ -50,7 +50,22 @@ class StorePromotionRequest extends FormRequest
 
     public function createPromotion(BranchOffice $branchOffice)
     {
-        $promotion = $branchOffice->promotions()->create($this->validated());
+        $lastPromotion = $branchOffice
+            ->promotions()
+            ->latest()
+            ->first();
+
+        if ($lastPromotion) {
+            $promotion = $branchOffice->promotions()->create([
+                'promotion_no' => $this->promotion_no,
+                'created_at' => now()->addYear(($lastPromotion->created_at->year - now()->year) + 1)
+            ]);
+        }else{
+            $promotion = $branchOffice->promotions()->create([
+                'promotion_no' => $this->promotion_no
+            ]);
+        }
+
         return "Promocion No. {$promotion->promotion_no} creada correctamente.";
     }
 }

@@ -115,4 +115,56 @@ class CreatePromotionTest extends TestCase
 
         $this->assertDatabaseEmpty('promotions');
     }
+
+    /** @test */
+    function promotion_no_is_create_with_one_year_added()
+    {
+        factory(Promotion::class)->create([
+            'branch_office_id' => $this->branchOffice->id,
+            'promotion_no' => 1,
+            'status' => Promotion::STATUS_FINISHED
+        ]);
+
+        $this->actingAs($this->admin)
+            ->post(route('tenant.promotions.store', $this->branchOffice), [
+                'promotion_no' => 2
+            ])
+            ->assertStatus(Response::HTTP_FOUND)
+            ->assertSessionHas(['flash_success' => "Promocion No. 2 creada correctamente."]);
+
+        $this->assertDatabaseHas('promotions', [
+            'promotion_no' => 2,
+            'created_at' => now()->addYear()->toDateTimeString()
+        ]);
+    }
+
+    /** @test */
+    function promotion_will_only_be_one_year_between()
+    {
+        factory(Promotion::class)->create([
+            'branch_office_id' => $this->branchOffice->id,
+            'promotion_no' => 1,
+            'status' => Promotion::STATUS_FINISHED,
+            'created_at' => now()->addYear(1)
+        ]);
+
+        factory(Promotion::class)->create([
+            'branch_office_id' => $this->branchOffice->id,
+            'promotion_no' => 2,
+            'status' => Promotion::STATUS_FINISHED,
+            'created_at' => now()->addYear(2)
+        ]);
+
+        $this->actingAs($this->admin)
+            ->post(route('tenant.promotions.store', $this->branchOffice), [
+                'promotion_no' => 3
+            ])
+            ->assertStatus(Response::HTTP_FOUND)
+            ->assertSessionHas(['flash_success' => "Promocion No. 3 creada correctamente."]);
+
+        $this->assertDatabaseHas('promotions', [
+            'promotion_no' => 3,
+            'created_at' => now()->addYear(3)->toDateTimeString()
+        ]);
+    }
 }

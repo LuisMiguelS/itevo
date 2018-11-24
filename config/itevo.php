@@ -7,4 +7,7 @@ return [
         'testing_email@example.com'
     ],
     'adulthood' => 18,
+    'ip' => [
+        "127.0.0.1",
+    ],
 ];

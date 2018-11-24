@@ -44,7 +44,7 @@ Route::resource('abilities', 'AbilitieController')->only('index');
 Route::resource('roles', 'RoleController')->except('show');
 
 
-Route::prefix('{branchOffice}')->middleware(['auth', 'tenantAccess'])->name('tenant.')->group(function () {
+Route::prefix('{branchOffice}')->middleware(['auth', 'tenantAccess', 'allowedIpMiddleware'])->name('tenant.')->group(function () {
 
     Route::get('dashboard', [BranchOfficeController::class, 'dashboard'])->name('dashboard');
 

@@ -20,8 +20,16 @@ class BalanceDayController extends Controller
 
     protected function getBalanceDay()
     {
-        if ($this->getBalanceDayResource()->count() > 0 && $this->getBalanceDayResource()[0] != null) {
+        if ($this->getBalanceDayResource()->count() > 0) {
             return $this->getBalanceDayResource();
+        }
+
+        if ($this->getBalanceDayCourse()->count() > 0){
+            return $this->getBalanceDayCourse();
+        }
+
+        if ($this->getBalanceDayGeneral()->count() > 0){
+            return $this->getBalanceDayGeneral();
         }
 
         return [];
@@ -29,12 +37,12 @@ class BalanceDayController extends Controller
 
     protected function getBalanceDayResource()
     {
-        return \App\Invoice::with(['payments', 'student' => function ($query) {
-            $query->where('branch_office_id', request()->branchOffice->id);
+        return \App\Invoice::whereHas('payments', function ($queryPayment) {
+            $queryPayment->whereDate('created_at', now());
+        })->with(['payments', 'student' => function ($queryStudent) {
+            $queryStudent->where('branch_office_id', request()->branchOffice->id);
         }])->get()->pluck('resources')->map(function ($resource) {
-            if (now()->toDateString() === $resource->toArray()[0]['created_at']->toDateString()
-                && request('cuadre') == strtolower($resource->toArray()[0]['name'])
-            ) {
+            if (request('cuadre') == strtolower($resource->toArray()[0]['name'])) {
                 return [
                     'factura' => $resource->toArray()[0]['pivot']['invoice_id'],
                     'cuadre' => $resource->toArray()[0]['name'],
@@ -42,27 +50,61 @@ class BalanceDayController extends Controller
                     'fecha' => $resource->toArray()[0]['created_at']->format('d/m/Y'),
                 ];
             }
-        });
+        })->filter();
     }
 
-    public function das()
+    protected function getBalanceDayCourse()
     {
-        $incomeDay =  \App\Invoice::with(['payments', 'student' => function ($query) use($branchOffice){
-            $query->where('branch_office_id', $branchOffice->id);
-        }])->get()->pluck('resources')->collapse()->sum(function ($resources) {
-            if (now()->toDateString() === $resources->created_at->toDateString()) {
-                return $resources->price;
+        if (! (request('cuadre') == 'cursos')) {
+            return collect([]);
+        }
+
+        return \App\Invoice::whereHas('payments', function ($queryPayment) {
+            $queryPayment->whereDate('created_at', now());
+        })->with(['payments', 'student' => function ($queryStudent) {
+            $queryStudent->where('branch_office_id', request()->branchOffice->id);
+        }])->get()->map(function ($object) {
+            if (($object->balance - $object->resources->sum('price')) > 0) {
+                return [
+                    'factura' => $object->id,
+                    'cuadre' => 'Cursos',
+                    'precio' => $object->balance - $object->resources->sum('price'),
+                    'fecha' => $object->created_at->format('d/m/Y'),
+                ];
             }
-        });
+        })->filter();
+    }
 
-        /* $incomeDay =  \App\Invoice::with(['payments', 'student' => function ($query) use($branchOffice){
-             $query->where('branch_office_id', $branchOffice->id);
-         }])->get()->pluck('payments')->collapse()->sum(function ($payment) {
-             if (now()->toDateString() === $payment->created_at->toDateString()) {
-                 return $payment->payment_amount;
-             }
-         });*/
+    public function getBalanceDayGeneral()
+    {
+        $resource = \App\Invoice::whereHas('payments', function ($queryPayment) {
+            $queryPayment->whereDate('created_at', now());
+        })->with(['payments', 'student' => function ($queryStudent) {
+            $queryStudent->where('branch_office_id', request()->branchOffice->id);
+        }])->get()->pluck('resources')->map(function ($resource) {
+            return [
+                'factura' => $resource->toArray()[0]['pivot']['invoice_id'],
+                'cuadre' => $resource->toArray()[0]['name'],
+                'precio' => $resource->toArray()[0]['price'],
+                'fecha' => $resource->toArray()[0]['created_at']->format('d/m/Y'),
+            ];
+        })->filter();
 
-        dd($incomeDay);
+        $course = \App\Invoice::whereHas('payments', function ($queryPayment) {
+            $queryPayment->whereDate('created_at', now());
+        })->with(['payments', 'student' => function ($queryStudent) {
+            $queryStudent->where('branch_office_id', request()->branchOffice->id);
+        }])->get()->map(function ($object) {
+            if (($object->balance - $object->resources->sum('price')) > 0) {
+                return [
+                    'factura' => $object->id,
+                    'cuadre' => 'Cursos',
+                    'precio' => $object->balance - $object->resources->sum('price'),
+                    'fecha' => $object->created_at->format('d/m/Y'),
+                ];
+            }
+        })->filter();
+
+        return $resource->merge($course)->filter();
     }
 }
