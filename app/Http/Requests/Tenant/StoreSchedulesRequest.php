@@ -36,27 +36,20 @@ class StoreSchedulesRequest extends FormRequest
         return [
             'weekday' => [
                 'required',
-                    Rule::in(Schedule::WEEKDAY),
+                Rule::in(Schedule::WEEKDAY),
+                Rule::unique('schedules')->where(function ($query) {
+                    return $query->where([
+                        ['branch_office_id', $this->branchOffice->id],
+                        ['weekday', $this->weekday],
+                    ])->whereTime('start_at', Carbon::createFromTimeString($this->start_at)->toTimeString())
+                    ->whereTime('ends_at', Carbon::createFromTimeString($this->ends_at)->toTimeString());
+                }),
             ],
             'start_at' => [
                 'required',
-                Rule::unique('schedules')->where(function ($query) {
-                    return $query->where([
-                        ['branch_office_id', $this->branchOffice->id],
-                        ['start_at', $this->start_at],
-                        ['ends_at', $this->ends_at],
-                    ]);
-                }),
             ],
             'ends_at' => [
                 'required',
-                Rule::unique('schedules')->where(function ($query) {
-                    return $query->where([
-                        ['branch_office_id', $this->branchOffice->id],
-                        ['start_at', $this->start_at],
-                        ['ends_at', $this->ends_at],
-                    ]);
-                }),
             ]
         ];
     }
@@ -70,6 +63,16 @@ class StoreSchedulesRequest extends FormRequest
             'weekday' => 'días laborables',
             'start_at' => 'hora de inicio',
             'ends_at' => 'hora de finalizacion',
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'weekday.unique' => 'El horario elegido ya existe, por favor elige otro.',
         ];
     }
 

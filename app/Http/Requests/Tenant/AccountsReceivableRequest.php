@@ -64,17 +64,23 @@ class AccountsReceivableRequest extends FormRequest
     protected function paymentDescription(Invoice $invoice)
     {
         if ($this->resources) {
-            $this->description .= "Pago de:";
+
+            $this->description .= "Pago de: ";
 
             collect(request('resources'))->each(function ($resources){
                 $resource = Resource::findOrFail($resources['id']);
-                $this->description .= $resource->name;
+                $this->description .= "{$resource->name}, ";
             });
 
-
-            if ($this->paid_out > $invoice->resources->sum('price')) {
-                return $this->description .= ", Abono a factura #{$invoice->id}";
+            if (
+                $this->paid_out > collect(request('resources'))->unique('id')->each(function ($resources) use ($invoice){
+                    return Resource::findOrFail($resources['id']);
+                })->sum('price')
+            ) {
+                return $this->description .= "Abono a factura #{$invoice->id}";
             }
+
+            return $this->description;
         }
 
         return "Abono a factura #{$invoice->id}";

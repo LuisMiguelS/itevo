@@ -31,6 +31,9 @@
           }
         },
         watch: {
+            invoice() {
+              this.resources = [];
+            },
             resources(newValue) {
                 if(newValue) {
                    this.$emit('change-resources', newValue);

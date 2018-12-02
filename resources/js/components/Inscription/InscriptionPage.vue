@@ -131,6 +131,12 @@
                 errors: false,
             }
         },
+        watch: {
+            resources: function () {
+                this.payment = 0;
+                this.cash_received = 0;
+            }
+        },
         mounted(){
             axios.get(`/${this.branchOffice.slug}/inscription/students`).then((response) => {
                 this.students = response.data.data;
@@ -148,7 +154,7 @@
                 return `${course.name} (${course.type_course.name})`;
             },
             dispatchActionCourse() {
-              this.resource = [];
+              this.resources = [];
               if (this.course) {
                   this.course.resources.forEach(resource => {
                      if (resource.necessary === 1) {

@@ -37,11 +37,13 @@ class AccountsReceivableController extends Controller
                 ->select('id', 'name', 'last_name')
                 ->where('branch_office_id', $branchOffice->id)
                 ->whereHas('invoices', function ($query) {
-                    $query->where('status', Invoice::STATUS_PENDING);
+                    $query->where('status', Invoice::STATUS_PENDING)
+                        ->orWhere('status', Invoice::STATUS_COMPLETE);
                 })
                 ->with(['invoices' => function ($invoices) {
                     $invoices->select('id', 'student_id', 'created_at')
                         ->where('status', Invoice::STATUS_PENDING)
+                        ->orWhere('status', Invoice::STATUS_COMPLETE)
                         ->with([
                             'resources:id,name,resources.price,necessary',
                             'payments:id,invoice_id,description,payment_amount,cash_received',

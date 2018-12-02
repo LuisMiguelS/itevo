@@ -35,7 +35,7 @@ class TenantStudentDataTable extends DataTable
                 if ($student->tutor_id_card) {
                     return $student->tutor_id_card;
                 }
-                return '<span class="label label-info">Sin especificar</span>';
+                return '<span class="label label-info">No es necesaria</span>';
             })
             ->editColumn('signed_up', function (Student $student) {
                 if ($student->signed_up) {

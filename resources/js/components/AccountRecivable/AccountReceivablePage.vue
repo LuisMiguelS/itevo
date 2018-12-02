@@ -120,6 +120,12 @@
                 BreakdownPendingPayment: []
             }
         },
+        watch: {
+            resources: function () {
+                this.payment = 0;
+                this.cash_received = 0;
+            }
+        },
         mounted(){
             this.getStudent();
         },
@@ -134,6 +140,7 @@
             },
             getInvoice(invoice){
                 this.invoice = invoice;
+                this.resources = [];
             },
             dispatchActionStudent(){
                 this.invoice = null;

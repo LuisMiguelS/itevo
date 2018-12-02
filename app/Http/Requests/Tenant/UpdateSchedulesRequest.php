@@ -37,27 +37,16 @@ class UpdateSchedulesRequest extends FormRequest
             'weekday' => [
                 'required',
                 Rule::in(Schedule::WEEKDAY),
-            ],
-            'start_at' => [
-                'required',
                 Rule::unique('schedules')->ignore($this->schedule->id)->where(function ($query) {
                     return $query->where([
                         ['branch_office_id', $this->branchOffice->id],
-                        ['start_at', $this->start_at],
-                        ['ends_at', $this->ends_at],
-                    ]);
+                        ['weekday', $this->weekday],
+                    ])->whereTime('start_at', Carbon::createFromTimeString($this->start_at)->toTimeString())
+                        ->whereTime('ends_at', Carbon::createFromTimeString($this->ends_at)->toTimeString());
                 }),
             ],
-            'ends_at' => [
-                'required',
-                Rule::unique('schedules')->ignore($this->schedule->id)->where(function ($query) {
-                    return $query->where([
-                        ['branch_office_id', $this->branchOffice->id],
-                        ['start_at', $this->start_at],
-                        ['ends_at', $this->ends_at],
-                    ]);
-                }),
-            ]
+            'start_at' => ['required'],
+            'ends_at' => ['required']
         ];
     }
 

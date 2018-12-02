@@ -52,7 +52,11 @@ class StoreStudentRequest extends FormRequest
                 'min:14',
                 'max:14',
             ],
-            'birthdate' => 'required|date',
+            'birthdate' => ['required', 'date',  function ($attribute, $value, $fail) {
+                if (! $this->isAdult(new Carbon($value)) && $this->id_card) {
+                    $fail('La cédula del tutor debe ser especificada si el estudiante es menor.');
+                }
+            }],
             'address' => 'required|min:15|max:255',
             'notes' => 'nullable|min:10'
         ];
@@ -84,8 +88,8 @@ class StoreStudentRequest extends FormRequest
 
         $data = $this->validated();
         $data['promotion_id'] = $branchOffice->currentPromotion()->id;
-        $data['birthdate'] = (new Carbon($this->validated()['birthdate']))->toDateTimeString();
-        $data['tutor_id_card'] = $this->isAdult(new Carbon($this->validated()['birthdate'])) ? null : $this->validated()['tutor_id_card'];
+        $data['birthdate'] = (new Carbon($this->birthdate))->toDateTimeString();
+        $data['tutor_id_card'] = $this->isAdult(new Carbon($this->birthdate)) ? null : $this->tutor_id_card;
 
         return $data;
     }
@@ -95,19 +99,17 @@ class StoreStudentRequest extends FormRequest
     {
         abort_unless($branchOffice->currentPromotion(), 400, 'No hay una promocion actual');
 
-        if ($this->isAdult(new Carbon($this->validated()['birthdate']))){
-            abort_if(isset($this->validated()['id_card'])
-                && $this->validated()['id_card'] == null, 400, 'Debe especificar la cedula, si el estudiante es mayor de edad');
+        if ($this->isAdult(new Carbon($this->birthdate))){
+            abort_if(isset($this->id_card)
+                && $this->id_card == null, 400, 'Debe especificar la cedula, si el estudiante es mayor de edad');
         }
 
-        abort_if(isset($this->validated()['tutor_id_card'])
-            && $this->validated()['tutor_id_card'] == null, 400, 'Debe especificar la cedula del tutor, si el estudiante no es mayor de edad');
+        abort_if(isset($this->tutor_id_card)
+            && $this->tutor_id_card == null, 400, 'Debe especificar la cedula del tutor, si el estudiante no es mayor de edad');
     }
 
     protected function isAdult(Carbon $birthday)
     {
         return $birthday->age >= config('itevo.adulthood');
     }
-
-
 }

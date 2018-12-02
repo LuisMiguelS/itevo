@@ -36,7 +36,7 @@ class InvoiceController extends Controller
         $this->authorize('tenant-view', \App\Invoice::class);
 
         return PDF::loadView('tenant.invoice.factura-template', compact('branchOffice', 'invoice'))
-            ->setPaper('A0')
+            ->setPaper('A4')
             ->stream("FACTURA#{$invoice->id}");
     }
 
@@ -47,7 +47,7 @@ class InvoiceController extends Controller
         $payment = Payment::findOrFail($id);
 
         return PDF::loadView('tenant.invoice.recibo-template', compact('branchOffice', 'payment'))
-            ->setPaper('A0')
+            ->setPaper('A4')
             ->stream("RECIBO#{$payment->id}");
     }
 }

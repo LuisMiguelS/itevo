@@ -12,7 +12,7 @@
 
             @box
             <form action="{{ $coursePeriod->url->update }}" method="post">
-
+                @method('PUT')
                 @include('tenant.course_period._fields')
 
                 <div class="form-group row mb-0">

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Tenant;
 
-use App\{BranchOffice};
+use App\{BranchOffice, CoursePeriod};
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Tenant\InscriptionRequest;
 
@@ -38,14 +38,15 @@ class InscriptionController extends Controller
     public function courses(BranchOffice $branchOffice)
     {
         return response()->json(['data' =>
-            $branchOffice->currentPromotion()
-                ->currentPeriod()
-                ->coursePeriods()
+            CoursePeriod::whereHas('course', function ($query) use ($branchOffice) {
+                $query->where('branch_office_id', $branchOffice->id);
+            })
                 ->has('resources')
                 ->has('schedules')
                 ->withCount('students')
                 ->with('teacher', 'course', 'classroom', 'schedules', 'resources')
                 ->whereRaw("start_at > DATE_SUB(NOW(), INTERVAL 7 DAY)")
+                ->whereColumn('start_at', '<', 'ends_at')
                 ->get()
         ], 200);
     }

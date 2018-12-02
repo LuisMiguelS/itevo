@@ -26,7 +26,7 @@ class UpdateResourceRequest extends FormRequest
                 'required',
                 'min:4',
                 'max:50',
-                Rule::unique('type_courses')->ignore($this->resource->id)->where(function ($query) {
+                Rule::unique('resources')->ignore($this->resource->id)->where(function ($query) {
                     return $query->where([
                         ['branch_office_id', $this->branchOffice->id],
                         ['name', $this->request->get('name')],

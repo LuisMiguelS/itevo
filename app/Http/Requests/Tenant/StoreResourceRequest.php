@@ -26,7 +26,7 @@ class StoreResourceRequest extends FormRequest
                 'required',
                 'min:4',
                 'max:50',
-                Rule::unique('type_courses')->where(function ($query) {
+                Rule::unique('resources')->where(function ($query) {
                     return $query->where([
                         ['branch_office_id', $this->branchOffice->id],
                         ['name', $this->request->get('name')],

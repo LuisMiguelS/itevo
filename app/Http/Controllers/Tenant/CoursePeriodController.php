@@ -82,20 +82,21 @@ class CoursePeriodController extends Controller
 
     public function show(BranchOffice $branchOffice, Period $period)
     {
-        $horario = \App\Schedule::with(['coursePeriods' => function ($query) use ($branchOffice, $period) {
-            $query->with('teacher', 'course', 'classroom')
-                ->whereHas('period', function ($queryPeriod) use ($branchOffice, $period) {
-                   $queryPeriod->where([
-                       ['id', $period->id],
-                       ['status', \App\Period::STATUS_CURRENT]
-                   ])->whereHas('promotion', function ($queryPromotion)  use ($branchOffice) {
-                       $queryPromotion->where('status', \App\Promotion::STATUS_CURRENT)
-                           ->whereHas('branchOffice', function ($queryBranchOffice)  use ($branchOffice) {
-                               $queryBranchOffice->where('id', $branchOffice->id);
-                           });
-                   });
-                });
-        }])
+        $horario = \App\Schedule::has('coursePeriods')
+            ->with(['coursePeriods' => function ($query) use ($branchOffice, $period) {
+                $query->with('teacher', 'course', 'classroom')
+                    ->whereHas('period', function ($queryPeriod) use ($branchOffice, $period) {
+                    $queryPeriod->where([
+                        ['id', $period->id],
+                        ['status', \App\Period::STATUS_CURRENT]
+                    ])->whereHas('promotion', function ($queryPromotion)  use ($branchOffice) {
+                        $queryPromotion->where('status', \App\Promotion::STATUS_CURRENT)
+                            ->whereHas('branchOffice', function ($queryBranchOffice)  use ($branchOffice) {
+                                $queryBranchOffice->where('id', $branchOffice->id);
+                            });
+                    });
+                    });
+            }])
             ->get()
             ->groupBy('weekday');
 

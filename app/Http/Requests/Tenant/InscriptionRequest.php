@@ -59,9 +59,9 @@ class InscriptionRequest extends FormRequest
                         400,
                         "Se ha superado la capacidad del curso.");
 
-                    abort_if($active_course->students()->where('course_period_id', $student->id)->count() > 1,
+                    abort_if($active_course->students()->where('id', $student->id)->count(),
                         400,
-                        "No puede registrar un estudiante que ya ha sido registrado en el curso");
+                        "No puedes reinscribir este estudiante, Porque ya esta inscrito en el curso selecionado.");
 
                     $active_course->students()->attach($student->id);
                     $invoice->coursePeriod()->attach($active_course->id,  ['price' => $active_course->price]);
