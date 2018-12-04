@@ -131,7 +131,10 @@ class CoursePeriod extends Model
 
     public function getCurrentCourses()
     {
-        return  collect($this->period->coursePeriods()->where('id', '<>', $this->id)->get());
+        return  collect($this->period->coursePeriods()
+            ->where('id', '<>', $this->id)
+            ->where('classroom_id', $this->classroom_id)
+            ->get());
     }
 
     public function invoices()
