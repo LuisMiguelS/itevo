@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Bouncer;
 use App\User;
 use Silber\Bouncer\Database\{Ability, Role};
 use App\Http\Requests\{StoreRoleRequest, UpdateRoleRequest};
@@ -66,14 +67,19 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+        Bouncer::refresh();
+
         $this->authorize('update', $role);
+
         $response = $this->canAlterThisRole($role, "No puedes editar el rol {$role->title}");
         if (!is_null($response)) {
             return $response;
         }
+
         $abilities = Ability::unless(auth()->user()->isAdmin(), function ($q){
             $q->where('name','<>','*');
         })->get();
+
         return view('role.edit', compact('role', 'abilities'));
     }
 

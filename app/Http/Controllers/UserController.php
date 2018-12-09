@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+Use Bouncer;
 use App\{BranchOffice, User};
 use Silber\Bouncer\Database\Role;
 use App\Http\Requests\StoreUserRequest;
@@ -90,15 +91,21 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        Bouncer::refresh();
+
         $this->authorize('update', User::class);
+
         $this->canAlterTo($user);
+
         $branchOffices = BranchOffice::all();
+
         $roles = Role::unless(auth()->user()->isAdmin(), function ($query) {
             $query->where([
                 ['name', '<>', User::ROLE_ADMIN],
                 ['name', '<>', User::ROLE_TENANT_ADMIN]
             ]);
         })->get();
+
         return view('user.edit', compact('user', 'branchOffices', 'roles'));
     }
 

@@ -41,12 +41,12 @@
                                     <ul class="dropdown-menu" role="menu">
                                         @can('view', \App\User::class)
                                             <li><a href="{{ route('users.index') }}">Usuarios</a></li>
+                                            <li class="divider"></li>
                                         @endcan
-                                        <li class="divider"></li>
                                         @can('view', \Silber\Bouncer\Database\Role::class)
                                             <li><a  href="{{ route('roles.index') }}">Roles</a></li>
+                                            <li class="divider"></li>
                                         @endcan
-                                        <li class="divider"></li>
                                         <li><a href="{{ route('abilities.index') }}">Habilidades</a></li>
                                     </ul>
                                 </li>

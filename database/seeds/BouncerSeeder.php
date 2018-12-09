@@ -604,13 +604,13 @@ class BouncerSeeder extends Seeder
         ]);
 
         Bouncer::ability()->createForModel(Invoice::class, [
-            'name' => 'tenant-create',
-            'title' => 'Crear facturas'
+            'name' => 'tenant-store',
+            'title' => 'Inscribir estudiantes'
         ]);
 
         Bouncer::ability()->createForModel(Invoice::class, [
             'name' => 'tenant-update',
-            'title' => 'Pagar facturas'
+            'title' => 'Cuentas x pagar'
         ]);
     }
 }

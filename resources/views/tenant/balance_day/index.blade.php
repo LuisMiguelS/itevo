@@ -18,6 +18,10 @@
                         @endforeach
                     </select>
 
+                    <br>
+
+                    <input type="checkbox" name="print" id="print" value="true"> <label for="print">Haz click aqui si deseas imprimir</label>
+
                     <button class="btn btn-primary btn-block" style="margin-top: 1rem">Buscar</button>
                 </form>
             @endbox
@@ -26,7 +30,7 @@
             @box
                 @slot('title', 'Información del cuadre')
 
-                <table class="table table-striped">
+                <table class="table table-striped" id="balance_day">
                     <thead>
                     <tr>
                         <th>Numero de factura</th>

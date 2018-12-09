@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Tenant;
 
-use App\{BranchOffice, CoursePeriod};
+use App\{BranchOffice, CoursePeriod, Invoice};
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Tenant\InscriptionRequest;
 
@@ -15,7 +15,7 @@ class InscriptionController extends Controller
 
     public function index(BranchOffice $branchOffice)
     {
-        $this->authorize('tenant-store', \App\Invoice::class);
+        $this->authorize('tenant-store', Invoice::class);
 
         abort_unless($branchOffice->currentPromotion(), 400, 'No hay una promocion actual');
 
@@ -25,7 +25,7 @@ class InscriptionController extends Controller
 
     public function store(InscriptionRequest $request, BranchOffice $branchOffice)
     {
-        $this->authorize('tenant-store', \App\Invoice::class);
+       $this->authorize('tenant-store', Invoice::class);
 
         return response()->json(['data' => $request->createInscription($branchOffice)], 201);
     }

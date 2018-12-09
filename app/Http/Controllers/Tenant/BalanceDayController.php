@@ -15,6 +15,10 @@ class BalanceDayController extends Controller
 
         $balanceDay = $this->getBalanceDay();
 
+        if (request()->print == 'true'){
+            return view('tenant.balance_day.print', compact('balanceDay'));
+        }
+
         return view('tenant.balance_day.index', compact('branchOffice', 'resources', 'balanceDay'));
     }
 
